@@ -1,0 +1,158 @@
+import { useState } from "react";
+import Logo from "./Logo";
+import Alert from "./Alert";
+
+const SignUp = () => {
+  const [name, setName] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [birth, setBirth] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [alertData, setAlertData] = useState({ enable: false });
+
+  const signUp = async (event) => {
+    event.preventDefault();
+    setAlertData({ enable: false });
+    const data = {
+      name: name,
+      mobileNumber: Number(mobileNumber),
+      birth: birth,
+      email: email,
+      password: password,
+    };
+    const serverData = await fetch("http://localhost:5000/singup", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const response = await serverData.json();
+    console.log(response);
+
+    setAlertData({ ...response, enable: true });
+  };
+
+  return (
+    <div
+      className="modal fade"
+      id="signupModal"
+      tabIndex={-1}
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div className="modal-dialog modal-fullscreen-sm-down">
+        <div className="modal-content">
+          <div className="modal-header">
+            <div className="modal-title w-100 text-center">
+              <Logo />
+            </div>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            />
+          </div>
+          <div className="modal-body">
+            <form
+              className="form"
+              onSubmit={(event) => {
+                signUp(event);
+              }}
+            >
+              <div className="text-box display-flex">
+                <input
+                  className="text-box"
+                  type="text"
+                  placeholder="Enter your Name"
+                  required
+                  value={name}
+                  onChange={(event) => {
+                    setName(event.target.value);
+                  }}
+                />
+              </div>
+              <div className=" text-box display-flex">
+                <input
+                  className="text-box"
+                  type="number"
+                  placeholder="Enter your Mobile Number"
+                  required
+                  value={mobileNumber}
+                  onChange={(event) => {
+                    setMobileNumber(event.target.value);
+                  }}
+                />
+              </div>
+              <div className=" text-box display-flex">
+                <input
+                  className="text-box"
+                  type="date"
+                  placeholder="Enter your date of birth"
+                  required
+                  value={birth}
+                  onChange={(event) => {
+                    setBirth(event.target.value);
+                  }}
+                />
+              </div>
+              <div className="text-box display-flex">
+                <input
+                  className="text-box"
+                  type="email"
+                  placeholder="Enter your Email-ID"
+                  required
+                  value={email}
+                  onChange={(event) => {
+                    setEmail(event.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="text-box display-flex">
+                <input
+                  className="text-box"
+                  type="password"
+                  placeholder="Enter your password"
+                  required
+                  value={password}
+                  onChange={(event) => {
+                    setPassword(event.target.value);
+                  }}
+                />
+              </div>
+              {alertData.enable && (
+                <div className="text-box">
+                  <Alert alertData={alertData} setAlertData={setAlertData} />
+                </div>
+              )}
+              <div className="text-box display-flex">
+                <button
+                  className="button btn btn-primary"
+                  style={{ width: "100%" }}
+                >
+                  Create Your Account
+                </button>
+              </div>
+            </form>
+          </div>
+          <div className="modal-footer">
+            Do you have already account created ?
+            <button
+              type="button"
+              className="btn btn-link"
+              data-bs-toggle="modal"
+              data-bs-target="#loginModal"
+            >
+              Login
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SignUp;

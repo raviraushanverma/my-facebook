@@ -15,14 +15,6 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
   const uploadImage = async (imageData) => {
     return new Promise(async (resolve, reject) => {
       try {
-        // const res = await fetch(
-        //   `${process.env.REACT_APP_SERVER_END_PONT}/media-upload`,
-        //   {
-        //     mode: "cors",
-        //     method: "POST",
-        //     body: imageData,
-        //   }
-        // );
         const res = await fetch(
           `https://api.cloudinary.com/v1_1/drwcm1tej/image/upload`,
           {

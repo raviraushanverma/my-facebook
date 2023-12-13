@@ -1,9 +1,10 @@
 const ImageThumbnail = (props) => {
   return (
     <section className="d-flex justify-content-between align-items-center flex-wrap">
-      {props.images.map((image) => {
+      {props.images.map((image, index) => {
         return (
           <img
+            key={index}
             style={{
               padding: "3px",
               margin: "3px",

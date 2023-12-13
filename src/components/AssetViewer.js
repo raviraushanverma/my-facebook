@@ -2,7 +2,9 @@ import ImageViewer from "./ImageViewer";
 
 const AssetViewer = (props) => {
   if (props.assets.length === 1) {
-    return <ImageViewer imageUrl={props.assets[0].url} />;
+    return (
+      <ImageViewer style={{ width: "100%" }} imageUrl={props.assets[0].url} />
+    );
   } else if (props.assets.length === 2) {
     return (
       <div style={{ width: "100%", display: "flex" }}>

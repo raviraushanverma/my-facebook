@@ -1,27 +1,30 @@
-import { useRef } from "react";
 import { useState } from "react";
 import UserAvatar from "./UserAvatar";
+import MediaUpload from "./MediaUpload";
+import ImageThumbnail from "./ImageThumbnail";
 
 const CreatePost = (props) => {
   const [alertData, setAlertData] = useState({ enable: false });
-  const inputRef = useRef(null);
-  const [image, setImage] = useState("");
   const [content, setContent] = useState("");
+  const [imageList, setImageList] = useState([]);
 
-  const handleImageClick = () => {
-    inputRef.current.click();
+  const onUploadHandler = (images) => {
+    const imageDataArray = images.map((element) => {
+      return {
+        url: element.url,
+      };
+    });
+    setImageList(imageDataArray);
   };
 
-  const handleImageChange = (event) => {
-    const file = event.target.files;
-
-    setImage(file);
-  };
   const post = async (event) => {
     event.preventDefault();
     const data = {
       content: content,
     };
+    if (imageList.length > 0) {
+      data.images = imageList;
+    }
     const serverData = await fetch("http://localhost:5000/post", {
       headers: {
         "Content-Type": "application/json",
@@ -32,22 +35,9 @@ const CreatePost = (props) => {
     const response = await serverData.json();
     setAlertData({ ...response, enable: true });
     if (response.isSuccess === true) {
+      props.updateData(response.post);
       document.getElementById("modalClose").click();
     }
-    props.updateData(response.post);
-  };
-
-  const imageUploadImage = async () => {
-    const imagesdata = {
-      images: image,
-    };
-    const imagePost = await fetch("http://localhost:5000/postimage", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(imagesdata),
-    });
   };
 
   return (
@@ -92,7 +82,6 @@ const CreatePost = (props) => {
                     <form
                       onSubmit={(event) => {
                         post(event);
-                        imageUploadImage();
                       }}
                     >
                       <div className="content d-flex">
@@ -114,39 +103,30 @@ const CreatePost = (props) => {
                           setContent(event.target.value);
                         }}
                       ></textarea>
-                      <div className="options">
-                        <p>Add to Your Post</p>
-                        <div className="list">
-                          <div onClick={handleImageClick}>
-                            {image ? (
-                              <img src={URL.createObjectURL(image)} alt="" />
-                            ) : (
-                              <img
-                                src="../assets/images/istockphoto-1248723171-612x612.jpg"
-                                alt=""
-                              />
-                            )}
-                            <input
-                              type="file"
-                              ref={inputRef}
-                              onChange={handleImageChange}
-                            ></input>
-                          </div>
-                          <div>
-                            <i className="fa-solid fa-user"></i>
-                          </div>
-                          <div>
-                            <i className="fa-regular fa-face-smile"></i>
-                          </div>
-                          <div>
-                            <i className="fa-solid fa-location-dot"></i>
-                          </div>
-                        </div>
-                      </div>
+                      <ImageThumbnail images={imageList} />
                       <button type="submit" className="btn btn-primary btn-lg">
                         Post
                       </button>
                     </form>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div>Add to Your Post</div>
+                      <div className="d-flex justify-content-between align-items-center">
+                        <div className="post-icons">
+                          <MediaUpload onSuccessUpload={onUploadHandler}>
+                            <i className="fa-solid fa-camera"></i>
+                          </MediaUpload>
+                        </div>
+                        <div className="post-icons">
+                          <i className="fa-solid fa-user"></i>
+                        </div>
+                        <div className="post-icons">
+                          <i className="fa-regular fa-face-smile"></i>
+                        </div>
+                        <div className="post-icons">
+                          <i className="fa-solid fa-location-dot"></i>
+                        </div>
+                      </div>
+                    </div>
                   </section>
                 </div>
               </div>

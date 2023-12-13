@@ -1,6 +1,7 @@
 import UserAvatar from "./UserAvatar";
 import CreateComment from "./CreateComment";
 import Comment from "./Comment";
+import AssetViewer from "./AssetViewer";
 
 const Post = (props) => {
   return (
@@ -16,6 +17,9 @@ const Post = (props) => {
       </section>
       <section>
         <div className="post-content">{props.postObj.content}</div>
+        <div>
+          <AssetViewer assets={props.postObj.images} />
+        </div>
       </section>
       <div className="post-buttons">
         <div>

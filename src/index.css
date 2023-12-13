@@ -35,13 +35,13 @@ a {
   list-style: none;
 }
 
-.display-flex > li > a {
+.display-flex > li >  a {
   color: #000000;
 }
 
 .footer {
   background-color: #ffffff;
-  color:#000000;
+  color: #000000;
   height: 30px;
   width: 100%;
   position: fixed;
@@ -50,6 +50,20 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.uploading-image-section {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  height: 30%;
+}
+
+.uploading-image-section .uploading-image {
+  height: 100px;
+  width: 100px;
+  padding: 10px;
+  border: 1px solid #ffffff;
 }
 
 .profile-pic-img {
@@ -73,7 +87,6 @@ a {
   padding: 30px;
 }
 
-  
 .text-box {
   font-size: 16px;
   width: 100%;
@@ -84,7 +97,7 @@ a {
   font-size: 20px;
   width: 90%;
 }
-  
+
 .form {
   border: black;
   background-color: #ffffff;
@@ -99,16 +112,16 @@ a {
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   backdrop-filter: saturate(180%) blur(20px);
 }
+
 .site-header a {
   color: #8e8e8e;
   transition: color .15s ease-in-out;
 }
+
 .site-header a:hover {
   color: #fff;
   text-decoration: none;
 }
-
-
 
 .product-device {
   position: absolute;
@@ -145,11 +158,12 @@ a {
  * Extra utilities
  */
 
-.flex-equal > * {
+.flex-equal>* {
   flex: 1;
 }
+
 @media (min-width: 768px) {
-  .flex-md-equal > * {
+  .flex-md-equal>* {
     flex: 1;
   }
 }
@@ -160,6 +174,7 @@ a {
   margin-bottom: 1.5rem;
   text-align: center;
 }
+
 .marketing .col-lg-4 p {
   margin-right: .75rem;
   margin-left: .75rem;
@@ -170,7 +185,8 @@ a {
 ------------------------- */
 
 .featurette-divider {
-  margin: 5rem 0; /* Space out the Bootstrap <hr> more */
+  margin: 5rem 0;
+  /* Space out the Bootstrap <hr> more */
 }
 
 /* Thin out the marketing headings */
@@ -179,6 +195,7 @@ a {
 -------------------------------------------------- */
 
 @media (min-width: 40em) {
+
   /* Bump up size of carousel content */
   .carousel-caption p {
     margin-bottom: 1.25rem;
@@ -203,11 +220,13 @@ a {
   margin-bottom: 1.5rem;
   text-align: center;
 }
+
 /* rtl:begin:ignore */
 .marketing .col-lg-4 p {
   margin-right: .75rem;
   margin-left: .75rem;
 }
+
 /* rtl:end:ignore */
 
 
@@ -215,7 +234,8 @@ a {
 ------------------------- */
 
 .featurette-divider {
-  margin: 5rem 0; /* Space out the Bootstrap <hr> more */
+  margin: 5rem 0;
+  /* Space out the Bootstrap <hr> more */
 }
 
 /* Thin out the marketing headings */
@@ -230,6 +250,7 @@ a {
 -------------------------------------------------- */
 
 @media (min-width: 40em) {
+
   /* Bump up size of carousel content */
   .carousel-caption p {
     margin-bottom: 1.25rem;
@@ -270,7 +291,7 @@ a {
   margin-left: 15px;
 }
 
-.content .details .privacy{
+.content .details .privacy {
   display: flex;
   height: 25px;
   cursor: pointer;
@@ -283,65 +304,46 @@ a {
   background: #E4E6EB;
   justify-content: space-between;
 }
-.details .privacy span{
+
+.details .privacy span {
   font-size: 13px;
   margin-top: 1px;
   font-weight: 500;
 }
-.details .privacy i:last-child{
+
+.details .privacy i:last-child {
   font-size: 13px;
   margin-left: 1px;
 }
-form :where(textarea, button){
+
+form :where(textarea, button) {
   width: 100%;
   outline: none;
   border: none;
 }
-form textarea{
+
+form textarea {
   resize: none;
   font-size: 18px;
   margin-top: 30px;
   min-height: 100px;
 }
 
-form textarea::placeholder{
+form textarea::placeholder {
   color: #858585;
 }
 
-form textarea:focus::placeholder{
+form textarea:focus::placeholder {
   color: #b3b3b3;
 }
 
-form .options {
-  display: flex;
+.post-icons {
   padding: 10px;
-  align-items: center;
-  border-radius: 7px;
-  border: 1px solid #B9B9B9;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  margin-bottom: 10px;
-  justify-content: space-around;
 }
 
-form .options :where(.list, div) {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-form .options .list{
-  list-style: none;
-}
-.options .list div{
-  height: 30px;
-  width: 30px;
-  margin: 0 -1px;
+.post-icons:hover {
+  background-color: lightgray;
   cursor: pointer;
-  border-radius: 50%;
-}
-
-.options .list div:hover{
-  background: #f0f1f4;
 }
 
 .create-post-container {
@@ -354,12 +356,12 @@ form .options .list{
 }
 
 .create-post-textbox {
-    border-radius: 24px;
-    margin-left: 10px;
-    border: none;
-    padding: 18px;
-    width: 80%;
-    background-color: #F7F7F7;
+  border-radius: 24px;
+  margin-left: 10px;
+  border: none;
+  padding: 18px;
+  width: 80%;
+  background-color: #F7F7F7;
 }
 
 /* Post-list related CSS  */
@@ -431,44 +433,21 @@ form .options .list{
   transform: translate(-50%, -50%);
 }
 
+/* comments parts */
 
-
-
-
-
-
-
-/* commnets parts */
-
-
-
-
-
-.create-commnet-textbox{
-
+.create-comment-textbox {
   border-radius: 20px;
   margin-left: 100px;
   margin-bottom: 10px;
   border: none;
- padding: 5px;
- width: 150%;
+  padding: 5px;
+  width: 150%;
   background-color: #F7F7F7;
 }
 
-
 .commentList {
   border: 2px;
- margin-left: 10px;
- display: flex;
- 
-}
-
-
-/* .commentListlist wala comment */
-
-
-
-
-.comment-row {
-  border: 1px solid black;
+  margin-left: 10px;
+  display: flex;
+  justify-content: space-around;
 }

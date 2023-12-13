@@ -3,7 +3,7 @@ import PostList from "./PostList";
 const Timeline = (props) => {
   return (
     <div className="row">
-      <div className="col-md-3">hello1</div>
+      <div className="col-md-3">hello</div>
       <div className="col-md-6">
         <PostList />
       </div>

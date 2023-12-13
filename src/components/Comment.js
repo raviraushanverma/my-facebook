@@ -23,9 +23,6 @@ const Comment = (props) => {
         </div>
         <div className="comment-text active w-100">
           <h6 className="font-medium">{props.data.content}</h6>{" "}
-          <span className="m-b-15 d-block">
-            Thanks bbbootstrap.com for providing such useful snippets.{" "}
-          </span>
           <div className="comment-footer">
             {" "}
             <span className="text-muted float-right">May 10, 2019</span>{" "}

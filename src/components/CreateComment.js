@@ -22,6 +22,7 @@ const CreateComment = (props) => {
     );
     const response = await commentData.json();
     props.updatePostData(response.post);
+    setComment("");
   };
 
   return (
@@ -42,6 +43,7 @@ const CreateComment = (props) => {
                     className="create-commnet-textbox"
                     placeholder="Write a comment ?"
                     required
+                    value={comment}
                     onChange={(event) => {
                       setComment(event.target.value);
                     }}
@@ -53,23 +55,6 @@ const CreateComment = (props) => {
                   </div>
                 </div>
               </form>
-              <div className="comment-btns mt-2">
-                <div className="row">
-                  <div className="col-6">
-                    <div className="pull-left">
-                      <button
-                        className="btn btn-success btn-sm"
-                        onClick={() => {
-                          setComment("");
-                        }}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                  <div className="col-6"></div>
-                </div>
-              </div>
             </div>
           </div>
         </div>

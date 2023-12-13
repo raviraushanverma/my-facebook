@@ -65,7 +65,7 @@ const AssetViewer = (props) => {
       </div>
     );
   }
-  return <div>hello</div>;
+  return null;
 };
 
 export default AssetViewer;

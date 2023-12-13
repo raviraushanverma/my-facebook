@@ -12,11 +12,13 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
     setFileList(null);
   };
 
-  const uploadImage = async (imageData) => {
+  const uploadImage = async (imageData, fileType) => {
     return new Promise(async (resolve, reject) => {
       try {
         const res = await fetch(
-          `https://api.cloudinary.com/v1_1/drwcm1tej/image/upload`,
+          `https://api.cloudinary.com/v1_1/drwcm1tej/${
+            fileType.includes("image") ? "image" : "video"
+          }/upload`,
           {
             method: "POST",
             body: imageData,
@@ -38,10 +40,11 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
     setLoading(true);
     files.forEach((file, i) => {
       const imageData = new FormData();
+      console.log("file details ====> ", file);
       imageData.append("file", file);
       imageData.append("upload_preset", "ravi_raushan_ka_apna_facebook");
       imageData.append("cloud_name", "drwcm1tej");
-      allImagePromises.push(uploadImage(imageData));
+      allImagePromises.push(uploadImage(imageData, file.type));
     });
     Promise.all(allImagePromises)
       .then(async (medias) => {

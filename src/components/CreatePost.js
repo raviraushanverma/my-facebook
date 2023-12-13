@@ -35,6 +35,8 @@ const CreatePost = (props) => {
       props.updateData(response.post);
       document.getElementById("modalClose").click();
     }
+    setContent("");
+    setImageList([]);
   };
 
   return (
@@ -95,13 +97,19 @@ const CreatePost = (props) => {
                       <textarea
                         placeholder="What's on your mind, Ravi Raushan?"
                         spellCheck="false"
-                        required
+                        value={content}
                         onChange={(event) => {
                           setContent(event.target.value);
                         }}
                       ></textarea>
                       <ImageThumbnail images={imageList} />
-                      <button type="submit" className="btn btn-primary btn-lg">
+                      <button
+                        type="submit"
+                        className="btn btn-primary btn-lg"
+                        disabled={
+                          content.length === 0 && imageList.length === 0
+                        }
+                      >
                         Post
                       </button>
                     </form>

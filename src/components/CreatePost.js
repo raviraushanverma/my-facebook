@@ -9,12 +9,7 @@ const CreatePost = (props) => {
   const [imageList, setImageList] = useState([]);
 
   const onUploadHandler = (images) => {
-    const imageDataArray = images.map((element) => {
-      return {
-        url: element.url,
-      };
-    });
-    setImageList(imageDataArray);
+    setImageList(images);
   };
 
   const post = async (event) => {

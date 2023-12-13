@@ -46,7 +46,15 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
         setLoading(false);
         setVisibility(false);
         setFileList(null);
-        onSuccessUpload(medias);
+        const mainMedia = medias.map((media) => {
+          return {
+            url:
+              !process.env.NODE_ENV || process.env.NODE_ENV === "development"
+                ? media.url
+                : media.secure_url,
+          };
+        });
+        onSuccessUpload(mainMedia);
       })
       .catch((error) => {
         console.log("There is some error while uploading media", error);

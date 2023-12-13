@@ -49,10 +49,7 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
         setFileList(null);
         const mainMedia = medias.map((media) => {
           return {
-            url:
-              process.env.REACT_APP_SERVER_ENV === "false"
-                ? media.url
-                : media.secure_url,
+            url: media.url,
           };
         });
         onSuccessUpload(mainMedia);

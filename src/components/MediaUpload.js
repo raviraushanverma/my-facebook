@@ -18,6 +18,7 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
         const res = await fetch(
           `${process.env.REACT_APP_SERVER_END_PONT}/media-upload`,
           {
+            mode: "cors",
             method: "POST",
             body: imageData,
           }

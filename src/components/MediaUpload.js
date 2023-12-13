@@ -15,10 +15,13 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
   const uploadImage = async (imageData) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const res = await fetch("http://localhost:5000/media-upload", {
-          method: "POST",
-          body: imageData,
-        });
+        const res = await fetch(
+          `${process.env.REACT_APP_SERVER_END_PONT}/media-upload`,
+          {
+            method: "POST",
+            body: imageData,
+          }
+        );
         const response = await res.json();
         resolve(response.media);
       } catch (error) {

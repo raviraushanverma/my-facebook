@@ -21,13 +21,16 @@ const SignUp = () => {
       email: email,
       password: password,
     };
-    const serverData = await fetch("http://localhost:5000/singup", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+    const serverData = await fetch(
+      `${process.env.REACT_APP_SERVER_END_PONT}/signup`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(data),
+      }
+    );
     const response = await serverData.json();
 
     setAlertData({ ...response, enable: true });

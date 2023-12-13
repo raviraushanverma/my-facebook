@@ -2,13 +2,16 @@ import UserAvatar from "./UserAvatar";
 
 const Comment = (props) => {
   const commentDeleteData = async () => {
-    const deleteData = await fetch("http://localhost:5000/delete", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "DELETE",
-      body: "body",
-    });
+    const deleteData = await fetch(
+      `${process.env.REACT_APP_SERVER_END_PONT}/delete`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "DELETE",
+        body: "body",
+      }
+    );
   };
   return (
     <>

@@ -9,13 +9,16 @@ const CreateComment = (props) => {
       id: props.postId,
       comments: { content: comment },
     };
-    const commentData = await fetch("http://localhost:5000/comment", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+    const commentData = await fetch(
+      `${process.env.REACT_APP_SERVER_END_PONT}/comment`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(data),
+      }
+    );
     const response = await commentData.json();
     props.updatePostData(response.post);
   };

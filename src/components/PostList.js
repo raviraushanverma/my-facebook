@@ -25,7 +25,10 @@ const PostList = (props) => {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch("http://localhost:5000/getData", {});
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_END_PONT}/getData`,
+        {}
+      );
       const responseData = await response.json();
       setPostData(responseData.posts);
     }

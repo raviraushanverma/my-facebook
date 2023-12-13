@@ -460,6 +460,15 @@ form .options .list{
   border: 2px;
  margin-left: 10px;
  display: flex;
- justify-content: space-around;
+ 
 }
 
+
+/* .commentListlist wala comment */
+
+
+
+
+.comment-row {
+  border: 1px solid black;
+}

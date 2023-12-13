@@ -3,7 +3,8 @@ import { useState } from "react";
 const CreateComment = (props) => {
   const [comment, setComment] = useState("");
 
-  const commentPost = async () => {
+  const commentPost = async (event) => {
+    event.preventDefault();
     const data = {
       id: props.postId,
       comments: { content: comment },
@@ -26,17 +27,28 @@ const CreateComment = (props) => {
           <div className="col-10">
             <div className="comment-box ml-2">
               <h4>Add a comment</h4>
-
-              <div className="comment-area d-flex">
-                <input
-                  type="text"
-                  className="create-commnet-textbox"
-                  placeholder="Write a comment ?"
-                  onChange={(event) => {
-                    setComment(event.target.value);
-                  }}
-                />
-              </div>
+              <form
+                onSubmit={(event) => {
+                  commentPost(event);
+                }}
+              >
+                <div className="comment-area d-flex">
+                  <input
+                    type="text"
+                    className="create-commnet-textbox"
+                    placeholder="Write a comment ?"
+                    required
+                    onChange={(event) => {
+                      setComment(event.target.value);
+                    }}
+                  ></input>
+                  <div className="pull-right">
+                    <button>
+                      Send <i className="fa fa-long-arrow-right ml-1" />
+                    </button>
+                  </div>
+                </div>
+              </form>
               <div className="comment-btns mt-2">
                 <div className="row">
                   <div className="col-6">
@@ -51,18 +63,7 @@ const CreateComment = (props) => {
                       </button>
                     </div>
                   </div>
-                  <div className="col-6">
-                    <div className="pull-right">
-                      <button
-                        className="btn btn-success send btn-sm "
-                        onClick={() => {
-                          commentPost();
-                        }}
-                      >
-                        Send <i className="fa fa-long-arrow-right ml-1" />
-                      </button>
-                    </div>
-                  </div>
+                  <div className="col-6"></div>
                 </div>
               </div>
             </div>

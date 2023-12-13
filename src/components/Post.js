@@ -49,12 +49,13 @@ const Post = (props) => {
           <span className="text">Share</span>
         </button>
       </div>
+
       <CreateComment
         postId={props.postObj._id}
         updatePostData={props.updatePostData}
       />
-      {props.postObj.comments.map((element) => {
-        return <Comment data={element} />;
+      {props.postObj.comments.map((element, index) => {
+        return <Comment key={index} data={element} />;
       })}
     </div>
   );

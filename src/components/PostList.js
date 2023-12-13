@@ -1,27 +1,25 @@
 import { useState, useEffect } from "react";
 import Post from "./Post";
+import CreatePost from "./CreatePost";
 
 const PostList = (props) => {
   const [postData, setPostData] = useState([]);
-  console.log("======>postData", postData);
-  const postUpdata = () => {
-    return postData;
-  };
-
-  postUpdata();
 
   const updatePostData = (postObj) => {
-    console.log("======>", postObj);
     const tempData = postData.map((element) => {
       if (element._id === postObj._id) {
-        console.log("if wala element ", element);
         return postObj;
       } else {
-        console.log("else wala element ", element);
         return element;
       }
     });
 
+    setPostData(tempData);
+  };
+
+  const updateData = (post) => {
+    const tempData = [...postData];
+    tempData.unshift(post);
     setPostData(tempData);
   };
 
@@ -36,6 +34,7 @@ const PostList = (props) => {
 
   return (
     <section className="post-list-container">
+      <CreatePost updateData={updateData} />
       <div>
         {postData.map((postObj, index) => {
           return (

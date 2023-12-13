@@ -29,7 +29,6 @@ const SignUp = () => {
       body: JSON.stringify(data),
     });
     const response = await serverData.json();
-    console.log(response);
 
     setAlertData({ ...response, enable: true });
   };

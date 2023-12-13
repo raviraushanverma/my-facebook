@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useState } from "react";
 import UserAvatar from "./UserAvatar";
 
-const CreatePost = () => {
+const CreatePost = (props) => {
   const [alertData, setAlertData] = useState({ enable: false });
   const inputRef = useRef(null);
   const [image, setImage] = useState("");
@@ -14,7 +14,7 @@ const CreatePost = () => {
 
   const handleImageChange = (event) => {
     const file = event.target.files;
-    console.log(file);
+
     setImage(file);
   };
   const post = async (event) => {
@@ -34,7 +34,7 @@ const CreatePost = () => {
     if (response.isSuccess === true) {
       document.getElementById("modalClose").click();
     }
-    console.log("=====>ravi raushan verma", response.post);
+    props.updateData(response.post);
   };
 
   const imageUploadImage = async () => {

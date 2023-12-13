@@ -49,7 +49,7 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
         const mainMedia = medias.map((media) => {
           return {
             url:
-              !process.env.NODE_ENV || process.env.NODE_ENV === "development"
+              process.env.REACT_APP_SERVER_ENV === "false"
                 ? media.url
                 : media.secure_url,
           };

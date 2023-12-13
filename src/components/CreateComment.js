@@ -9,6 +9,7 @@ const CreateComment = (props) => {
       id: props.postId,
       comments: { content: comment },
     };
+
     const commentData = await fetch(
       `${process.env.REACT_APP_SERVER_END_PONT}/comment`,
       {

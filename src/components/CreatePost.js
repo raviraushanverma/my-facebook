@@ -11,7 +11,6 @@ const CreatePost = (props) => {
   const onUploadHandler = (images) => {
     setImageList(images);
   };
-
   const post = async (event) => {
     event.preventDefault();
     const data = {

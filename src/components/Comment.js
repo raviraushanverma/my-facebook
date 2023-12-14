@@ -3,7 +3,7 @@ import UserAvatar from "./UserAvatar";
 const Comment = (props) => {
   const commentDeleteData = async () => {
     const deleteData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/comment_delete/${props.data._id}/`,
+      `${process.env.REACT_APP_SERVER_END_PONT}/comment_delete/${props.postId}/${props.comment._id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -11,29 +11,45 @@ const Comment = (props) => {
         method: "DELETE",
       }
     );
+    const response = await deleteData.json();
+    props.commentUpdate(response.post);
   };
   return (
     <>
       <div style={{ padding: "10px" }}>
-        <UserAvatar userName={"Ravi Raushan"} time={props.data.created} />
-        <div>
-          <h6 style={{ paddingLeft: "10px", paddingRight: "10px" }}>
-            {props.data.content}
-          </h6>
-          <div className="d-flex flex-sm-row-reverse">
-            <button type="button" className="btn btn-light">
-              <i className="fa-regular fa-pen-to-square"></i>
-            </button>
+        <div className="d-flex justify-content-sm-between">
+          <UserAvatar userName={"Ravi Raushan"} time={props.comment.created} />
+          <div>
             <button type="button" className="btn btn-light">
               <i
                 style={{ cursor: "pointer" }}
+                className="fa-regular fa-pen-to-square"
+              ></i>
+            </button>
+            <button
+              type="button"
+              className="btn btn-light"
+              onClick={() => {
+                commentDeleteData();
+              }}
+            >
+              <i
+                style={{ cursor: "pointer" }}
                 className="fa-solid fa-trash-can"
-                onClick={() => {
-                  commentDeleteData();
-                }}
               ></i>
             </button>
           </div>
+        </div>
+        <div>
+          <h6
+            style={{
+              paddingLeft: "10px",
+              paddingRight: "10px",
+              textAlign: "justify",
+            }}
+          >
+            {props.comment.content}
+          </h6>
         </div>
         <hr style={{ margin: "0px" }}></hr>
       </div>

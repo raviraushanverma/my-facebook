@@ -22,7 +22,7 @@ const Post = (props) => {
         </div>
         <div>
           <a href="/" target="_blank" rel="noreferrer">
-            {props.postObj.comments.length} comments
+            {props.postObj.comments.length} Comments
           </a>
         </div>
       </div>
@@ -51,9 +51,17 @@ const Post = (props) => {
       <CreateComment
         postId={props.postObj._id}
         updatePostData={props.updatePostData}
+        commentUpdate={props.commentUpdate}
       />
-      {props.postObj.comments.map((element, index) => {
-        return <Comment key={index} data={element} posts={props.postObj} />;
+      {props.postObj.comments.map((comment, index) => {
+        return (
+          <Comment
+            key={index}
+            comment={comment}
+            postId={props.postObj._id}
+            commentUpdate={props.updatePostData}
+          />
+        );
       })}
     </div>
   );

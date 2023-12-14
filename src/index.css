@@ -451,11 +451,6 @@ form textarea:focus::placeholder {
 
 
 /* Skeleton CSS */
-.container {
-  margin-top: 4em;
-  margin-bottom: 4em;
-}
-
 .loading-skeleton h1, .loading-skeleton h2, .loading-skeleton h3, .loading-skeleton h4, .loading-skeleton h5, .loading-skeleton h6,
 .loading-skeleton p, .loading-skeleton li,
 .loading-skeleton .btn,

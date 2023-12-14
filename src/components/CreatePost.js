@@ -2,6 +2,9 @@ import { useState } from "react";
 import UserAvatar from "./UserAvatar";
 import MediaUpload from "./MediaUpload";
 import ImageThumbnail from "./ImageThumbnail";
+import { getLoggedInUser } from "../utility";
+
+const user = getLoggedInUser();
 
 const CreatePost = (props) => {
   const [alertData, setAlertData] = useState({ enable: false });
@@ -42,9 +45,10 @@ const CreatePost = (props) => {
   return (
     <>
       <div className="create-post-container">
-        <UserAvatar profilePicURL={""} />
+        <UserAvatar />
         <input
           type="text"
+          readOnly
           className="create-post-textbox"
           placeholder="What on your mind ?"
           data-bs-toggle="modal"
@@ -84,9 +88,8 @@ const CreatePost = (props) => {
                       }}
                     >
                       <div className="content d-flex">
-                        <UserAvatar />
                         <div className="details">
-                          <p>Ravi Raushan</p>
+                          <UserAvatar userName={user.name} />
                           <div className="privacy">
                             <i className="fas fa-user-friends" />
                             <span>Friends</span>
@@ -95,14 +98,15 @@ const CreatePost = (props) => {
                         </div>
                       </div>
                       <textarea
-                        placeholder="What's on your mind, Ravi Raushan?"
+                        style={{ textTransform: "capitalize" }}
+                        placeholder={`What's on your mind, ${user.name}?`}
                         spellCheck="false"
                         value={content}
                         onChange={(event) => {
                           setContent(event.target.value);
                         }}
                       ></textarea>
-                      <ImageThumbnail images={imageList} />
+                      <ImageThumbnail images={imageList} value={imageList} />
                       <button
                         type="submit"
                         className="btn btn-primary btn-lg"

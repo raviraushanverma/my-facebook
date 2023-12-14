@@ -25,7 +25,7 @@ const PostList = (props) => {
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_END_PONT}/getData`,
+        `${process.env.REACT_APP_SERVER_END_PONT}/posts`,
         {}
       );
       const responseData = await response.json();

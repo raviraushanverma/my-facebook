@@ -27,38 +27,34 @@ const CreateComment = (props) => {
 
   return (
     <div>
-      <div className="card">
-        <div className="row">
-          <div className="col-10">
-            <div className="comment-box ml-2">
-              <h4>Add a comment</h4>
-              <form
-                onSubmit={(event) => {
-                  commentPost(event);
-                }}
-              >
-                <div className="comment-area d-flex">
-                  <input
-                    type="text"
-                    className="create-commnet-textbox"
-                    placeholder="Write a comment ?"
-                    required
-                    value={comment}
-                    onChange={(event) => {
-                      setComment(event.target.value);
-                    }}
-                  ></input>
-                  <div className="pull-right">
-                    <button>
-                      Send <i className="fa fa-long-arrow-right ml-1" />
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
+      <hr style={{ margin: "0px" }}></hr>
+      <div>
+        <form
+          onSubmit={(event) => {
+            commentPost(event);
+          }}
+        >
+          <div
+            className="d-flex justify-content-around"
+            style={{ padding: "10px" }}
+          >
+            <input
+              type="text"
+              className="create-comment-textbox"
+              placeholder="Write a comment ?"
+              required
+              value={comment}
+              onChange={(event) => {
+                setComment(event.target.value);
+              }}
+            ></input>
+            <button type="submit" className="btn btn-light comment-send-icon">
+              <i className="fa-solid fa-paper-plane"></i>
+            </button>
           </div>
-        </div>
+        </form>
       </div>
+      <hr style={{ margin: "0px" }}></hr>
     </div>
   );
 };

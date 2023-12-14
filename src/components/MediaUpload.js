@@ -40,7 +40,7 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
     setLoading(true);
     files.forEach((file, i) => {
       const imageData = new FormData();
-      console.log("file details ====> ", file);
+
       imageData.append("file", file);
       imageData.append("upload_preset", "ravi_raushan_ka_apna_facebook");
       imageData.append("cloud_name", "drwcm1tej");

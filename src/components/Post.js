@@ -2,24 +2,12 @@ import UserAvatar from "./UserAvatar";
 import CreateComment from "./CreateComment";
 import Comment from "./Comment";
 import AssetViewer from "./AssetViewer";
-import TimeAgo from "javascript-time-ago";
-import en from "javascript-time-ago/locale/en";
-
-TimeAgo.addDefaultLocale(en);
 
 const Post = (props) => {
-  const timeAgo = new TimeAgo("en-US");
-
   return (
     <div className="post-container">
       <section className="post-header">
-        <UserAvatar />
-        <div className="user-name-details">
-          <div className="user-post-date">
-            <span>{timeAgo.format(new Date(props.postObj.created))}</span>
-            <span className="icon icon-privacy">🌎</span>
-          </div>
-        </div>
+        <UserAvatar userName={"Ravi Raushan"} time={props.postObj.created} />
       </section>
       <section>
         <div className="post-content">{props.postObj.content}</div>
@@ -65,7 +53,7 @@ const Post = (props) => {
         updatePostData={props.updatePostData}
       />
       {props.postObj.comments.map((element, index) => {
-        return <Comment key={index} data={element} />;
+        return <Comment key={index} data={element} posts={props.postObj} />;
       })}
     </div>
   );

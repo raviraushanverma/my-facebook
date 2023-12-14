@@ -288,16 +288,18 @@ a {
 }
 
 .details {
-  margin-left: 15px;
+  position: relative;
 }
 
 .content .details .privacy {
+  position: relative;
+  top: -30px;
+  left: 69px;
   display: flex;
   height: 25px;
   cursor: pointer;
   padding: 0 10px;
   font-size: 11px;
-  margin-top: 3px;
   border-radius: 5px;
   align-items: center;
   max-width: 98px;
@@ -382,14 +384,6 @@ form textarea:focus::placeholder {
   display: flex;
 }
 
-.post-container .post-header .user-name-details {
-  margin-left: 10px;
-}
-
-.post-container .post-header .user-post-date {
-  color: gray;
-}
-
 .post-container .post-content {
   padding: 10px;
 }
@@ -437,12 +431,15 @@ form textarea:focus::placeholder {
 
 .create-comment-textbox {
   border-radius: 20px;
-  margin-left: 100px;
-  margin-bottom: 10px;
   border: none;
-  padding: 5px;
-  width: 150%;
+  padding: 11px;
+  width: 80%;
   background-color: #F7F7F7;
+}
+
+.comment-send-icon {
+  font-size: 20px;
+  width: 60px;
 }
 
 .commentList {

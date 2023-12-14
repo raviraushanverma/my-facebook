@@ -17,7 +17,7 @@ const Comment = (props) => {
   return (
     <>
       <div style={{ padding: "10px" }}>
-        <div className="d-flex justify-content-sm-between">
+        <div className="d-flex justify-content-between">
           <UserAvatar userName={"Ravi Raushan"} time={props.comment.created} />
           <div>
             <button type="button" className="btn btn-light">

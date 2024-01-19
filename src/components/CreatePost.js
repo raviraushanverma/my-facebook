@@ -15,9 +15,14 @@ const CreatePost = (props) => {
     setImageList(images);
   };
   const post = async (event) => {
+    const user = getLoggedInUser();
     event.preventDefault();
     const data = {
       content: content,
+      owner: {
+        userId: user._id,
+        userName: user.name,
+      },
     };
     if (imageList.length > 0) {
       data.images = imageList;

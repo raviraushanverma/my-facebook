@@ -7,7 +7,10 @@ const Post = (props) => {
   return (
     <div className="post-container">
       <section className="post-header">
-        <UserAvatar userName={"Ravi Raushan"} time={props.postObj.created} />
+        <UserAvatar
+          userName={props.postObj.owner.userName}
+          time={props.postObj.created}
+        />
       </section>
       <section>
         <div className="post-content">{props.postObj.content}</div>

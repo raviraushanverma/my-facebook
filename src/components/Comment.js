@@ -40,7 +40,7 @@ const Comment = (props) => {
             </button>
           </div>
         </div>
-        <div>
+        <div className="comment-list">
           <h6
             style={{
               paddingLeft: "10px",
@@ -50,6 +50,9 @@ const Comment = (props) => {
           >
             {props.comment.content}
           </h6>
+          <div>
+            <h6>{props.comment.owner.userName}</h6>
+          </div>
         </div>
         <hr style={{ margin: "0px" }}></hr>
       </div>

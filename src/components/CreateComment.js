@@ -1,13 +1,22 @@
 import { useState } from "react";
+import { getLoggedInUser } from "../utility/index";
 
 const CreateComment = (props) => {
   const [comment, setComment] = useState("");
 
   const commentPost = async (event) => {
     event.preventDefault();
+    const user = getLoggedInUser();
+
     const data = {
       id: props.postId,
-      comments: { content: comment },
+      comments: {
+        content: comment,
+        owner: {
+          userId: user._id,
+          userName: user.name,
+        },
+      },
     };
 
     const commentData = await fetch(

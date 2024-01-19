@@ -485,3 +485,8 @@ form textarea:focus::placeholder {
 .loading-skeleton img {
   filter: grayscale(100) contrast(0%) brightness(1.8);
 }
+
+.comment-list{
+  display: flex;
+  justify-content: space-around;
+}

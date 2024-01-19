@@ -9,7 +9,9 @@ const Post = (props) => {
   const user = getLoggedInUser();
   const [editPost, setEditPost] = useState(true);
   const [editPostData, setEditPostData] = useState("");
+  const [loading, setLoading] = useState();
   const postDelete = async () => {
+    setLoading(true);
     const user = getLoggedInUser();
     const deleteData = await fetch(
       `${process.env.REACT_APP_SERVER_END_PONT}/post_delete/${props.postObj._id}/${user._id}`,
@@ -21,68 +23,77 @@ const Post = (props) => {
       }
     );
     await deleteData.json();
+    setLoading(false);
     props.deletePostData(props.postObj._id);
   };
   return (
     <div className="post-container">
-      <section className="post-header">
-        <UserAvatar
-          userName={props.postObj.owner.userName}
-          time={props.postObj.created}
-        />
-        {user._id === props.postObj.owner.userId && (
-          <div>
-            <button
-              type="button"
-              className="btn btn-light"
-              onClick={(event) => {
-                postDelete(event);
-              }}
-            >
-              <i
-                style={{ cursor: "pointer" }}
-                className="fa-solid fa-trash-can"
-              ></i>
-            </button>
-          </div>
-        )}
-      </section>
-      <section>
-        <div className="display-flex" style={{ width: "20%" }}>
-          {editPost ? (
-            <div className="post-content">{props.postObj.content}</div>
-          ) : (
-            <div>
-              <form
-                onSubmit={() => {
-                  editPostData();
+      {loading ? (
+        <center>
+          <div className="loader"></div>
+        </center>
+      ) : (
+        <div>
+          <section className="post-header">
+            <UserAvatar
+              userName={props.postObj.owner.userName}
+              time={props.postObj.created}
+            />
+            {user._id === props.postObj.owner.userId && (
+              <div>
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  onClick={(event) => {
+                    postDelete(event);
+                  }}
+                >
+                  <i
+                    style={{ cursor: "pointer" }}
+                    className="fa-solid fa-trash-can"
+                  ></i>
+                </button>
+              </div>
+            )}
+          </section>
+          <section>
+            <div className="display-flex" style={{ width: "20%" }}>
+              {editPost ? (
+                <div className="post-content">{props.postObj.content}</div>
+              ) : (
+                <div>
+                  <form
+                    onSubmit={() => {
+                      editPostData();
+                    }}
+                  >
+                    <input type="text"></input>
+                  </form>
+                </div>
+              )}
+              <button
+                type="button"
+                className="btn btn-light"
+                onClick={() => {
+                  if (editPost === true) {
+                    setEditPost(false);
+                  } else {
+                    setEditPost(true);
+                  }
                 }}
               >
-                <input type="text"></input>
-              </form>
+                <i
+                  style={{ cursor: "pointer" }}
+                  className="fa-regular fa-pen-to-square"
+                ></i>
+              </button>
             </div>
-          )}
-          <button
-            type="button"
-            className="btn btn-light"
-            onClick={() => {
-              if (editPost === true) {
-                setEditPost(false);
-              } else {
-                setEditPost(true);
-              }
-            }}
-          >
-            <i
-              style={{ cursor: "pointer" }}
-              className="fa-regular fa-pen-to-square"
-            ></i>
-          </button>
+            <div>
+              <AssetViewer assets={props.postObj.images} />
+            </div>
+          </section>
         </div>
-        <div>
-          <AssetViewer assets={props.postObj.images} />
-        </div>
-      </section>
+      )}
       <div className="post-buttons">
         <div>
           <i className="fa-solid fa-thumbs-up"></i>
@@ -115,7 +126,6 @@ const Post = (props) => {
           <span className="text">Share</span>
         </button>
       </div>
-
       <CreateComment
         postId={props.postObj._id}
         updatePostData={props.updatePostData}

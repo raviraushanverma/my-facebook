@@ -3,8 +3,11 @@ import CreateComment from "./CreateComment";
 import Comment from "./Comment";
 import AssetViewer from "./AssetViewer";
 import { getLoggedInUser } from "../utility";
+import { useState } from "react";
 
 const Post = (props) => {
+  const [editPost, setEditPost] = useState(true);
+  const [editPostData, setEditPostData] = useState("");
   const postDelete = async () => {
     const user = getLoggedInUser();
     const deleteData = await fetch(
@@ -42,7 +45,37 @@ const Post = (props) => {
         </div>
       </section>
       <section>
-        <div className="post-content">{props.postObj.content}</div>
+        <div className="display-flex" style={{ width: "20%" }}>
+          {editPost ? (
+            <div className="post-content">{props.postObj.content}</div>
+          ) : (
+            <div>
+              <form
+                onSubmit={() => {
+                  editPostData();
+                }}
+              >
+                <input type="text"></input>
+              </form>
+            </div>
+          )}
+          <button
+            type="button"
+            className="btn btn-light"
+            onClick={() => {
+              if (editPost === true) {
+                setEditPost(false);
+              } else {
+                setEditPost(true);
+              }
+            }}
+          >
+            <i
+              style={{ cursor: "pointer" }}
+              className="fa-regular fa-pen-to-square"
+            ></i>
+          </button>
+        </div>
         <div>
           <AssetViewer assets={props.postObj.images} />
         </div>

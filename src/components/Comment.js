@@ -18,7 +18,10 @@ const Comment = (props) => {
     <>
       <div style={{ padding: "10px" }}>
         <div className="d-flex justify-content-between">
-          <UserAvatar userName={"Ravi Raushan"} time={props.comment.created} />
+          <UserAvatar
+            userName={props.comment.owner.userName}
+            time={props.comment.created}
+          />
           <div>
             <button type="button" className="btn btn-light">
               <i
@@ -50,9 +53,6 @@ const Comment = (props) => {
           >
             {props.comment.content}
           </h6>
-          <div>
-            <h6>{props.comment.owner.userName}</h6>
-          </div>
         </div>
         <hr style={{ margin: "0px" }}></hr>
       </div>

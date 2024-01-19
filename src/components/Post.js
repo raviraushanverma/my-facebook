@@ -6,6 +6,7 @@ import { getLoggedInUser } from "../utility";
 import { useState } from "react";
 
 const Post = (props) => {
+  const user = getLoggedInUser();
   const [editPost, setEditPost] = useState(true);
   const [editPostData, setEditPostData] = useState("");
   const postDelete = async () => {
@@ -29,20 +30,22 @@ const Post = (props) => {
           userName={props.postObj.owner.userName}
           time={props.postObj.created}
         />
-        <div>
-          <button
-            type="button"
-            className="btn btn-light"
-            onClick={(event) => {
-              postDelete(event);
-            }}
-          >
-            <i
-              style={{ cursor: "pointer" }}
-              className="fa-solid fa-trash-can"
-            ></i>
-          </button>
-        </div>
+        {user._id === props.postObj.owner.userId && (
+          <div>
+            <button
+              type="button"
+              className="btn btn-light"
+              onClick={(event) => {
+                postDelete(event);
+              }}
+            >
+              <i
+                style={{ cursor: "pointer" }}
+                className="fa-solid fa-trash-can"
+              ></i>
+            </button>
+          </div>
+        )}
       </section>
       <section>
         <div className="display-flex" style={{ width: "20%" }}>

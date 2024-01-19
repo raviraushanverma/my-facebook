@@ -8,8 +8,8 @@ const SignUp = () => {
   const [birth, setBirth] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [alertData, setAlertData] = useState({ enable: false });
+  const [loading, setLoading] = useState();
 
   const signUp = async (event) => {
     event.preventDefault();
@@ -21,6 +21,7 @@ const SignUp = () => {
       email: email,
       password: password,
     };
+    setLoading(true);
     const serverData = await fetch(
       `${process.env.REACT_APP_SERVER_END_PONT}/sign_up`,
       {
@@ -32,6 +33,7 @@ const SignUp = () => {
       }
     );
     const response = await serverData.json();
+    setLoading(false);
 
     setAlertData({ ...response, enable: true });
   };
@@ -132,10 +134,22 @@ const SignUp = () => {
               )}
               <div className="text-box display-flex">
                 <button
+                  disabled={loading}
                   className="button btn btn-primary"
                   style={{ width: "100%" }}
                 >
-                  Create Your Account
+                  {loading ? (
+                    <span>
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      Loading...
+                    </span>
+                  ) : (
+                    <span>create your account</span>
+                  )}
                 </button>
               </div>
             </form>
@@ -148,7 +162,9 @@ const SignUp = () => {
               data-bs-toggle="modal"
               data-bs-target="#loginModal"
             >
-              Login
+              <div>
+                <span>signup</span>
+              </div>
             </button>
           </div>
         </div>

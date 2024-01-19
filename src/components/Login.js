@@ -9,6 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alertData, setAlertData] = useState({ enable: false });
+  const [loading, setLoading] = useState();
 
   const login = async (event) => {
     event.preventDefault();
@@ -17,6 +18,7 @@ const Login = () => {
       email: email,
       password: password,
     };
+    setLoading(true);
     const serverData = await fetch(
       `${process.env.REACT_APP_SERVER_END_PONT}/login`,
       {
@@ -28,6 +30,7 @@ const Login = () => {
       }
     );
     const response = await serverData.json();
+    setLoading(false);
     setAlertData({ ...response, enable: true });
     if (response.isSuccess === true) {
       localStorage.setItem("user", JSON.stringify(response.user));
@@ -96,10 +99,22 @@ const Login = () => {
               )}
               <div className="text-box display-flex">
                 <button
+                  disabled={loading}
                   className="button btn btn-primary"
                   style={{ width: "100%" }}
                 >
-                  Login
+                  {loading ? (
+                    <span>
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      Loading...
+                    </span>
+                  ) : (
+                    <span>login</span>
+                  )}
                 </button>
               </div>
             </form>

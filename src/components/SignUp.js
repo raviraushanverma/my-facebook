@@ -22,7 +22,7 @@ const SignUp = () => {
       password: password,
     };
     const serverData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/signup`,
+      `${process.env.REACT_APP_SERVER_END_PONT}/sign_up`,
       {
         headers: {
           "Content-Type": "application/json",

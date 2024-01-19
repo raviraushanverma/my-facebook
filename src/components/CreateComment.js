@@ -3,6 +3,7 @@ import { getLoggedInUser } from "../utility/index";
 
 const CreateComment = (props) => {
   const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState();
 
   const commentPost = async (event) => {
     event.preventDefault();
@@ -18,7 +19,7 @@ const CreateComment = (props) => {
         },
       },
     };
-
+    setLoading(true);
     const commentData = await fetch(
       `${process.env.REACT_APP_SERVER_END_PONT}/comment`,
       {
@@ -30,6 +31,7 @@ const CreateComment = (props) => {
       }
     );
     const response = await commentData.json();
+    setLoading(false);
     props.updatePostData(response.post);
     setComment("");
   };
@@ -47,16 +49,22 @@ const CreateComment = (props) => {
             className="d-flex justify-content-around"
             style={{ padding: "10px" }}
           >
-            <input
-              type="text"
-              className="create-comment-textbox"
-              placeholder="Write a comment ?"
-              required
-              value={comment}
-              onChange={(event) => {
-                setComment(event.target.value);
-              }}
-            ></input>
+            {loading ? (
+              <center>
+                <div className="loader"></div>
+              </center>
+            ) : (
+              <input
+                type="text"
+                className="create-comment-textbox"
+                placeholder="Write a comment ?"
+                required
+                value={comment}
+                onChange={(event) => {
+                  setComment(event.target.value);
+                }}
+              ></input>
+            )}
             <button type="submit" className="btn btn-light comment-send-icon">
               <i className="fa-solid fa-paper-plane"></i>
             </button>

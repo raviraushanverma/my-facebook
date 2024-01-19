@@ -2,8 +2,22 @@ import UserAvatar from "./UserAvatar";
 import CreateComment from "./CreateComment";
 import Comment from "./Comment";
 import AssetViewer from "./AssetViewer";
+import { getLoggedInUser } from "../utility";
 
 const Post = (props) => {
+  const postDelete = async () => {
+    const user = getLoggedInUser();
+    const deleteData = await fetch(
+      `${process.env.REACT_APP_SERVER_END_PONT}/post_delete/${props.postObj._id}/${user._id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "DELETE",
+      }
+    );
+    await deleteData.json();
+  };
   return (
     <div className="post-container">
       <section className="post-header">
@@ -11,6 +25,20 @@ const Post = (props) => {
           userName={props.postObj.owner.userName}
           time={props.postObj.created}
         />
+        <div>
+          <button
+            type="button"
+            className="btn btn-light"
+            onClick={(event) => {
+              postDelete(event);
+            }}
+          >
+            <i
+              style={{ cursor: "pointer" }}
+              className="fa-solid fa-trash-can"
+            ></i>
+          </button>
+        </div>
       </section>
       <section>
         <div className="post-content">{props.postObj.content}</div>

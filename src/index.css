@@ -382,6 +382,8 @@ form textarea:focus::placeholder {
 .post-container .post-header {
   padding: 10px;
   display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .post-container .post-content {

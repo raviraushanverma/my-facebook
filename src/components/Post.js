@@ -17,6 +17,7 @@ const Post = (props) => {
       }
     );
     await deleteData.json();
+    props.deletePostData(props.postObj._id);
   };
   return (
     <div className="post-container">

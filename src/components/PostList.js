@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Post from "./Post";
 import CreatePost from "./CreatePost";
 import PostSkeleton from "./PostSkeleton";
+import { getLoggedInUser } from "../utility";
 
 const PostList = (props) => {
   const [postData, setPostData] = useState([]);
@@ -38,6 +39,18 @@ const PostList = (props) => {
     fetchData();
   }, []);
 
+  const deletePostData = (postId) => {
+    const user = getLoggedInUser();
+    const newData = [...postData];
+    const index = newData.findIndex((element) => {
+      return element._id === postId;
+    });
+    if (user._id === newData[index].owner.userId) {
+      newData.splice(index, 1);
+      setPostData(newData);
+    }
+  };
+
   return (
     <section className="post-list-container">
       <CreatePost updateData={updateData} />
@@ -51,6 +64,7 @@ const PostList = (props) => {
                 key={index}
                 postObj={postObj}
                 updatePostData={updatePostData}
+                deletePostData={deletePostData}
               />
             );
           })}

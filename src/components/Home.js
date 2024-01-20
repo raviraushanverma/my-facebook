@@ -14,7 +14,7 @@ const Home = () => {
     <main>
       <div className="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary">
         <div className="col-md-6 p-lg-5 mx-auto my-5">
-          <h1 className="display-3 fw-bold">Welcome to Apna Faceook!</h1>
+          <h1 className="display-3 fw-bold">Welcome to Apna Facebook!</h1>
           <h3 className="fw-normal text-muted mb-3">
             Lets connect with your friends today
           </h3>

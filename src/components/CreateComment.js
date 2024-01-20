@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { getLoggedInUser } from "../utility/index";
+import Loading from "./Loading";
 
 const CreateComment = (props) => {
   const [comment, setComment] = useState("");
@@ -8,7 +9,6 @@ const CreateComment = (props) => {
   const commentPost = async (event) => {
     event.preventDefault();
     const user = getLoggedInUser();
-
     const data = {
       id: props.postId,
       comments: {
@@ -49,24 +49,22 @@ const CreateComment = (props) => {
             className="d-flex justify-content-around"
             style={{ padding: "10px" }}
           >
-            {loading ? (
-              <center>
-                <div className="loader"></div>
-              </center>
-            ) : (
-              <input
-                type="text"
-                className="create-comment-textbox"
-                placeholder="Write a comment ?"
-                required
-                value={comment}
-                onChange={(event) => {
-                  setComment(event.target.value);
-                }}
-              ></input>
-            )}
+            <input
+              type="text"
+              className="create-comment-textbox"
+              placeholder="Write a comment ?"
+              required
+              value={comment}
+              onChange={(event) => {
+                setComment(event.target.value);
+              }}
+            ></input>
             <button type="submit" className="btn btn-light comment-send-icon">
-              <i className="fa-solid fa-paper-plane"></i>
+              {loading ? (
+                <Loading />
+              ) : (
+                <i className="fa-solid fa-paper-plane"></i>
+              )}
             </button>
           </div>
         </form>

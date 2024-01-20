@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Modal from "./Modal";
+import Loading from "./Loading";
 
 const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
   const [loading, setLoading] = useState(false);
@@ -119,18 +120,7 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
                 disabled={loading}
                 onClick={onImageUploadHandler}
               >
-                {loading ? (
-                  <span>
-                    <span
-                      className="spinner-border spinner-border-sm"
-                      role="status"
-                      aria-hidden="true"
-                    ></span>
-                    Loading...
-                  </span>
-                ) : (
-                  <span>Upload Image on server</span>
-                )}
+                {loading ? <Loading /> : <span>Upload Image on server</span>}
               </button>
             </div>
           </div>

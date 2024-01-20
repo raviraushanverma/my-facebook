@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Logo from "./Logo";
 import Alert from "./Alert";
+import Loading from "./Loading";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -66,7 +67,7 @@ const SignUp = () => {
                 signUp(event);
               }}
             >
-              <div className="text-box display-flex">
+              <div className="text-box">
                 <input
                   className="text-box"
                   type="text"
@@ -78,7 +79,7 @@ const SignUp = () => {
                   }}
                 />
               </div>
-              <div className=" text-box display-flex">
+              <div className=" text-box">
                 <input
                   className="text-box"
                   type="number"
@@ -90,7 +91,7 @@ const SignUp = () => {
                   }}
                 />
               </div>
-              <div className=" text-box display-flex">
+              <div className=" text-box">
                 <input
                   className="text-box"
                   type="date"
@@ -102,7 +103,7 @@ const SignUp = () => {
                   }}
                 />
               </div>
-              <div className="text-box display-flex">
+              <div className="text-box">
                 <input
                   className="text-box"
                   type="email"
@@ -115,7 +116,7 @@ const SignUp = () => {
                 />
               </div>
 
-              <div className="text-box display-flex">
+              <div className="text-box">
                 <input
                   className="text-box"
                   type="password"
@@ -132,24 +133,13 @@ const SignUp = () => {
                   <Alert alertData={alertData} setAlertData={setAlertData} />
                 </div>
               )}
-              <div className="text-box display-flex">
+              <div className="text-box">
                 <button
                   disabled={loading}
                   className="button btn btn-primary"
                   style={{ width: "100%" }}
                 >
-                  {loading ? (
-                    <span>
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>
-                      Loading...
-                    </span>
-                  ) : (
-                    <span>create your account</span>
-                  )}
+                  {loading ? <Loading /> : <span>Create Your Account</span>}
                 </button>
               </div>
             </form>
@@ -163,7 +153,7 @@ const SignUp = () => {
               data-bs-target="#loginModal"
             >
               <div>
-                <span>signup</span>
+                <span>Login</span>
               </div>
             </button>
           </div>

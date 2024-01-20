@@ -28,10 +28,10 @@ const Modal = (props) => {
       <div className={popupStyles.popup}>
         <h3>
           <center>{props.title}</center>
+          <span className={popupStyles.close} onClick={closeHandler}>
+            &times;
+          </span>
         </h3>
-        <span className={popupStyles.close} onClick={closeHandler}>
-          &times;
-        </span>
         <div className={popupStyles.content}>{props.children}</div>
       </div>
     </div>

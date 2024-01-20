@@ -3,11 +3,12 @@ import UserAvatar from "./UserAvatar";
 import MediaUpload from "./MediaUpload";
 import ImageThumbnail from "./ImageThumbnail";
 import { getLoggedInUser } from "../utility";
+import Loading from "./Loading";
 
 const user = getLoggedInUser();
 
 const CreatePost = (props) => {
-  const [alertData, setAlertData] = useState({ enable: false });
+  const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
   const [imageList, setImageList] = useState([]);
 
@@ -27,6 +28,7 @@ const CreatePost = (props) => {
     if (imageList.length > 0) {
       data.images = imageList;
     }
+    setLoading(true);
     const serverData = await fetch(
       `${process.env.REACT_APP_SERVER_END_PONT}/post`,
       {
@@ -38,11 +40,11 @@ const CreatePost = (props) => {
       }
     );
     const response = await serverData.json();
-    setAlertData({ ...response, enable: true });
     if (response.isSuccess === true) {
       props.updateData(response.post);
       document.getElementById("modalClose").click();
     }
+    setLoading(false);
     setContent("");
     setImageList([]);
   };
@@ -119,7 +121,7 @@ const CreatePost = (props) => {
                           content.length === 0 && imageList.length === 0
                         }
                       >
-                        Post
+                        {loading ? <Loading /> : "Post"}
                       </button>
                     </form>
                     <div className="d-flex justify-content-between align-items-center">

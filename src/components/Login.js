@@ -2,6 +2,7 @@ import { useState } from "react";
 import Logo from "./Logo";
 import Alert from "./Alert";
 import { useNavigate } from "react-router-dom";
+import Loading from "./Loading";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ const Login = () => {
                 login(event);
               }}
             >
-              <div className="text-box display-flex">
+              <div className="text-box">
                 <input
                   className="text-box"
                   type="email"
@@ -80,7 +81,7 @@ const Login = () => {
                   }}
                 />
               </div>
-              <div className="text-box display-flex">
+              <div className="text-box">
                 <input
                   className="text-box"
                   type="password"
@@ -97,25 +98,13 @@ const Login = () => {
                   <Alert alertData={alertData} setAlertData={setAlertData} />
                 </div>
               )}
-              <div className="text-box display-flex">
+              <div className="text-box">
                 <button
                   disabled={loading}
                   className="button btn btn-primary"
                   style={{ width: "100%" }}
                 >
-                  {loading ? (
-                    <span>
-                      <span
-                        style={{ marginRight: "10px" }}
-                        className="spinner-border spinner-border-sm"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>
-                      Loading...
-                    </span>
-                  ) : (
-                    <span>login</span>
-                  )}
+                  {loading ? <Loading /> : <span>login</span>}
                 </button>
               </div>
             </form>
@@ -128,7 +117,7 @@ const Login = () => {
               data-bs-toggle="modal"
               data-bs-target="#signupModal"
             >
-              Signup
+              SignUp
             </button>
           </div>
         </div>

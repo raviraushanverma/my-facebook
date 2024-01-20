@@ -12,9 +12,22 @@ const Post = (props) => {
   const [editPostData, setEditPostData] = useState("");
   const [deleteLoading, setDeleteLoading] = useState();
 
+  const postLike = async () => {
+    const likeData = await fetch(
+      `${process.env.REACT_APP_SERVER_END_PONT}/post_like/${props.postObj._id}/${user._id}/${user.name}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      }
+    );
+    await likeData.json();
+    // tujhe frontend me update karna hain like ko
+  };
+
   const postDelete = async () => {
     setDeleteLoading(true);
-    const user = getLoggedInUser();
     const deleteData = await fetch(
       `${process.env.REACT_APP_SERVER_END_PONT}/post_delete/${props.postObj._id}/${user._id}`,
       {
@@ -98,13 +111,18 @@ const Post = (props) => {
       <div className="post-buttons">
         <div>
           <i className="fa-solid fa-thumbs-up"></i>
-          <span className="text">{props.postObj.likes.length}</span>
+          <span style={{ marginLeft: "10px" }}>
+            {Object.keys(props.postObj.likes).length}
+          </span>
         </div>
         <div>{props.postObj.comments.length} Comments</div>
       </div>
       <hr className="post-separator"></hr>
       <div className="post-buttons d-flex justify-content-around align-items-center">
-        <button className="btn btn-light justify-content-around">
+        <button
+          className="btn btn-light justify-content-around"
+          onClick={() => postLike()}
+        >
           <span className="post-button">
             <i className="fa-solid fa-thumbs-up"></i>
           </span>

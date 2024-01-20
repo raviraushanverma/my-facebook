@@ -106,6 +106,7 @@ const Login = () => {
                   {loading ? (
                     <span>
                       <span
+                        style={{ marginRight: "10px" }}
                         className="spinner-border spinner-border-sm"
                         role="status"
                         aria-hidden="true"

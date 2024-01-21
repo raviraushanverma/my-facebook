@@ -452,3 +452,13 @@ form textarea:focus::placeholder {
 .loading-skeleton img {
   filter: grayscale(100) contrast(0%) brightness(1.8);
 }
+
+
+.no-border {
+  border: 0;
+   /* You may want to include this as bootstrap applies these styles too */
+}
+
+.form-control {
+  border: 0;
+}

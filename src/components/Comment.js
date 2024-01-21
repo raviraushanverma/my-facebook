@@ -85,7 +85,9 @@ const Comment = (props) => {
                 }}
               >
                 <input
+                  className="form-control no-border"
                   type="text"
+                  value={editContent}
                   onChange={(event) => {
                     setAditContent(event.target.value);
                   }}

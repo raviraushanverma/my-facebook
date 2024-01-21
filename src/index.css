@@ -456,7 +456,7 @@ form textarea:focus::placeholder {
 
 .no-border {
   border: 0;
-   /* You may want to include this as bootstrap applies these styles too */
+  
 }
 
 .form-control {

@@ -37,13 +37,6 @@ button, .modal-content {
   height: 30%;
 }
 
-.uploading-image-section .uploading-image {
-  height: 100px;
-  width: 100px;
-  padding: 10px;
-  border: 1px solid #ffffff;
-}
-
 .profile-pic-img {
   height: 60px;
   width: 60px;

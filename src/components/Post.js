@@ -81,7 +81,7 @@ const Post = (props) => {
             <div className="post-content">{props.postObj.content}</div>
           </div>
           <div>
-            <AssetViewer assets={props.postObj.images} />
+            <AssetViewer assets={props.postObj.medias} />
           </div>
         </section>
       </div>

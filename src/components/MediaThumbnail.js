@@ -1,7 +1,14 @@
-const ImageThumbnail = (props) => {
+import VideoWidget from "./VideoWidget";
+
+const MediaThumbnail = (props) => {
+  const styleObj = {
+    width: "100%",
+    height: "auto",
+  };
+
   return (
     <section className="d-flex justify-content-between align-items-center flex-wrap">
-      {props.images.map((image, index) => {
+      {props.medias.map((media, index) => {
         return (
           <div style={{ position: "relative", margin: "1px" }} key={index}>
             <div
@@ -25,13 +32,17 @@ const ImageThumbnail = (props) => {
                 onClick={() => props.onImageDelete(index)}
               />
             </div>
-            <img
-              key={index}
-              width={100}
-              height={100}
-              src={image.url}
-              alt="thumbnail"
-            />
+            {media.resource_type === "image" ? (
+              <img
+                key={index}
+                width={100}
+                height={100}
+                src={media.url}
+                alt="thumbnail"
+              />
+            ) : (
+              <VideoWidget url={media.url} style={styleObj} />
+            )}
           </div>
         );
       })}
@@ -39,4 +50,4 @@ const ImageThumbnail = (props) => {
   );
 };
 
-export default ImageThumbnail;
+export default MediaThumbnail;

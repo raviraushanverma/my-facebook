@@ -1,10 +1,18 @@
 import { useState } from "react";
 import Modal from "./Modal";
 import Loading from "./Loading";
+import VideoWidget from "./VideoWidget";
 
 const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
   const [loading, setLoading] = useState(false);
   const [visibility, setVisibility] = useState(false);
+
+  const mediaStyle = {
+    height: "100px",
+    width: "100px",
+    padding: "10px",
+    border: "1px solid #ffffff",
+  };
 
   const [fileList, setFileList] = useState(null);
 
@@ -53,8 +61,12 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
         setVisibility(false);
         setFileList(null);
         const mainMedia = medias.map((media) => {
+          const { asset_id, resource_type, secure_url, url } = media;
           return {
-            url: media.url,
+            asset_id,
+            resource_type,
+            secure_url,
+            url,
           };
         });
         onSuccessUpload(mainMedia);
@@ -104,14 +116,25 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
         {!!files.length && (
           <div>
             <section className="uploading-image-section">
-              {files.map((file, index) => (
-                <img
-                  key={index}
-                  className="uploading-image"
-                  src={URL.createObjectURL(file)}
-                  alt="uploading-pic"
-                />
-              ))}
+              {files.map((file, index) => {
+                return (
+                  <>
+                    {file.type === "image" ? (
+                      <img
+                        key={index}
+                        style={mediaStyle}
+                        src={URL.createObjectURL(file)}
+                        alt="uploading-pic"
+                      />
+                    ) : (
+                      <VideoWidget
+                        url={URL.createObjectURL(file)}
+                        style={mediaStyle}
+                      />
+                    )}
+                  </>
+                );
+              })}
             </section>
             <div className="d-flex justify-content-center">
               <button

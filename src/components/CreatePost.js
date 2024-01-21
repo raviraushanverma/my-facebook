@@ -1,7 +1,7 @@
 import { useState } from "react";
 import UserAvatar from "./UserAvatar";
 import MediaUpload from "./MediaUpload";
-import ImageThumbnail from "./ImageThumbnail";
+import MediaThumbnail from "./MediaThumbnail";
 import { getLoggedInUser } from "../utility";
 import Loading from "./Loading";
 
@@ -10,11 +10,12 @@ const user = getLoggedInUser();
 const CreatePost = (props) => {
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
-  const [imageList, setImageList] = useState([]);
+  const [mediaList, setMediaList] = useState([]);
 
-  const onUploadHandler = (images) => {
-    setImageList(images);
+  const onUploadHandler = (medias) => {
+    setMediaList(medias);
   };
+
   const post = async (event) => {
     const user = getLoggedInUser();
     event.preventDefault();
@@ -25,8 +26,8 @@ const CreatePost = (props) => {
         userName: user.name,
       },
     };
-    if (imageList.length > 0) {
-      data.images = imageList;
+    if (mediaList.length > 0) {
+      data.medias = mediaList;
     }
     setLoading(true);
     const serverData = await fetch(
@@ -46,13 +47,13 @@ const CreatePost = (props) => {
     }
     setLoading(false);
     setContent("");
-    setImageList([]);
+    setMediaList([]);
   };
 
   const onImageDeleteHandler = (index) => {
-    const tempImageList = [...imageList];
-    tempImageList.splice(index, 1);
-    setImageList(tempImageList);
+    const tempMediaList = [...mediaList];
+    tempMediaList.splice(index, 1);
+    setMediaList(tempMediaList);
   };
 
   return (
@@ -119,16 +120,15 @@ const CreatePost = (props) => {
                           setContent(event.target.value);
                         }}
                       ></textarea>
-                      <ImageThumbnail
-                        images={imageList}
-                        value={imageList}
+                      <MediaThumbnail
+                        medias={mediaList}
                         onImageDelete={onImageDeleteHandler}
                       />
                       <button
                         type="submit"
                         className="btn btn-primary btn-lg"
                         disabled={
-                          content.length === 0 && imageList.length === 0
+                          content.length === 0 && mediaList.length === 0
                         }
                       >
                         {loading ? <Loading /> : "Post"}

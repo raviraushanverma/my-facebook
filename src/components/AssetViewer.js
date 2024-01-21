@@ -1,39 +1,37 @@
-import ImageViewer from "./ImageViewer";
+import MediaViewer from "./MediaViewer";
 
 const AssetViewer = (props) => {
   if (props.assets.length === 1) {
-    return (
-      <ImageViewer style={{ width: "100%" }} imageUrl={props.assets[0].url} />
-    );
+    return <MediaViewer style={{ width: "100%" }} media={props.assets[0]} />;
   } else if (props.assets.length === 2) {
     return (
       <div style={{ width: "100%", display: "flex" }}>
-        <ImageViewer
+        <MediaViewer
           className="image-viewer"
           style={{ width: "50%", height: "300px" }}
-          imageUrl={props.assets[0].url}
+          media={props.assets[0]}
         />
-        <ImageViewer
+        <MediaViewer
           style={{ width: "50%", height: "300px" }}
-          imageUrl={props.assets[1].url}
+          media={props.assets[1]}
         />
       </div>
     );
   } else if (props.assets.length === 3) {
     return (
       <div style={{ width: "100%", display: "flex" }}>
-        <ImageViewer
+        <MediaViewer
           style={{ width: "50%", height: "500px" }}
-          imageUrl={props.assets[0].url}
+          media={props.assets[0]}
         />
         <div style={{ width: "50%" }}>
-          <ImageViewer
+          <MediaViewer
             style={{ width: "100%", height: "250px" }}
-            imageUrl={props.assets[1].url}
+            media={props.assets[1]}
           />
-          <ImageViewer
+          <MediaViewer
             style={{ width: "100%", height: "250px" }}
-            imageUrl={props.assets[2].url}
+            media={props.assets[2]}
           />
         </div>
       </div>
@@ -42,23 +40,23 @@ const AssetViewer = (props) => {
     return (
       <div style={{ width: "100%", display: "flex" }}>
         <div style={{ width: "50%" }}>
-          <ImageViewer
+          <MediaViewer
             style={{ width: "100%", height: "300px" }}
-            imageUrl={props.assets[0].url}
+            media={props.assets[0]}
           />
-          <ImageViewer
+          <MediaViewer
             style={{ width: "100%", height: "300px" }}
-            imageUrl={props.assets[1].url}
+            media={props.assets[1]}
           />
         </div>
         <div style={{ width: "50%" }}>
-          <ImageViewer
+          <MediaViewer
             style={{ width: "100%", height: "300px" }}
-            imageUrl={props.assets[2].url}
+            media={props.assets[2]}
           />
-          <ImageViewer
+          <MediaViewer
             style={{ width: "100%", height: "300px" }}
-            imageUrl={props.assets[3].url}
+            media={props.assets[3]}
             textCount={props.assets.length - 4}
           />
         </div>

@@ -6,7 +6,7 @@ const Timeline = () => {
       <div className="row">
         <div className="col-md-3">hello</div>
         <div className="col-md-6">
-          <PostList />
+          <PostList isProfilePage={false} />
         </div>
         <div className="col-md-3">hello2</div>
       </div>

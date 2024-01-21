@@ -30,16 +30,20 @@ const PostList = (props) => {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER_END_PONT}/posts`,
-        {}
-      );
+      let apiURL;
+      if (props.isProfilePage) {
+        apiURL = `${process.env.REACT_APP_SERVER_END_PONT}/profile_post/${user._id}`;
+      } else {
+        apiURL = `${process.env.REACT_APP_SERVER_END_PONT}/posts`;
+      }
+      const response = await fetch(apiURL);
       const responseData = await response.json();
       setPostData(responseData.posts);
       setLoading(false);
     }
     fetchData();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.isProfilePage]);
 
   const deletePostData = (postId) => {
     const user = getLoggedInUser();

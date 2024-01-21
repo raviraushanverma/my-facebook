@@ -8,14 +8,8 @@ import Loading from "./Loading";
 
 const Post = (props) => {
   const user = getLoggedInUser();
-  const [edit, setEdit] = useState(false);
+
   const [deleteLoading, setDeleteLoading] = useState();
-  const [editPostdata, setAditPostdata] = useState();
-  useEffect(() => {
-    if (edit === false) {
-      setAditPostdata(props.postObj.content);
-    }
-  }, [edit, props.postObj]);
 
   const postLike = async () => {
     const likeData = await fetch(
@@ -46,18 +40,6 @@ const Post = (props) => {
     setDeleteLoading(false);
     props.deletePostData(props.postObj._id);
   };
-  const editPost = async () => {
-    const editPostData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/edit_post/${props.postObj._id}/${user._id}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "post",
-      }
-    );
-    await editPostData.json();
-  };
 
   return (
     <div className="post-container">
@@ -69,17 +51,7 @@ const Post = (props) => {
           />
           {user._id === props.postObj.owner.userId && (
             <div>
-              <button
-                type="button"
-                className="btn btn-light"
-                onClick={() => {
-                  if (editPost === false) {
-                    setEdit(true);
-                  } else {
-                    setEdit(false);
-                  }
-                }}
-              >
+              <button type="button" className="btn btn-light">
                 <i
                   style={{ cursor: "pointer" }}
                   className="fa-regular fa-pen-to-square"
@@ -106,20 +78,7 @@ const Post = (props) => {
         </section>
         <section>
           <div>
-            {edit ? (
-              <div className="post-content">{props.postObj.content}</div>
-            ) : (
-              <div>
-                <textarea
-                  type="text"
-                  value={editPostdata}
-                  onChange={(event) => {
-                    setAditPostdata(event.target.value);
-                    editPost();
-                  }}
-                ></textarea>
-              </div>
-            )}
+            <div className="post-content">{props.postObj.content}</div>
           </div>
           <div>
             <AssetViewer assets={props.postObj.images} />
@@ -182,6 +141,7 @@ const Post = (props) => {
             comment={comment}
             postId={props.postObj._id}
             commentUpdate={props.updatePostData}
+            editComment={props.editComment}
           />
         );
       })}

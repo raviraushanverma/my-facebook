@@ -66,6 +66,19 @@ const PostList = (props) => {
     setPostData(newData);
   };
 
+  const editComment = (postId, commentId, editContent) => {
+    const newData = [...postData];
+    const postIndex = newData.findIndex((element) => {
+      return element._id === postId;
+    });
+
+    const commentIndex = newData[postIndex].comments.findIndex((element) => {
+      return element._id === commentId;
+    });
+    newData[postIndex].comments[commentIndex].content = editContent;
+    setPostData(newData);
+  };
+
   return (
     <section className="post-list-container">
       <CreatePost updateData={updateData} />
@@ -81,6 +94,7 @@ const PostList = (props) => {
                 updatePostData={updatePostData}
                 deletePostData={deletePostData}
                 likeUpdateData={likeUpdateData}
+                editComment={editComment}
               />
             );
           })}

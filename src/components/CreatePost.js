@@ -49,6 +49,12 @@ const CreatePost = (props) => {
     setImageList([]);
   };
 
+  const onImageDeleteHandler = (index) => {
+    const tempImageList = [...imageList];
+    tempImageList.splice(index, 1);
+    setImageList(tempImageList);
+  };
+
   return (
     <>
       <div className="create-post-container">
@@ -113,7 +119,11 @@ const CreatePost = (props) => {
                           setContent(event.target.value);
                         }}
                       ></textarea>
-                      <ImageThumbnail images={imageList} value={imageList} />
+                      <ImageThumbnail
+                        images={imageList}
+                        value={imageList}
+                        onImageDelete={onImageDeleteHandler}
+                      />
                       <button
                         type="submit"
                         className="btn btn-primary btn-lg"

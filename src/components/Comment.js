@@ -1,13 +1,21 @@
 import UserAvatar from "./UserAvatar";
 import { getLoggedInUser } from "../utility";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import TimeAgo from "javascript-time-ago";
 
 const Comment = (props) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setAditContent] = useState();
   const timeAgo = new TimeAgo("en-US");
   const [commentDeleteLoading, setCommentDeleteLoading] = useState();
   const user = getLoggedInUser();
+
+  useEffect(() => {
+    if (isEditing === true) {
+      setAditContent(props.comment.content);
+    }
+  }, [isEditing, props.comment]);
 
   const commentDeleteData = async () => {
     setCommentDeleteLoading(true);
@@ -23,6 +31,26 @@ const Comment = (props) => {
     const response = await deleteData.json();
     setCommentDeleteLoading(false);
     props.commentUpdate(response.post);
+  };
+
+  const editCommentData = async (event) => {
+    event.preventDefault();
+
+    const data = {
+      content: editContent,
+    };
+    const editData = await fetch(
+      `${process.env.REACT_APP_SERVER_END_PONT}/comment_edit/${props.postId}/${props.comment._id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "post",
+        body: JSON.stringify(data),
+      }
+    );
+    await editData.json();
+    props.editComment(props.postId, props.comment._id, editContent);
   };
 
   return (
@@ -49,10 +77,43 @@ const Comment = (props) => {
                 {timeAgo.format(new Date(props.comment.created))}
               </span>
             </div>
-            <div>{props.comment.content}</div>
+            {isEditing ? (
+              <form
+                onSubmit={(event) => {
+                  editCommentData(event);
+                  setIsEditing(false);
+                }}
+              >
+                <input
+                  type="text"
+                  onChange={(event) => {
+                    setAditContent(event.target.value);
+                  }}
+                />
+              </form>
+            ) : (
+              <div>
+                <div>
+                  <small>
+                    <label>{props.comment.owner.userName}</label>
+                  </small>
+                </div>
+                <span>{props.comment.content}</span>
+              </div>
+            )}
             {user._id === props.comment.owner.userId && (
               <div style={{ float: "right" }}>
-                <button type="button" className="btn btn-light">
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  onClick={() => {
+                    if (isEditing === false) {
+                      setIsEditing(true);
+                    } else {
+                      setIsEditing(false);
+                    }
+                  }}
+                >
                   <i
                     style={{ cursor: "pointer" }}
                     className="fa-regular fa-pen-to-square"

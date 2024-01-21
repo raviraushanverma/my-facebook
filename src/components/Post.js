@@ -3,14 +3,19 @@ import CreateComment from "./CreateComment";
 import Comment from "./Comment";
 import AssetViewer from "./AssetViewer";
 import { getLoggedInUser } from "../utility";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loading from "./Loading";
 
 const Post = (props) => {
   const user = getLoggedInUser();
-  const [editPost, setEditPost] = useState(true);
-  const [editPostData, setEditPostData] = useState("");
+  const [edit, setEdit] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState();
+  const [editPostdata, setAditPostdata] = useState();
+  useEffect(() => {
+    if (edit === false) {
+      setAditPostdata(props.postObj.content);
+    }
+  }, [edit, props.postObj]);
 
   const postLike = async () => {
     const likeData = await fetch(
@@ -22,8 +27,8 @@ const Post = (props) => {
         method: "POST",
       }
     );
-    await likeData.json();
-    // tujhe frontend me update karna hain like ko
+    const reponseData = await likeData.json();
+    props.likeUpdateData(props.postObj._id, user._id, reponseData.isSuccess);
   };
 
   const postDelete = async () => {
@@ -41,6 +46,18 @@ const Post = (props) => {
     setDeleteLoading(false);
     props.deletePostData(props.postObj._id);
   };
+  const editPost = async () => {
+    const editPostData = await fetch(
+      `${process.env.REACT_APP_SERVER_END_PONT}/edit_post/${props.postObj._id}/${user._id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "post",
+      }
+    );
+    await editPostData.json();
+  };
 
   return (
     <div className="post-container">
@@ -56,10 +73,10 @@ const Post = (props) => {
                 type="button"
                 className="btn btn-light"
                 onClick={() => {
-                  if (editPost === true) {
-                    setEditPost(false);
+                  if (editPost === false) {
+                    setEdit(true);
                   } else {
-                    setEditPost(true);
+                    setEdit(false);
                   }
                 }}
               >
@@ -88,18 +105,19 @@ const Post = (props) => {
           )}
         </section>
         <section>
-          <div style={{ width: "20%" }}>
-            {editPost ? (
+          <div>
+            {edit ? (
               <div className="post-content">{props.postObj.content}</div>
             ) : (
               <div>
-                <form
-                  onSubmit={() => {
-                    editPostData();
+                <textarea
+                  type="text"
+                  value={editPostdata}
+                  onChange={(event) => {
+                    setAditPostdata(event.target.value);
+                    editPost();
                   }}
-                >
-                  <input type="text"></input>
-                </form>
+                ></textarea>
               </div>
             )}
           </div>
@@ -109,7 +127,12 @@ const Post = (props) => {
         </section>
       </div>
       <div className="post-buttons">
-        <div>
+        <div
+          style={{ cursor: "pointer" }}
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title={Object.values(props.postObj.likes).join(",")}
+        >
           <i className="fa-solid fa-thumbs-up"></i>
           <span style={{ marginLeft: "10px" }}>
             {Object.keys(props.postObj.likes).length}
@@ -121,10 +144,16 @@ const Post = (props) => {
       <div className="post-buttons d-flex justify-content-around align-items-center">
         <button
           className="btn btn-light justify-content-around"
-          onClick={() => postLike()}
+          onClick={() => {
+            postLike();
+          }}
         >
           <span className="post-button">
-            <i className="fa-solid fa-thumbs-up"></i>
+            {props.postObj.likes[user._id] === undefined ? (
+              <i className="fa-regular fa-thumbs-up"></i>
+            ) : (
+              <i className="fa-solid fa-thumbs-up"></i>
+            )}
           </span>
           <span className="text">Like</span>
         </button>

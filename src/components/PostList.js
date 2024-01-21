@@ -5,6 +5,8 @@ import PostSkeleton from "./PostSkeleton";
 import { getLoggedInUser } from "../utility";
 
 const PostList = (props) => {
+  const user = getLoggedInUser();
+
   const [postData, setPostData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -51,6 +53,19 @@ const PostList = (props) => {
     }
   };
 
+  const likeUpdateData = (postId, userId) => {
+    const newData = [...postData];
+    const index = newData.findIndex((element) => {
+      return element._id === postId;
+    });
+    if (newData[index].likes[userId] === undefined) {
+      newData[index].likes[user._id] = user.name;
+    } else {
+      delete newData[index].likes[user._id];
+    }
+    setPostData(newData);
+  };
+
   return (
     <section className="post-list-container">
       <CreatePost updateData={updateData} />
@@ -65,6 +80,7 @@ const PostList = (props) => {
                 postObj={postObj}
                 updatePostData={updatePostData}
                 deletePostData={deletePostData}
+                likeUpdateData={likeUpdateData}
               />
             );
           })}

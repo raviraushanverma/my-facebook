@@ -1,15 +1,10 @@
 import { useState } from "react";
 import { getLoggedInUser } from "../utility/index";
 import Loading from "./Loading";
-import MediaUpload from "./MediaUpload";
 
 const CreateComment = (props) => {
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState();
-  const [imageList, setImageList] = useState([]);
-  const onUploadHandler = (images) => {
-    setImageList(images);
-  };
 
   const commentPost = async (event) => {
     event.preventDefault();
@@ -24,10 +19,6 @@ const CreateComment = (props) => {
         },
       },
     };
-    if (imageList.length > 0) {
-      data.images = imageList;
-    }
-
     setLoading(true);
     const commentData = await fetch(
       `${process.env.REACT_APP_SERVER_END_PONT}/comment`,
@@ -68,11 +59,6 @@ const CreateComment = (props) => {
                 setComment(event.target.value);
               }}
             ></input>
-            <div className="post-icons">
-              <MediaUpload onSuccessUpload={onUploadHandler}>
-                <i className="fa-solid fa-camera"></i>
-              </MediaUpload>
-            </div>
             <button type="submit" className="btn btn-light comment-send-icon">
               {loading ? (
                 <Loading />

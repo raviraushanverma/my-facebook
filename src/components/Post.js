@@ -3,7 +3,7 @@ import CreateComment from "./CreateComment";
 import Comment from "./Comment";
 import AssetViewer from "./AssetViewer";
 import { getLoggedInUser } from "../utility";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Loading from "./Loading";
 
 const Post = (props) => {

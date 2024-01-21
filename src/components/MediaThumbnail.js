@@ -37,11 +37,22 @@ const MediaThumbnail = (props) => {
                 key={index}
                 width={100}
                 height={100}
-                src={media.url}
+                src={
+                  process.env.NODE_ENV === "development"
+                    ? media.url
+                    : media.secure_url
+                }
                 alt="thumbnail"
               />
             ) : (
-              <VideoWidget url={media.url} style={styleObj} />
+              <VideoWidget
+                url={
+                  process.env.NODE_ENV === "development"
+                    ? media.url
+                    : media.secure_url
+                }
+                style={styleObj}
+              />
             )}
           </div>
         );

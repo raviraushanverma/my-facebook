@@ -4,8 +4,10 @@ import VideoWidget from "./VideoWidget";
 const MediaViewer = (props) => {
   const navigate = useNavigate();
 
-  const { url, resource_type } = props.media;
+  const { url, secure_url, resource_type } = props.media;
   const imgStyle = { ...props.style, opacity: "0.7" };
+
+  const src = process.env.NODE_ENV === "development" ? url : secure_url;
 
   if (!props.textCount) {
     return (
@@ -14,14 +16,14 @@ const MediaViewer = (props) => {
           <img
             className="image-viewer-img"
             style={props.style}
-            src={url}
+            src={src}
             alt="post-data"
             onClick={() => {
               navigate("/photo");
             }}
           />
         ) : (
-          <VideoWidget url={url} style={imgStyle} />
+          <VideoWidget url={src} style={imgStyle} />
         )}
       </>
     );
@@ -33,14 +35,14 @@ const MediaViewer = (props) => {
         <img
           className="image-viewer-img"
           style={imgStyle}
-          src={url}
+          src={src}
           alt="post-data"
           onClick={() => {
             navigate("/photo");
           }}
         />
       ) : (
-        <VideoWidget url={url} style={imgStyle} />
+        <VideoWidget url={src} style={imgStyle} />
       )}
 
       <h1 className="centered">{props.textCount}+</h1>

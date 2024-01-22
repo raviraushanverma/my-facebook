@@ -5,6 +5,7 @@ import AssetViewer from "./AssetViewer";
 import { getLoggedInUser } from "../utility";
 import { useState } from "react";
 import Loading from "./Loading";
+import { Link } from "react-router-dom";
 
 const Post = (props) => {
   const user = getLoggedInUser();
@@ -45,18 +46,15 @@ const Post = (props) => {
     <div className="post-container">
       <div>
         <section className="post-header">
-          <UserAvatar
-            userName={props.postObj.owner.userName}
-            time={props.postObj.created}
-          />
+          <Link to={`/profile/${props.postObj.owner.userId}`}>
+            <UserAvatar
+              userName={props.postObj.owner.userName}
+              time={props.postObj.created}
+            />
+          </Link>
+
           {user._id === props.postObj.owner.userId && (
             <div>
-              <button type="button" className="btn btn-light">
-                <i
-                  style={{ cursor: "pointer" }}
-                  className="fa-regular fa-pen-to-square"
-                ></i>
-              </button>
               <button
                 type="button"
                 className="btn btn-light"

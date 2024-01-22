@@ -3,6 +3,7 @@ import { getLoggedInUser } from "../utility";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import TimeAgo from "javascript-time-ago";
+import { Link } from "react-router-dom";
 
 const Comment = (props) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -57,7 +58,9 @@ const Comment = (props) => {
     <>
       <div style={{ padding: "10px" }}>
         <div className="d-flex">
-          <UserAvatar />
+          <Link to={`/profile/${props.comment.owner.userId}`}>
+            <UserAvatar />
+          </Link>
           <div
             style={{
               background: "#F0F2F5",
@@ -95,11 +98,6 @@ const Comment = (props) => {
               </form>
             ) : (
               <div>
-                <div>
-                  <small>
-                    <label>{props.comment.owner.userName}</label>
-                  </small>
-                </div>
                 <span>{props.comment.content}</span>
               </div>
             )}

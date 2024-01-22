@@ -4,10 +4,12 @@ import MediaUpload from "./MediaUpload";
 import MediaThumbnail from "./MediaThumbnail";
 import { getLoggedInUser } from "../utility";
 import Loading from "./Loading";
+import { Link, useNavigate } from "react-router-dom";
 
 const user = getLoggedInUser();
 
 const CreatePost = (props) => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
   const [mediaList, setMediaList] = useState([]);
@@ -59,7 +61,9 @@ const CreatePost = (props) => {
   return (
     <>
       <div className="create-post-container">
-        <UserAvatar />
+        <Link to={`/profile/${user._id}`}>
+          <UserAvatar />
+        </Link>
         <input
           type="text"
           readOnly
@@ -86,7 +90,7 @@ const CreatePost = (props) => {
               </div>
               <button
                 type="button"
-                id="modalClose"
+                id="createPostModalClose"
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
@@ -103,7 +107,17 @@ const CreatePost = (props) => {
                     >
                       <div className="content d-flex">
                         <div className="details">
-                          <UserAvatar userName={user.name} />
+                          <div
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              document
+                                .getElementById("createPostModalClose")
+                                .click();
+                              navigate(`/profile/${user._id}`);
+                            }}
+                          >
+                            <UserAvatar userName={user.name} />
+                          </div>
                           <div className="privacy">
                             <i className="fas fa-user-friends" />
                             <span>Friends</span>

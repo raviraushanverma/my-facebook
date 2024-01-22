@@ -32,7 +32,7 @@ const PostList = (props) => {
       setLoading(true);
       let apiURL;
       if (props.isProfilePage) {
-        apiURL = `${process.env.REACT_APP_SERVER_END_PONT}/profile_post/${user._id}`;
+        apiURL = `${process.env.REACT_APP_SERVER_END_PONT}/profile_post/${props.userId}`;
       } else {
         apiURL = `${process.env.REACT_APP_SERVER_END_PONT}/posts`;
       }

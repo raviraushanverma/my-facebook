@@ -1,6 +1,6 @@
 import PostList from "./PostList";
 import { Link } from "react-router-dom";
-import UserAvatar from "./UserAvatar";
+import ProfileUserAvatar from "./ProfileUserAvatar";
 import { getLoggedInUser } from "../utility";
 
 const Timeline = () => {
@@ -10,7 +10,7 @@ const Timeline = () => {
       <div className="row">
         <div className="col-md-3">
           <Link to={`/profile/${user._id}`}>
-            <UserAvatar />
+            <ProfileUserAvatar />
           </Link>
         </div>
         <div className="col-md-6">

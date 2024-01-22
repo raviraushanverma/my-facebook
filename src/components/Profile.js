@@ -26,7 +26,7 @@ const Profile = (props) => {
           <div>
             <div>{user.name}</div>
             <div>{user.mobileNumber}</div>
-            <div>{user.birth}</div>
+            <div>{new Date(user.birth).toDateString()}</div>
             <div>{user.email}</div>
             <div>{user.name}</div>
           </div>

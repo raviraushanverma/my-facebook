@@ -45,7 +45,7 @@ const CreatePost = (props) => {
     const response = await serverData.json();
     if (response.isSuccess === true) {
       props.updateData(response.post);
-      document.getElementById("modalClose").click();
+      document.getElementById("createPostModalClose").click();
     }
     setLoading(false);
     setContent("");

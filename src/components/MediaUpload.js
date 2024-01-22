@@ -118,7 +118,7 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
             <section className="uploading-image-section">
               {files.map((file, index) => {
                 return (
-                  <>
+                  <div key={index}>
                     {file.type === "image" ? (
                       <img
                         key={index}
@@ -132,7 +132,7 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
                         style={mediaStyle}
                       />
                     )}
-                  </>
+                  </div>
                 );
               })}
             </section>

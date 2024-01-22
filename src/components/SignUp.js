@@ -97,6 +97,7 @@ const SignUp = () => {
                   type="date"
                   placeholder="Enter your date of birth"
                   required
+                  max={new Date().toISOString().substring(0, 10)}
                   value={birth}
                   onChange={(event) => {
                     setBirth(event.target.value);

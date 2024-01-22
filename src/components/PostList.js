@@ -42,8 +42,7 @@ const PostList = (props) => {
       setLoading(false);
     }
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.isProfilePage]);
+  }, [props.isProfilePage, props.userId]);
 
   const deletePostData = (postId) => {
     const user = getLoggedInUser();

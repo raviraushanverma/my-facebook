@@ -83,13 +83,21 @@ const PostList = (props) => {
 
   return (
     <section className="post-list-container">
-      {props.userId === user._id && (
+      {props.isProfilePage ? (
+        <>
+          {props.userId === user._id && (
+            <CreatePost
+              updateData={updateData}
+              profilePicURL={props.profilePicURL}
+            />
+          )}
+        </>
+      ) : (
         <CreatePost
           updateData={updateData}
           profilePicURL={props.profilePicURL}
         />
       )}
-
       {loading ? (
         <PostSkeleton />
       ) : (

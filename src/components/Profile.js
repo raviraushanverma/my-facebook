@@ -47,13 +47,21 @@ const Profile = () => {
 
   return (
     <div className="container">
-      <ProfileUserAvatar profilePicURL={getProfilePic()} userId={user._id} />
+      <ProfileUserAvatar profilePicURL={getProfilePic()} />
       {loginUser._id === user_id && (
         <MediaUpload
           onSuccessUpload={onProfileUploadHandler}
           isMultiple={false}
         >
-          <i className="fa-solid fa-camera" style={{ marginLeft: "60px" }}></i>
+          <i
+            className="fa-solid fa-camera"
+            style={{
+              marginLeft: "44px",
+              fontSize: "30px",
+              cursor: "pointer",
+              marginTop: "10px",
+            }}
+          ></i>
         </MediaUpload>
       )}
       <div className="row">

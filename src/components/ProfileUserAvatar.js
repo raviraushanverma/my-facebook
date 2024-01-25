@@ -3,9 +3,9 @@ import TimeAgo from "javascript-time-ago";
 const ProfileUserAvatar = ({ profilePicURL, userName, time }) => {
   const timeAgo = new TimeAgo("en-US");
   return (
-    <section className="d-flex">
+    <section className="d-flex" style={{ marginTop: "80px" }}>
       <div
-        className="rounded-circle border d-flex justify-content-around align-items-center"
+        className="profile-pic-img-big-size rounded-circle border d-flex justify-content-around align-items-center"
         style={{}}
         alt="Avatar"
       >

@@ -1,20 +1,21 @@
 import PostList from "./PostList";
 import { Link } from "react-router-dom";
 import ProfileUserAvatar from "./ProfileUserAvatar";
-import { getLoggedInUser } from "../utility";
+import { SessionContext } from "../providers/SessionProvider";
+import { useContext } from "react";
 
-const Timeline = () => {
-  const user = getLoggedInUser();
+const Timeline = (props) => {
+  const [user] = useContext(SessionContext);
   return (
     <div className="container">
       <div className="row">
         <div className="col-md-3">
           <Link to={`/profile/${user._id}`}>
-            <ProfileUserAvatar />
+            <ProfileUserAvatar profilePicURL={user.profilePicURL} />
           </Link>
         </div>
         <div className="col-md-6">
-          <PostList isProfilePage={false} />
+          <PostList isProfilePage={false} profilePicURL={user.profilePicURL} />
         </div>
         <div className="col-md-3">hello2</div>
       </div>

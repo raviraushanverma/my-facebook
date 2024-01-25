@@ -1,14 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import UserAvatar from "./UserAvatar";
 import MediaUpload from "./MediaUpload";
 import MediaThumbnail from "./MediaThumbnail";
-import { getLoggedInUser } from "../utility";
+import { SessionContext } from "../providers/SessionProvider";
 import Loading from "./Loading";
 import { Link, useNavigate } from "react-router-dom";
 
-const user = getLoggedInUser();
-
 const CreatePost = (props) => {
+  const [user] = useContext(SessionContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
@@ -19,14 +18,10 @@ const CreatePost = (props) => {
   };
 
   const post = async (event) => {
-    const user = getLoggedInUser();
     event.preventDefault();
     const data = {
       content: content,
-      owner: {
-        userId: user._id,
-        userName: user.name,
-      },
+      owner: user._id,
     };
     if (mediaList.length > 0) {
       data.medias = mediaList;
@@ -62,7 +57,7 @@ const CreatePost = (props) => {
     <>
       <div className="create-post-container">
         <Link to={`/profile/${user._id}`}>
-          <UserAvatar />
+          <UserAvatar profilePicURL={props.profilePicURL} />
         </Link>
         <input
           type="text"
@@ -116,7 +111,10 @@ const CreatePost = (props) => {
                               navigate(`/profile/${user._id}`);
                             }}
                           >
-                            <UserAvatar userName={user.name} />
+                            <UserAvatar
+                              userName={user.name}
+                              profilePicURL={props.profilePicURL}
+                            />
                           </div>
                           <div className="privacy">
                             <i className="fas fa-user-friends" />
@@ -155,15 +153,6 @@ const CreatePost = (props) => {
                           <MediaUpload onSuccessUpload={onUploadHandler}>
                             <i className="fa-solid fa-camera"></i>
                           </MediaUpload>
-                        </div>
-                        <div className="post-icons">
-                          <i className="fa-solid fa-user"></i>
-                        </div>
-                        <div className="post-icons">
-                          <i className="fa-regular fa-face-smile"></i>
-                        </div>
-                        <div className="post-icons">
-                          <i className="fa-solid fa-location-dot"></i>
                         </div>
                       </div>
                     </div>

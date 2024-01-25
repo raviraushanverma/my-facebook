@@ -43,6 +43,12 @@ button, .modal-content {
   border-radius: 50%;
 }
 
+.profile-pic-img-big-size {
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+}
+
 .section {
   margin-top: 30px;
 }
@@ -446,10 +452,8 @@ form textarea:focus::placeholder {
   filter: grayscale(100) contrast(0%) brightness(1.8);
 }
 
-
 .no-border {
   border: 0;
-  
 }
 
 .form-control {

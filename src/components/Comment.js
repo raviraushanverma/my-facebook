@@ -1,6 +1,6 @@
 import UserAvatar from "./UserAvatar";
-import { getLoggedInUser } from "../utility";
-import { useEffect, useState } from "react";
+import { SessionContext } from "../providers/SessionProvider";
+import { useContext, useEffect, useState } from "react";
 import Loading from "./Loading";
 import TimeAgo from "javascript-time-ago";
 import { Link } from "react-router-dom";
@@ -10,7 +10,7 @@ const Comment = (props) => {
   const [editContent, setAditContent] = useState();
   const timeAgo = new TimeAgo("en-US");
   const [commentDeleteLoading, setCommentDeleteLoading] = useState();
-  const user = getLoggedInUser();
+  const [user] = useContext(SessionContext);
 
   useEffect(() => {
     if (isEditing === true) {
@@ -58,8 +58,14 @@ const Comment = (props) => {
     <>
       <div style={{ padding: "10px" }}>
         <div className="d-flex">
-          <Link to={`/profile/${props.comment.owner.userId}`}>
-            <UserAvatar />
+          <Link to={`/profile/${props.comment.owner._id}`}>
+            <UserAvatar
+              profilePicURL={
+                user._id === props.comment.owner._id
+                  ? user.profilePicURL
+                  : props.comment.owner.profilePicURL
+              }
+            />
           </Link>
           <div
             style={{
@@ -69,7 +75,7 @@ const Comment = (props) => {
             }}
           >
             <div className="d-flex">
-              <h6>{props.comment.owner.userName}</h6>
+              <h6>{props.comment.owner.name}</h6>
               <span
                 style={{
                   color: "gray",
@@ -101,7 +107,7 @@ const Comment = (props) => {
                 <span>{props.comment.content}</span>
               </div>
             )}
-            {user._id === props.comment.owner.userId && (
+            {user._id === props.comment.owner._id && (
               <div style={{ float: "right" }}>
                 <button
                   type="button"

@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Post from "./Post";
 import CreatePost from "./CreatePost";
 import PostSkeleton from "./PostSkeleton";
-import { getLoggedInUser } from "../utility";
+import { SessionContext } from "../providers/SessionProvider";
 
 const PostList = (props) => {
-  const user = getLoggedInUser();
+  const [user] = useContext(SessionContext);
 
   const [postData, setPostData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,12 +45,11 @@ const PostList = (props) => {
   }, [props.isProfilePage, props.userId]);
 
   const deletePostData = (postId) => {
-    const user = getLoggedInUser();
     const newData = [...postData];
     const index = newData.findIndex((element) => {
       return element._id === postId;
     });
-    if (user._id === newData[index].owner.userId) {
+    if (user._id === newData[index].owner._id) {
       newData.splice(index, 1);
       setPostData(newData);
     }
@@ -84,7 +83,13 @@ const PostList = (props) => {
 
   return (
     <section className="post-list-container">
-      <CreatePost updateData={updateData} />
+      {props.userId === user._id && (
+        <CreatePost
+          updateData={updateData}
+          profilePicURL={props.profilePicURL}
+        />
+      )}
+
       {loading ? (
         <PostSkeleton />
       ) : (

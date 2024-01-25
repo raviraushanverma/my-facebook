@@ -1,22 +1,19 @@
-import { useState } from "react";
-import { getLoggedInUser } from "../utility/index";
+import { useContext, useState } from "react";
+import { SessionContext } from "../providers/SessionProvider";
 import Loading from "./Loading";
 
 const CreateComment = (props) => {
+  const [user] = useContext(SessionContext);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState();
 
   const commentPost = async (event) => {
     event.preventDefault();
-    const user = getLoggedInUser();
     const data = {
       id: props.postId,
       comments: {
         content: comment,
-        owner: {
-          userId: user._id,
-          userName: user.name,
-        },
+        owner: user._id,
       },
     };
     setLoading(true);

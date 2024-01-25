@@ -1,13 +1,16 @@
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import { useNavigate } from "react-router-dom";
-import { isUserLoggedIn } from "../utility";
+import { SessionContext } from "../providers/SessionProvider";
+import { useContext } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
+  const [user] = useContext(SessionContext);
 
   const logout = () => {
     localStorage.removeItem("user");
+    navigate("/");
     navigate(0);
   };
 
@@ -45,7 +48,7 @@ const Header = () => {
             </li> */}
           </ul>
           <div className="d-flex">
-            {isUserLoggedIn() ? (
+            {user ? (
               <button
                 type="button"
                 className="btn btn-sm btn-outline-primary"

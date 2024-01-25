@@ -2,13 +2,13 @@ import UserAvatar from "./UserAvatar";
 import CreateComment from "./CreateComment";
 import Comment from "./Comment";
 import AssetViewer from "./AssetViewer";
-import { getLoggedInUser } from "../utility";
-import { useState } from "react";
+import { SessionContext } from "../providers/SessionProvider";
+import { useContext, useState } from "react";
 import Loading from "./Loading";
 import { Link } from "react-router-dom";
 
 const Post = (props) => {
-  const user = getLoggedInUser();
+  const [user] = useContext(SessionContext);
 
   const [deleteLoading, setDeleteLoading] = useState();
 
@@ -46,14 +46,18 @@ const Post = (props) => {
     <div className="post-container">
       <div>
         <section className="post-header">
-          <Link to={`/profile/${props.postObj.owner.userId}`}>
+          <Link to={`/profile/${props.postObj.owner._id}`}>
             <UserAvatar
-              userName={props.postObj.owner.userName}
+              userName={props.postObj.owner.name}
               time={props.postObj.created}
+              profilePicURL={
+                user._id === props.postObj.owner._id
+                  ? user.profilePicURL
+                  : props.postObj.owner.profilePicURL
+              }
             />
           </Link>
-
-          {user._id === props.postObj.owner.userId && (
+          {user._id === props.postObj.owner._id && (
             <div>
               <button
                 type="button"

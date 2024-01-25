@@ -3,8 +3,12 @@ import Logo from "./Logo";
 import Alert from "./Alert";
 import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
+import { useContext } from "react";
+import { SessionContext } from "../providers/SessionProvider";
 
 const Login = () => {
+  const [user, setUser] = useContext(SessionContext);
+
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -34,7 +38,7 @@ const Login = () => {
     setLoading(false);
     setAlertData({ ...response, enable: true });
     if (response.isSuccess === true) {
-      localStorage.setItem("user", JSON.stringify(response.user));
+      setUser(response.user);
       document.getElementById("modalCloseButton").click();
       navigate(0);
     }

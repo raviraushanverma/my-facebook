@@ -15,7 +15,11 @@ const UserAvatar = ({ profilePicURL, userName, time }) => {
         {profilePicURL ? (
           <img
             className="profile-pic-img"
-            src={profilePicURL}
+            src={
+              process.env.NODE_ENV === "development"
+                ? profilePicURL.url
+                : profilePicURL.secure_url
+            }
             alt="profile pic"
           />
         ) : (

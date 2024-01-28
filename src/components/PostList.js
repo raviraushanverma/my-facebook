@@ -104,9 +104,8 @@ const PostList = (props) => {
         <div>
           {postData.map((postObj, index) => {
             return (
-              <div style={{ marginTop: "20px" }}>
+              <div style={{ marginTop: "20px" }} key={index}>
                 <Post
-                  key={index}
                   postObj={postObj}
                   updatePostData={updatePostData}
                   deletePostData={deletePostData}

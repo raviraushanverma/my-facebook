@@ -13,6 +13,7 @@ const Post = (props) => {
   const [deleteLoading, setDeleteLoading] = useState();
 
   const postLike = async () => {
+    props.likeUpdateData(props.postObj._id, user._id);
     const likeData = await fetch(
       `${process.env.REACT_APP_SERVER_END_PONT}/post_like/${props.postObj._id}/${user._id}/${user.name}`,
       {
@@ -22,8 +23,7 @@ const Post = (props) => {
         method: "POST",
       }
     );
-    const reponseData = await likeData.json();
-    props.likeUpdateData(props.postObj._id, user._id, reponseData.isSuccess);
+    await likeData.json();
   };
 
   const postDelete = async () => {

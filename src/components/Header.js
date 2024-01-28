@@ -2,17 +2,48 @@ import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import { useNavigate } from "react-router-dom";
 import { SessionContext } from "../providers/SessionProvider";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
-  const [user] = useContext(SessionContext);
+  const [user, setUser] = useContext(SessionContext);
 
   const logout = () => {
     localStorage.removeItem("user");
+    setUser(null);
     navigate("/");
     navigate(0);
   };
+
+  const subscribeForNotification = (user_id) => {
+    const eventSource = new EventSource(
+      `${process.env.REACT_APP_SERVER_END_PONT}/notification/${user_id}`
+    );
+
+    eventSource.onopen = function (evt) {
+      console.log("SSE open ");
+    };
+
+    eventSource.onerror = function (error) {
+      console.log("SSE error ", error);
+    };
+
+    eventSource.onmessage = (event) => {
+      console.log("data from SSE", JSON.parse(event.data));
+    };
+
+    return eventSource;
+  };
+
+  useEffect(() => {
+    if (user) {
+      const eventSource = subscribeForNotification(user._id);
+
+      return () => {
+        eventSource.close();
+      };
+    }
+  }, [user]);
 
   return (
     <nav

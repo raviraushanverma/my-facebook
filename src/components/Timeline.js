@@ -11,16 +11,14 @@ const Timeline = (props) => {
       <div className="row">
         <div className="col-md-3">
           <Link to={`/profile/${user._id}`}>
-            <UserAvatar
-              profilePicURL={user.profilePicURL}
-              userName={user.name}
-            />
+            <UserAvatar profilePicURL={user.profilePicURL} />
           </Link>
+          <h2>{user.name}</h2>
         </div>
         <div className="col-md-6">
           <PostList isProfilePage={false} profilePicURL={user.profilePicURL} />
         </div>
-        <div className="col-md-3">hello2</div>
+        <div className="col-md-3"></div>
       </div>
     </div>
   );

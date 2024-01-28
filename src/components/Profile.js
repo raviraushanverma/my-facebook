@@ -45,6 +45,23 @@ const Profile = () => {
     setLoginUser({ ...loginUser, [fieldName]: media[0] });
   };
 
+  const sendFriendRequest = async () => {
+    const data = {
+      loggedInUserId: loginUser._id,
+    };
+    const serverData = await fetch(
+      `${process.env.REACT_APP_SERVER_END_PONT}/friend_request/${user_id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(data),
+      }
+    );
+    serverData.json();
+  };
+
   const mainUser = loginUser._id === user_id ? loginUser : user;
   const isDev = process.env.NODE_ENV === "development";
 
@@ -89,7 +106,13 @@ const Profile = () => {
             </MediaUpload>
           </div>
         ) : (
-          <button type="button" className="btn btn-primary add-friend">
+          <button
+            type="button"
+            className="btn btn-primary add-friend"
+            onClick={() => {
+              sendFriendRequest();
+            }}
+          >
             Add friend
           </button>
         )}

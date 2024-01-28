@@ -87,7 +87,6 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
               type="file"
               multiple={isMultiple}
               onChange={(e) => {
-                console.log("onChange of input called");
                 setFileList(e.target.files);
               }}
             />

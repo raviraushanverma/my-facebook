@@ -29,7 +29,7 @@ const Header = () => {
     };
 
     eventSource.onmessage = (event) => {
-      console.log("data from SSE", JSON.parse(event.data));
+      console.log("data from SSE =======>", JSON.parse(event.data));
     };
 
     return eventSource;

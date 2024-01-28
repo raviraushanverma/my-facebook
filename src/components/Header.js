@@ -17,7 +17,10 @@ const Header = () => {
 
   const subscribeForNotification = (user_id) => {
     const eventSource = new EventSource(
-      `${process.env.REACT_APP_SERVER_END_PONT}/notification/${user_id}`
+      `${process.env.REACT_APP_SERVER_END_PONT}/notification/${user_id}`,
+      {
+        withCredentials: true,
+      }
     );
 
     eventSource.onopen = function (evt) {

@@ -1,8 +1,8 @@
 import PostList from "./PostList";
 import { Link } from "react-router-dom";
-import ProfileUserAvatar from "./ProfileUserAvatar";
 import { SessionContext } from "../providers/SessionProvider";
 import { useContext } from "react";
+import UserAvatar from "./UserAvatar";
 
 const Timeline = (props) => {
   const [user] = useContext(SessionContext);
@@ -11,7 +11,10 @@ const Timeline = (props) => {
       <div className="row">
         <div className="col-md-3">
           <Link to={`/profile/${user._id}`}>
-            <ProfileUserAvatar profilePicURL={user.profilePicURL} />
+            <UserAvatar
+              profilePicURL={user.profilePicURL}
+              userName={user.name}
+            />
           </Link>
         </div>
         <div className="col-md-6">

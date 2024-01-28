@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import UserAvatar from "./UserAvatar";
 import MediaUpload from "./MediaUpload";
-import MediaThumbnail from "./MediaThumbnail";
+import DisplayMedia from "./DisplayMedia";
 import { SessionContext } from "../providers/SessionProvider";
 import Loading from "./Loading";
 import { Link, useNavigate } from "react-router-dom";
@@ -132,15 +132,43 @@ const CreatePost = (props) => {
                           setContent(event.target.value);
                         }}
                       ></textarea>
-                      <MediaThumbnail
-                        medias={mediaList}
-                        onImageDelete={onImageDeleteHandler}
-                      />
+                      <section className="uploading-image-section">
+                        {mediaList.map((media, index) => {
+                          return (
+                            <DisplayMedia media={media} key={index}>
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  color: "white",
+                                  top: "0px",
+                                  left: "0px",
+                                  backgroundColor: "black",
+                                  opacity: 0.5,
+                                }}
+                              >
+                                <button
+                                  style={{
+                                    float: "right",
+                                    opacity: 1,
+                                  }}
+                                  type="button"
+                                  className="btn-close btn-close-white"
+                                  onClick={() => {
+                                    onImageDeleteHandler(index);
+                                  }}
+                                />
+                              </div>
+                            </DisplayMedia>
+                          );
+                        })}
+                      </section>
+
                       <button
                         type="submit"
                         className="btn btn-primary btn-lg"
                         disabled={
-                          content.length === 0 && mediaList.length === 0
+                          (content.length === 0 && mediaList.length === 0) ||
+                          loading
                         }
                       >
                         {loading ? <Loading /> : "Post"}

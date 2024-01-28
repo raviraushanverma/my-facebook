@@ -82,7 +82,7 @@ const PostList = (props) => {
   };
 
   return (
-    <section className="post-list-container">
+    <section>
       {props.isProfilePage ? (
         <>
           {props.userId === user._id && (
@@ -104,14 +104,16 @@ const PostList = (props) => {
         <div>
           {postData.map((postObj, index) => {
             return (
-              <Post
-                key={index}
-                postObj={postObj}
-                updatePostData={updatePostData}
-                deletePostData={deletePostData}
-                likeUpdateData={likeUpdateData}
-                editComment={editComment}
-              />
+              <div style={{ marginTop: "20px" }}>
+                <Post
+                  key={index}
+                  postObj={postObj}
+                  updatePostData={updatePostData}
+                  deletePostData={deletePostData}
+                  likeUpdateData={likeUpdateData}
+                  editComment={editComment}
+                />
+              </div>
             );
           })}
         </div>

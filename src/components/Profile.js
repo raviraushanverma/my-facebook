@@ -27,9 +27,9 @@ const Profile = () => {
     fetchData();
   }, [user_id]);
 
-  const onProfileUploadHandler = async (media) => {
+  const onProfileUploadHandler = async (media, fieldName) => {
     const data = {
-      profilePicURL: media[0],
+      [fieldName]: media[0],
     };
     const serverData = await fetch(
       `${process.env.REACT_APP_SERVER_END_PONT}/profile_update/${loginUser._id}`,
@@ -42,34 +42,78 @@ const Profile = () => {
       }
     );
     serverData.json();
-    setLoginUser({ ...loginUser, profilePicURL: media[0] });
+    setLoginUser({ ...loginUser, [fieldName]: media[0] });
   };
+
+  const mainUser = loginUser._id === user_id ? loginUser : user;
+  const isDev = process.env.NODE_ENV === "development";
 
   return (
     <div className="container">
-      <ProfileUserAvatar profilePicURL={getProfilePic()} />
+      <div className="profile-banner">
+        {mainUser.banner && (
+          <img
+            src={isDev ? mainUser.banner.url : mainUser.banner.secure_url}
+            alt="banner"
+            style={{ height: "100%", width: "100%" }}
+          />
+        )}
+        <div className="profile-user-avatar">
+          <ProfileUserAvatar profilePicURL={getProfilePic()} />
+        </div>
+        <h1 className="profile-user-avatar-user-name">{user.name}</h1>
+        {loginUser._id === user_id ? (
+          <div
+            style={{
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+              color: "white",
+              background: "black",
+              padding: "10px",
+            }}
+          >
+            <MediaUpload
+              onSuccessUpload={(media) => {
+                onProfileUploadHandler(media, "banner");
+              }}
+              isMultiple={false}
+            >
+              <i
+                className="fa-solid fa-camera"
+                style={{
+                  fontSize: "30px",
+                  cursor: "pointer",
+                }}
+              ></i>
+            </MediaUpload>
+          </div>
+        ) : (
+          <button type="button" className="btn btn-primary add-friend">
+            Add friend
+          </button>
+        )}
+      </div>
       {loginUser._id === user_id && (
         <MediaUpload
-          onSuccessUpload={onProfileUploadHandler}
+          onSuccessUpload={(media) => {
+            onProfileUploadHandler(media, "profilePicURL");
+          }}
           isMultiple={false}
         >
           <i
             className="fa-solid fa-camera"
             style={{
-              marginLeft: "44px",
               fontSize: "30px",
               cursor: "pointer",
-              marginTop: "10px",
             }}
           ></i>
         </MediaUpload>
       )}
-      <div className="row">
+      <div className="row" style={{ marginTop: "60px" }}>
         <div className="col-md-3">
           <div
             style={{
-              border: "1px solid black",
-              marginTop: "40px",
               background: "white",
             }}
           >

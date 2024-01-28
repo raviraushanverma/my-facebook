@@ -44,7 +44,6 @@ const MediaViewer = (props) => {
       ) : (
         <VideoWidget url={src} style={imgStyle} />
       )}
-
       <h1 className="centered">{props.textCount}+</h1>
     </div>
   );

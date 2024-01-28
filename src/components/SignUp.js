@@ -2,6 +2,9 @@ import { useState } from "react";
 import Logo from "./Logo";
 import Alert from "./Alert";
 import Loading from "./Loading";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { SessionContext } from "../providers/SessionProvider";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -11,6 +14,8 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [alertData, setAlertData] = useState({ enable: false });
   const [loading, setLoading] = useState();
+  const navigate = useNavigate();
+  const [user, setUser] = useContext(SessionContext);
 
   const signUp = async (event) => {
     event.preventDefault();
@@ -37,6 +42,11 @@ const SignUp = () => {
     setLoading(false);
 
     setAlertData({ ...response, enable: true });
+    if (response.isSuccess === true) {
+      setUser(response.user);
+      navigate(0);
+      navigate("/");
+    }
   };
 
   return (

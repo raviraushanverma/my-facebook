@@ -44,8 +44,9 @@ button, .modal-content {
 }
 
 .profile-pic-img-big-size {
-  height: 120px;
-  width: 120px;
+  margin-top: 250px;
+  height: 150px;
+  width: 150px;
   border-radius: 50%;
 }
 
@@ -54,7 +55,7 @@ button, .modal-content {
 }
 
 .our-container {
-  margin-top: 68px;
+  margin-top: 100px;
   margin-bottom: 40px;
 }
 
@@ -310,7 +311,6 @@ form textarea:focus::placeholder {
 }
 
 .create-post-container {
-  margin-top: 20px;
   background-color: #ffffff;
   border-radius: 10px;
   padding: 10px;
@@ -327,17 +327,11 @@ form textarea:focus::placeholder {
   background-color: #F7F7F7;
 }
 
-/* Post-list related CSS  */
-.post-list-container {
-  margin-top: 20px;
-}
-
 /* Post related CSS  */
 
 .post-container {
   box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 2px 0px;
   background-color: #ffffff;
-  margin-top: 20px;
 }
 
 .post-container .post-header {
@@ -458,4 +452,35 @@ form textarea:focus::placeholder {
 
 .form-control {
   border: 0;
+}
+
+.profile-banner {
+  background-color: rgb(0, 255, 255);
+  border: 1 px solid gray;
+  height: 300px;
+  width: 100%;
+  position: relative;
+}
+
+.profile-user-avatar {
+  position: absolute;
+  bottom: -50px;
+  left: 26px;
+}
+
+.profile-user-avatar-user-name {
+  position: absolute;
+  left: 181px;
+}
+
+.add-friend {
+  position: absolute;
+  bottom: -46px;
+  right: 0;
+}
+
+.banner-profile{
+  position: absolute;
+  bottom: 10%;
+  right: 0%;
 }

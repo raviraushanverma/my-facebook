@@ -88,7 +88,7 @@ const Profile = () => {
           <img
             src={isDev ? mainUser.banner.url : mainUser.banner.secure_url}
             alt="banner"
-            style={{ height: "100%", width: "100%" }}
+            style={{ height: "100%", width: "100%", objectFit: "cover" }}
           />
         )}
         <div className="profile-user-avatar">

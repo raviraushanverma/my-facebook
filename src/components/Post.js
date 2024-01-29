@@ -138,17 +138,19 @@ const Post = (props) => {
         updatePostData={props.updatePostData}
         commentUpdate={props.commentUpdate}
       />
-      {props.postObj.comments.map((comment, index) => {
-        return (
-          <Comment
-            key={index}
-            comment={comment}
-            postId={props.postObj._id}
-            commentUpdate={props.updatePostData}
-            editComment={props.editComment}
-          />
-        );
-      })}
+      <div style={{ maxHeight: "500px", overflowY: "auto" }}>
+        {props.postObj.comments.map((comment, index) => {
+          return (
+            <Comment
+              key={index}
+              comment={comment}
+              postId={props.postObj._id}
+              commentUpdate={props.updatePostData}
+              editComment={props.editComment}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };

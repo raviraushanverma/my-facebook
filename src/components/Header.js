@@ -7,7 +7,8 @@ import NotificationList from "./NotificationList";
 
 const Header = () => {
   const [user, setUser] = useContext(SessionContext);
-  const [notification, setNotification] = useContext(NotificationContext);
+  const [notification, setNotification, playNotificationSound] =
+    useContext(NotificationContext);
 
   const logout = () => {
     setUser(null);
@@ -29,8 +30,9 @@ const Header = () => {
     eventSource.onmessage = (event) => {
       const mainNotificationObj = JSON.parse(event.data);
       if (mainNotificationObj) {
+        playNotificationSound();
         const notificationArray = Object.values(mainNotificationObj).reverse();
-        console.log("notificationArray ", notificationArray);
+        console.log("Notification came => ", notificationArray);
         setNotification(notificationArray);
       }
     };
@@ -61,7 +63,7 @@ const Header = () => {
         <div className="d-flex">
           {user ? (
             <div className="d-flex">
-              <div style={{ marginRight: "50px" }}>
+              <div style={{ marginRight: "12px" }}>
                 <NotificationList notification={notification} />
               </div>
               <button

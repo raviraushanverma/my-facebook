@@ -10,9 +10,9 @@ import NotificationProvider from "./providers/NotificationProvider";
 
 function App() {
   return (
-    <NotificationProvider>
-      <BrowserRouter>
-        <SessionProvider>
+    <BrowserRouter>
+      <SessionProvider>
+        <NotificationProvider>
           <Header />
           <Login />
           <SignUp />
@@ -23,9 +23,9 @@ function App() {
             </Routes>
           </div>
           <Footer />
-        </SessionProvider>
-      </BrowserRouter>
-    </NotificationProvider>
+        </NotificationProvider>
+      </SessionProvider>
+    </BrowserRouter>
   );
 }
 

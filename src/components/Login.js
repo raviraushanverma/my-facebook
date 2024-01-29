@@ -12,7 +12,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [alertData, setAlertData] = useState({ enable: false });
   const [loading, setLoading] = useState();
-  const [notification, setNotification] = useContext(NotificationContext);
+  const [notification, setNotification, playNotificationSound] =
+    useContext(NotificationContext);
 
   const login = async (event) => {
     event.preventDefault();
@@ -37,6 +38,7 @@ const Login = () => {
     setAlertData({ ...response, enable: true });
     if (response.isSuccess === true) {
       setUser(response.user);
+      playNotificationSound();
       const notificationArray = Object.values(
         response.user.notifications
       ).reverse();

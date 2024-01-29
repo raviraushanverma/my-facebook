@@ -490,3 +490,9 @@ form textarea:focus::placeholder {
   max-height: 80vh;
   overflow-x: hidden;
 }
+
+.complete-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

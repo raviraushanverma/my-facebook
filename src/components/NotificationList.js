@@ -1,9 +1,14 @@
 import TimeAgo from "javascript-time-ago";
 import UserAvatar from "./UserAvatar";
+import { Link } from "react-router-dom";
 
-const NotificationList = ({ notification }) => {
-  if (!notification) return null;
+const NotificationList = ({ notification = [] }) => {
   const timeAgo = new TimeAgo("en-US");
+
+  const notificationCount = notification.filter(
+    (notifyObj) => notifyObj.isSeen === false
+  ).length;
+
   return (
     <div className="dropdown">
       <button
@@ -14,12 +19,11 @@ const NotificationList = ({ notification }) => {
         aria-expanded="false"
       >
         <i className="fa-regular fa-bell"></i>
-        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-          {
-            notification.filter((notifyObj) => notifyObj.isSeen === false)
-              .length
-          }
-        </span>
+        {notificationCount > 0 && (
+          <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {notificationCount}
+          </span>
+        )}
       </button>
       <ul
         className="dropdown-menu scrollable-menu dropdown-menu-end dropdown-menu-lg-end"
@@ -28,28 +32,34 @@ const NotificationList = ({ notification }) => {
       >
         {notification.map((notifyObj) => {
           return (
-            <li
-              key={notifyObj.created}
-              style={{ padding: "10px", textTransform: "capitalize" }}
-            >
+            <li key={notifyObj.created} style={{ padding: "10px" }}>
               <div style={{ display: "flex" }}>
-                <UserAvatar profilePicURL={notifyObj.user.profilePicURL} />
+                <Link to={`/profile/${notifyObj.user._id}`}>
+                  <UserAvatar profilePicURL={notifyObj.user.profilePicURL} />
+                </Link>
                 {notifyObj.action === "POST_LIKED" && (
-                  <>
-                    <strong>{notifyObj.user.name}</strong> Likes your post
-                  </>
+                  <div className="complete-center">
+                    <strong style={{ textTransform: "capitalize" }}>
+                      {notifyObj.user.name}
+                    </strong>
+                    &nbsp;Likes your post
+                  </div>
                 )}
                 {notifyObj.action === "POST_COMMENTED" && (
-                  <>
-                    <strong>{notifyObj.user.name}</strong> commented on your
-                    post
-                  </>
+                  <div className="complete-center">
+                    <strong style={{ textTransform: "capitalize" }}>
+                      {notifyObj.user.name}
+                    </strong>
+                    &nbsp;commented on your post
+                  </div>
                 )}
                 {notifyObj.action === "FRIEND_REQUEST" && (
-                  <>
-                    <strong>{notifyObj.user.name}</strong> sent you friend
-                    request
-                  </>
+                  <div className="complete-center">
+                    <strong style={{ textTransform: "capitalize" }}>
+                      {notifyObj.user.name}
+                    </strong>
+                    &nbsp;sent you friend request
+                  </div>
                 )}
               </div>
               <div style={{ color: "gray", fontSize: "11px" }}>

@@ -4,6 +4,7 @@ import Alert from "./Alert";
 import Loading from "./Loading";
 import { useContext } from "react";
 import { SessionContext } from "../providers/SessionProvider";
+import { NotificationContext } from "../providers/NotificationProvider";
 
 const Login = () => {
   const [user, setUser] = useContext(SessionContext);
@@ -11,6 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [alertData, setAlertData] = useState({ enable: false });
   const [loading, setLoading] = useState();
+  const [notification, setNotification] = useContext(NotificationContext);
 
   const login = async (event) => {
     event.preventDefault();
@@ -35,6 +37,10 @@ const Login = () => {
     setAlertData({ ...response, enable: true });
     if (response.isSuccess === true) {
       setUser(response.user);
+      const notificationArray = Object.values(
+        response.user.notifications
+      ).reverse();
+      setNotification(notificationArray);
       document.getElementById("modalCloseButton").click();
     }
   };

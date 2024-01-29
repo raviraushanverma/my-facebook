@@ -484,3 +484,9 @@ form textarea:focus::placeholder {
   bottom: 10%;
   right: 0%;
 }
+
+.scrollable-menu {
+  height: auto;
+  max-height: 80vh;
+  overflow-x: hidden;
+}

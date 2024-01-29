@@ -3,6 +3,7 @@ import Logo from "./Logo";
 import { SessionContext } from "../providers/SessionProvider";
 import { useContext, useEffect } from "react";
 import { NotificationContext } from "../providers/NotificationProvider";
+import NotificationList from "./NotificationList";
 
 const Header = () => {
   const [user, setUser] = useContext(SessionContext);
@@ -28,8 +29,9 @@ const Header = () => {
     eventSource.onmessage = (event) => {
       const mainNotificationObj = JSON.parse(event.data);
       if (mainNotificationObj) {
-        console.log("mainNotificationObj ", mainNotificationObj);
-        setNotification(mainNotificationObj);
+        const notificationArray = Object.values(mainNotificationObj).reverse();
+        console.log("notificationArray ", notificationArray);
+        setNotification(notificationArray);
       }
     };
 
@@ -56,68 +58,43 @@ const Header = () => {
         <Link className="navbar-brand" to={"/"}>
           <Logo />
         </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/">
-                {
-                  Object.keys(notification).filter(
-                    (key) => notification[key].isSeen === false
-                  ).length
-                }
-                <i
-                  style={{ fontSize: "30px" }}
-                  className="fa-regular fa-bell"
-                ></i>
-              </a>
-            </li>
-          </ul>
-          <div className="d-flex">
-            {user ? (
-              <>
-                <button
-                  type="button"
-                  className="btn btn-sm btn-outline-primary"
-                  onClick={() => {
-                    logout();
-                  }}
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <div className="d-flex">
-                <button
-                  style={{ marginRight: "10px" }}
-                  type="button"
-                  className="btn btn-sm btn-outline-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#loginModal"
-                >
-                  LOGIN
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-sm btn-outline-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#signupModal"
-                >
-                  SIGN UP
-                </button>
+        <div className="d-flex">
+          {user ? (
+            <div className="d-flex">
+              <div style={{ marginRight: "50px" }}>
+                <NotificationList notification={notification} />
               </div>
-            )}
-          </div>
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-primary"
+                onClick={() => {
+                  logout();
+                }}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="d-flex">
+              <button
+                style={{ marginRight: "10px" }}
+                type="button"
+                className="btn btn-sm btn-outline-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#loginModal"
+              >
+                LOGIN
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#signupModal"
+              >
+                SIGN UP
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </nav>

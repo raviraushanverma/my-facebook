@@ -11,7 +11,7 @@ const Profile = () => {
   const [loginUser, setLoginUser] = useContext(SessionContext);
 
   const getProfilePic = () => {
-    return loginUser._id === user_id
+    return loginUser && loginUser._id === user_id
       ? loginUser.profilePicURL
       : user.profilePicURL;
   };
@@ -62,7 +62,7 @@ const Profile = () => {
     serverData.json();
   };
 
-  const mainUser = loginUser._id === user_id ? loginUser : user;
+  const mainUser = loginUser && loginUser._id === user_id ? loginUser : user;
   const isDev = process.env.NODE_ENV === "development";
 
   return (
@@ -79,7 +79,7 @@ const Profile = () => {
           <ProfileUserAvatar profilePicURL={getProfilePic()} />
         </div>
         <h1 className="profile-user-avatar-user-name">{user.name}</h1>
-        {loginUser._id === user_id ? (
+        {loginUser && loginUser._id === user_id ? (
           <div
             style={{
               position: "absolute",
@@ -117,7 +117,7 @@ const Profile = () => {
           </button>
         )}
       </div>
-      {loginUser._id === user_id && (
+      {loginUser && loginUser._id === user_id && (
         <MediaUpload
           onSuccessUpload={(media) => {
             onProfileUploadHandler(media, "profilePicURL");

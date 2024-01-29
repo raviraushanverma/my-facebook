@@ -1,16 +1,12 @@
 import { useState } from "react";
 import Logo from "./Logo";
 import Alert from "./Alert";
-import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 import { useContext } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 
 const Login = () => {
   const [user, setUser] = useContext(SessionContext);
-
-  const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alertData, setAlertData] = useState({ enable: false });
@@ -40,7 +36,6 @@ const Login = () => {
     if (response.isSuccess === true) {
       setUser(response.user);
       document.getElementById("modalCloseButton").click();
-      navigate(0);
     }
   };
 

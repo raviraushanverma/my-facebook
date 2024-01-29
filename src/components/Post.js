@@ -92,7 +92,9 @@ const Post = (props) => {
           style={{ cursor: "pointer" }}
           data-bs-toggle="tooltip"
           data-bs-placement="right"
-          title={Object.values(props.postObj.likes).join(",")}
+          title={Object.values(props.postObj.likes)
+            .map((obj) => obj.userName)
+            .join(",")}
         >
           <i className="fa-solid fa-thumbs-up"></i>
           <span style={{ marginLeft: "10px" }}>

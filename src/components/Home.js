@@ -5,9 +5,12 @@ import chat from "../assets/images/chat.jpeg";
 import connect from "../assets/images/connect.jpeg";
 import enjoy from "../assets/images/enjoy.webp";
 import Timeline from "./Timeline";
+import { SessionContext } from "../providers/SessionProvider";
+import { useContext } from "react";
 
 const Home = () => {
-  if (localStorage.getItem("user") !== null) {
+  const [user] = useContext(SessionContext);
+  if (user) {
     return <Timeline />;
   }
   return (

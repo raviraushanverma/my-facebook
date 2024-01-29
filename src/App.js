@@ -6,23 +6,26 @@ import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Profile from "./components/Profile";
 import SessionProvider from "./providers/SessionProvider";
+import NotificationProvider from "./providers/NotificationProvider";
 
 function App() {
   return (
-    <SessionProvider>
+    <NotificationProvider>
       <BrowserRouter>
-        <Header />
-        <Login />
-        <SignUp />
-        <div className="our-container">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/profile/:user_id" element={<Profile />} />
-          </Routes>
-        </div>
-        <Footer />
+        <SessionProvider>
+          <Header />
+          <Login />
+          <SignUp />
+          <div className="our-container">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/profile/:user_id" element={<Profile />} />
+            </Routes>
+          </div>
+          <Footer />
+        </SessionProvider>
       </BrowserRouter>
-    </SessionProvider>
+    </NotificationProvider>
   );
 }
 

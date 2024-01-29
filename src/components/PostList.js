@@ -6,26 +6,8 @@ import { SessionContext } from "../providers/SessionProvider";
 
 const PostList = (props) => {
   const [user] = useContext(SessionContext);
-
   const [postData, setPostData] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const updatePostData = (postObj) => {
-    const tempData = postData.map((element) => {
-      if (element._id === postObj._id) {
-        return postObj;
-      } else {
-        return element;
-      }
-    });
-    setPostData(tempData);
-  };
-
-  const updateData = (post) => {
-    const tempData = [...postData];
-    tempData.unshift(post);
-    setPostData(tempData);
-  };
 
   useEffect(() => {
     async function fetchData() {
@@ -43,6 +25,27 @@ const PostList = (props) => {
     }
     fetchData();
   }, [props.isProfilePage, props.userId]);
+
+  if (!user) {
+    return null;
+  }
+
+  const updatePostData = (postObj) => {
+    const tempData = postData.map((element) => {
+      if (element._id === postObj._id) {
+        return postObj;
+      } else {
+        return element;
+      }
+    });
+    setPostData(tempData);
+  };
+
+  const updateData = (post) => {
+    const tempData = [...postData];
+    tempData.unshift(post);
+    setPostData(tempData);
+  };
 
   const deletePostData = (postId) => {
     const newData = [...postData];

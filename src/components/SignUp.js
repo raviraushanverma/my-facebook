@@ -2,7 +2,6 @@ import { useState } from "react";
 import Logo from "./Logo";
 import Alert from "./Alert";
 import Loading from "./Loading";
-import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 
@@ -14,7 +13,6 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [alertData, setAlertData] = useState({ enable: false });
   const [loading, setLoading] = useState();
-  const navigate = useNavigate();
   const [user, setUser] = useContext(SessionContext);
 
   const signUp = async (event) => {
@@ -44,8 +42,7 @@ const SignUp = () => {
     setAlertData({ ...response, enable: true });
     if (response.isSuccess === true) {
       setUser(response.user);
-      navigate(0);
-      navigate("/");
+      document.getElementById("modalCloseSignupButton").click();
     }
   };
 
@@ -65,6 +62,7 @@ const SignUp = () => {
             </div>
             <button
               type="button"
+              id="modalCloseSignupButton"
               className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"

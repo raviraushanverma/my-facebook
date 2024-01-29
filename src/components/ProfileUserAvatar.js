@@ -30,14 +30,16 @@ const ProfileUserAvatar = ({ profilePicURL, userName, time }) => {
           </div>
         )}
       </div>
-      <div style={{ marginLeft: "10px" }}>
-        {userName && <h6 style={{ textTransform: "capitalize" }}>{}</h6>}
-        {time && (
-          <p style={{ color: "gray" }}>
-            {timeAgo.format(new Date(time), "twitter")}
-          </p>
-        )}
-      </div>
+      {(userName || time) && (
+        <div style={{ marginLeft: "10px" }}>
+          {userName && <h6 style={{ textTransform: "capitalize" }}>{}</h6>}
+          {time && (
+            <p style={{ color: "gray" }}>
+              {timeAgo.format(new Date(time), "twitter")}
+            </p>
+          )}
+        </div>
+      )}
     </section>
   );
 };

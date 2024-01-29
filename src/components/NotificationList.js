@@ -1,13 +1,39 @@
 import TimeAgo from "javascript-time-ago";
 import UserAvatar from "./UserAvatar";
 import { Link } from "react-router-dom";
+import { SessionContext } from "../providers/SessionProvider";
+import { useContext } from "react";
 
-const NotificationList = ({ notification = [] }) => {
+const NotificationList = ({ notification = [], setNotification }) => {
   const timeAgo = new TimeAgo("en-US");
+  const [user] = useContext(SessionContext);
 
-  const notificationCount = notification.filter(
+  const unreadNotifications = notification.filter(
     (notifyObj) => notifyObj.isSeen === false
-  ).length;
+  );
+
+  const notficationSeen = async () => {
+    if (unreadNotifications.length > 0) {
+      const serverData = await fetch(
+        `${process.env.REACT_APP_SERVER_END_PONT}/notfication_seen/${user._id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify({ unreadNotifications }),
+        }
+      );
+      await serverData.json();
+      const temp = notification.map((notify) => {
+        return {
+          ...notify,
+          isSeen: true,
+        };
+      });
+      setNotification(temp);
+    }
+  };
 
   return (
     <div className="dropdown">
@@ -16,11 +42,14 @@ const NotificationList = ({ notification = [] }) => {
         id="dropdownMenu2"
         data-bs-toggle="dropdown"
         aria-expanded="false"
+        onClick={() => {
+          notficationSeen();
+        }}
       >
         <i className="fa-regular fa-bell"></i>
-        {notificationCount > 0 && (
+        {unreadNotifications.length > 0 && (
           <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            {notificationCount}
+            {unreadNotifications.length}
           </span>
         )}
       </button>
@@ -39,7 +68,10 @@ const NotificationList = ({ notification = [] }) => {
         <hr className="dropdown-divider"></hr>
         {notification.map((notifyObj, index) => {
           return (
-            <li key={notifyObj.created} style={{ padding: "10px" }}>
+            <li
+              key={notifyObj.created}
+              style={{ paddingLeft: "10px", paddingRight: "10px" }}
+            >
               {index !== 0 && <hr className="dropdown-divider"></hr>}
               <div style={{ display: "flex" }}>
                 <Link to={`/profile/${notifyObj.user._id}`}>
@@ -47,26 +79,32 @@ const NotificationList = ({ notification = [] }) => {
                 </Link>
                 {notifyObj.action === "POST_LIKED" && (
                   <div className="complete-center">
-                    <strong style={{ textTransform: "capitalize" }}>
-                      {notifyObj.user.name}
-                    </strong>
-                    &nbsp;Likes your post
+                    <div>
+                      <strong style={{ textTransform: "capitalize" }}>
+                        {notifyObj.user.name}
+                      </strong>
+                      &nbsp;Likes your post
+                    </div>
                   </div>
                 )}
                 {notifyObj.action === "POST_COMMENTED" && (
                   <div className="complete-center">
-                    <strong style={{ textTransform: "capitalize" }}>
-                      {notifyObj.user.name}
-                    </strong>
-                    &nbsp;commented on your post
+                    <div>
+                      <strong style={{ textTransform: "capitalize" }}>
+                        {notifyObj.user.name}
+                      </strong>
+                      &nbsp;commented on your post
+                    </div>
                   </div>
                 )}
                 {notifyObj.action === "FRIEND_REQUEST" && (
                   <div className="complete-center">
-                    <strong style={{ textTransform: "capitalize" }}>
-                      {notifyObj.user.name}
-                    </strong>
-                    &nbsp;sent you friend request
+                    <div>
+                      <strong style={{ textTransform: "capitalize" }}>
+                        {notifyObj.user.name}
+                      </strong>
+                      &nbsp;sent you friend request
+                    </div>
                   </div>
                 )}
               </div>

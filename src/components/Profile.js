@@ -93,9 +93,8 @@ const Profile = () => {
         )}
         <div className="profile-user-avatar">
           <ProfileUserAvatar profilePicURL={getProfilePic()} />
-          <h1 className="profile-user-avatar-user-name">{user.name}</h1>
+          <h3 className="profile-user-avatar-user-name">{user.name}</h3>
         </div>
-
         {loginUser && loginUser._id === user_id ? (
           <div
             style={{
@@ -155,11 +154,12 @@ const Profile = () => {
           ></i>
         </MediaUpload>
       )}
-      <div className="row" style={{ marginTop: "60px" }}>
+      <div className="row" style={{ marginTop: "96px" }}>
         <div className="col-md-3">
           <div
             style={{
               background: "white",
+              marginBottom: "10px",
             }}
           >
             <div style={{ textTransform: "capitalize" }}>

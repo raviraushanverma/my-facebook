@@ -89,17 +89,21 @@ const PostList = (props) => {
       {props.isProfilePage ? (
         <>
           {props.userId === user._id && (
-            <CreatePost
-              updateData={updateData}
-              profilePicURL={props.profilePicURL}
-            />
+            <div style={{ marginBottom: "20px", marginTop: "5px" }}>
+              <CreatePost
+                updateData={updateData}
+                profilePicURL={props.profilePicURL}
+              />
+            </div>
           )}
         </>
       ) : (
-        <CreatePost
-          updateData={updateData}
-          profilePicURL={props.profilePicURL}
-        />
+        <div style={{ marginBottom: "20px", marginTop: "5px" }}>
+          <CreatePost
+            updateData={updateData}
+            profilePicURL={props.profilePicURL}
+          />
+        </div>
       )}
       {loading ? (
         <PostSkeleton />
@@ -107,7 +111,12 @@ const PostList = (props) => {
         <div>
           {postData.map((postObj, index) => {
             return (
-              <div style={{ marginTop: "20px" }} key={index}>
+              <div
+                style={{
+                  marginTop: index !== 0 ? "20px" : "0px",
+                }}
+                key={index}
+              >
                 <Post
                   postObj={postObj}
                   updatePostData={updatePostData}

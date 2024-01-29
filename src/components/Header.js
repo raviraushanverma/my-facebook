@@ -64,7 +64,10 @@ const Header = () => {
           {user ? (
             <div className="d-flex">
               <div style={{ marginRight: "12px" }}>
-                <NotificationList notification={notification} />
+                <NotificationList
+                  notification={notification}
+                  setNotification={setNotification}
+                />
               </div>
               <button
                 type="button"

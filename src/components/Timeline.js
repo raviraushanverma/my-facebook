@@ -12,12 +12,15 @@ const Timeline = (props) => {
         <div className="col-md-3">
           <div className="profile-side-pannel">
             <div>
-              <Link to={`/profile/${user._id}`}>
+              <Link
+                to={`/profile/${user._id}`}
+                style={{ display: "flex", justifyContent: "center" }}
+              >
                 <ProfileUserAvatar profilePicURL={user.profilePicURL} />
               </Link>
-              <h2 style={{ textTransform: "capitalize", textAlign: "center" }}>
+              <h4 style={{ textTransform: "capitalize", textAlign: "center" }}>
                 {user.name}
-              </h2>
+              </h4>
             </div>
           </div>
         </div>

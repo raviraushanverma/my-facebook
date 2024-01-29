@@ -469,9 +469,8 @@ form textarea:focus::placeholder {
 
 .profile-user-avatar-user-name {
   position: absolute;
-  left: 168px;
   text-transform: capitalize;
-  top: 107px;
+  width: 300px;
 }
 
 .add-friend {

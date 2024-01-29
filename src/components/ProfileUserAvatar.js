@@ -4,13 +4,14 @@ const ProfileUserAvatar = ({ profilePicURL, userName, time }) => {
   const timeAgo = new TimeAgo("en-US");
   const isDev = process.env.NODE_ENV === "development";
   return (
-    <section className="d-flex" style={{ marginTop: "80px" }}>
+    <section className="d-flex">
       <div alt="Avatar">
         {profilePicURL ? (
           <img
             className="profile-pic-img-big-size"
             src={isDev ? profilePicURL.url : profilePicURL.secure_url}
             alt="profile pic"
+            style={{ border: "2px solid white" }}
           />
         ) : (
           <div
@@ -18,8 +19,7 @@ const ProfileUserAvatar = ({ profilePicURL, userName, time }) => {
               height: "150px",
               width: "150px",
               borderRadius: "50%",
-              marginTop: "250px",
-              border: "1px solid gray",
+              border: "2px solid white",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",

@@ -44,7 +44,6 @@ button, .modal-content {
 }
 
 .profile-pic-img-big-size {
-  margin-top: 250px;
   height: 150px;
   width: 150px;
   border-radius: 50%;
@@ -455,7 +454,7 @@ form textarea:focus::placeholder {
 }
 
 .profile-banner {
-  background-color: rgb(0, 255, 255);
+  background-color: gray;
   border: 1 px solid gray;
   height: 300px;
   width: 100%;
@@ -470,7 +469,9 @@ form textarea:focus::placeholder {
 
 .profile-user-avatar-user-name {
   position: absolute;
-  left: 181px;
+  left: 168px;
+  text-transform: capitalize;
+  top: 107px;
 }
 
 .add-friend {
@@ -495,4 +496,18 @@ form textarea:focus::placeholder {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.profile-side-pannel {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+}
+
+@media only screen and (max-width: 750px) {
+  .profile-side-pannel {
+    display: flex;
+    justify-content: center;
+    position: static;
+  }
 }

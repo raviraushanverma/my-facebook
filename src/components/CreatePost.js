@@ -66,6 +66,11 @@ const CreatePost = (props) => {
           placeholder="What on your mind ?"
           data-bs-toggle="modal"
           data-bs-target="#createPostModal"
+          onClick={() =>
+            setTimeout(() => {
+              document.getElementById("createPostTextarea").focus();
+            }, 500)
+          }
         />
       </div>
       <div
@@ -127,6 +132,7 @@ const CreatePost = (props) => {
                         style={{ textTransform: "capitalize" }}
                         placeholder={`What's on your mind, ${user.name}?`}
                         spellCheck="false"
+                        id="createPostTextarea"
                         value={content}
                         onChange={(event) => {
                           setContent(event.target.value);

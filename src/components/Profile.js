@@ -4,11 +4,14 @@ import { useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 import MediaUpload from "./MediaUpload";
+import Loading from "./Loading";
 
 const Profile = () => {
   let { user_id } = useParams();
   const [user, setUser] = useState({});
   const [loginUser, setLoginUser] = useContext(SessionContext);
+  const [addFriend, setAddFriend] = useState(true);
+  const [isFetchingUser, setIsFetchingUser] = useState(true);
 
   const getProfilePic = () => {
     return loginUser && loginUser._id === user_id
@@ -17,12 +20,14 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    setIsFetchingUser(true);
     async function fetchData() {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_END_PONT}/get_user/${user_id}`
       );
       const responseData = await response.json();
       setUser(responseData.user);
+      setIsFetchingUser(false);
     }
     fetchData();
   }, [user_id]);
@@ -65,6 +70,17 @@ const Profile = () => {
   const mainUser = loginUser && loginUser._id === user_id ? loginUser : user;
   const isDev = process.env.NODE_ENV === "development";
 
+  if (isFetchingUser) {
+    return (
+      <div
+        className="complete-center"
+        style={{ height: "60vh", width: "100vw" }}
+      >
+        <Loading />
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       <div className="profile-banner">
@@ -77,8 +93,9 @@ const Profile = () => {
         )}
         <div className="profile-user-avatar">
           <ProfileUserAvatar profilePicURL={getProfilePic()} />
+          <h1 className="profile-user-avatar-user-name">{user.name}</h1>
         </div>
-        <h1 className="profile-user-avatar-user-name">{user.name}</h1>
+
         {loginUser && loginUser._id === user_id ? (
           <div
             style={{
@@ -110,10 +127,15 @@ const Profile = () => {
             type="button"
             className="btn btn-primary add-friend"
             onClick={() => {
-              sendFriendRequest();
+              if (addFriend === true) {
+                sendFriendRequest();
+                setAddFriend(false);
+              } else {
+                setAddFriend(true);
+              }
             }}
           >
-            Add friend
+            Add Friend
           </button>
         )}
       </div>
@@ -140,7 +162,7 @@ const Profile = () => {
               background: "white",
             }}
           >
-            <div>
+            <div style={{ textTransform: "capitalize" }}>
               <i
                 className="fa-solid fa-signature"
                 style={{ padding: "20px" }}

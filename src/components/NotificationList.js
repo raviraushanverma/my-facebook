@@ -12,7 +12,6 @@ const NotificationList = ({ notification = [] }) => {
   return (
     <div className="dropdown">
       <button
-        type="button"
         className="btn btn-light position-relative"
         id="dropdownMenu2"
         data-bs-toggle="dropdown"
@@ -28,11 +27,20 @@ const NotificationList = ({ notification = [] }) => {
       <ul
         className="dropdown-menu scrollable-menu dropdown-menu-end dropdown-menu-lg-end"
         aria-labelledby="dropdownMenu2"
-        style={{ width: "350px", overflowY: "auto" }}
+        style={{
+          width: "350px",
+          overflowY: "auto",
+          marginRight: "-87px",
+          boxShadow:
+            "0 12px 28px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.1)",
+        }}
       >
-        {notification.map((notifyObj) => {
+        <h4 style={{ textAlign: "center" }}>Notifications</h4>
+        <hr className="dropdown-divider"></hr>
+        {notification.map((notifyObj, index) => {
           return (
             <li key={notifyObj.created} style={{ padding: "10px" }}>
+              {index !== 0 && <hr className="dropdown-divider"></hr>}
               <div style={{ display: "flex" }}>
                 <Link to={`/profile/${notifyObj.user._id}`}>
                   <UserAvatar profilePicURL={notifyObj.user.profilePicURL} />
@@ -65,7 +73,6 @@ const NotificationList = ({ notification = [] }) => {
               <div style={{ color: "gray", fontSize: "11px" }}>
                 {timeAgo.format(new Date(notifyObj.created))}
               </div>
-              <hr className="dropdown-divider"></hr>
             </li>
           );
         })}

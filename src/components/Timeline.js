@@ -2,7 +2,7 @@ import PostList from "./PostList";
 import { Link } from "react-router-dom";
 import { SessionContext } from "../providers/SessionProvider";
 import { useContext } from "react";
-import UserAvatar from "./UserAvatar";
+import ProfileUserAvatar from "./ProfileUserAvatar";
 
 const Timeline = (props) => {
   const [user] = useContext(SessionContext);
@@ -10,10 +10,16 @@ const Timeline = (props) => {
     <div className="container">
       <div className="row">
         <div className="col-md-3">
-          <Link to={`/profile/${user._id}`}>
-            <UserAvatar profilePicURL={user.profilePicURL} />
-          </Link>
-          <h2>{user.name}</h2>
+          <div className="profile-side-pannel">
+            <div>
+              <Link to={`/profile/${user._id}`}>
+                <ProfileUserAvatar profilePicURL={user.profilePicURL} />
+              </Link>
+              <h2 style={{ textTransform: "capitalize", textAlign: "center" }}>
+                {user.name}
+              </h2>
+            </div>
+          </div>
         </div>
         <div className="col-md-6">
           <PostList isProfilePage={false} profilePicURL={user.profilePicURL} />

@@ -31,7 +31,14 @@ const NotificationPage = () => {
       <ul style={{ listStyle: "none" }}>
         <h4 style={{ textAlign: "center" }}>Notifications</h4>
         <hr className="dropdown-divider"></hr>
-
+        {notifications.length === 0 && (
+          <div
+            className="complete-center"
+            style={{ width: "100%", height: "100px" }}
+          >
+            You don't have any notifications!
+          </div>
+        )}
         <NotificationList notifications={notifications} />
       </ul>
     </div>

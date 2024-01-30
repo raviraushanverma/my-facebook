@@ -2,13 +2,17 @@ import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import { SessionContext } from "../providers/SessionProvider";
 import { useContext, useEffect } from "react";
-import { NotificationContext } from "../providers/NotificationProvider";
+import {
+  NotificationContext,
+  subscribeForServerSentEvent,
+} from "../providers/NotificationProvider";
 import Notification from "./Notification";
 
 const Header = () => {
   const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
   const {
     eventSource,
+    setEventSource,
     notifications,
     setNotifications,
     playNotificationSound,
@@ -19,13 +23,16 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (eventSource) {
+    if (eventSource && loggedInUser) {
       eventSource.onopen = function (evt) {
         console.log("SSE opened");
       };
 
       eventSource.onerror = function (error) {
         console.log("SSE error", error);
+        // If Error, We are re-connecting to SSE
+        const eventSource = subscribeForServerSentEvent(loggedInUser);
+        setEventSource(eventSource);
       };
 
       eventSource.onmessage = (event) => {
@@ -38,7 +45,7 @@ const Header = () => {
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventSource, notifications]);
+  }, [loggedInUser, eventSource, notifications]);
 
   return (
     <nav

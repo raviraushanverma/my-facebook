@@ -9,7 +9,10 @@ const UserAvatar = ({ profilePicURL, userName, time }) => {
     <section className="d-flex">
       <div
         className="rounded-circle border d-flex justify-content-around align-items-center"
-        style={{ width: "60px", height: "60px" }}
+        style={{
+          width: "60px",
+          height: "60px",
+        }}
         alt="Avatar"
       >
         {profilePicURL ? (

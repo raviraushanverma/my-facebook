@@ -191,13 +191,6 @@ const Profile = () => {
               ></i>
               {new Date(user.birth).toDateString()}
             </div>
-            <div>
-              <i
-                className="fa-regular fa-envelope"
-                style={{ padding: "20px" }}
-              ></i>
-              {user.email}
-            </div>
           </div>
         </div>
         <div className="col-md-6">

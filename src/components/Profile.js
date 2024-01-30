@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 import MediaUpload from "./MediaUpload";
 import CenterPageLoader from "./CenterPageLoader";
+import Loading from "./Loading";
 
 const Profile = () => {
   let { user_id } = useParams();
@@ -12,6 +13,8 @@ const Profile = () => {
   const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
 
   const [isFetchingUser, setIsFetchingUser] = useState(true);
+  const [isUpdatingFriendRequest, setIsUpdatingFriendRequest] = useState(false);
+
   const getProfilePic = () => {
     return loggedInUser && loggedInUser._id === user_id
       ? loggedInUser.profilePicURL
@@ -49,20 +52,13 @@ const Profile = () => {
     setLoggedInUser({ ...loggedInUser, [fieldName]: media[0] });
   };
 
-  const updateFriendRequest = (loginUser_id, user_id) => {
-    const data = {
-      loggedInUserId: loginUser_id,
-      userId: user_id,
-    };
-    return data;
-  };
-
-  const sendFriendRequest = async () => {
+  const updateFriendRequest = async (uri) => {
     const data = {
       loggedInUserId: loggedInUser._id,
     };
+    setIsUpdatingFriendRequest(true);
     const serverData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/friend_request_send/${user_id}`,
+      `${process.env.REACT_APP_SERVER_END_PONT}/${uri}/${user_id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -72,6 +68,7 @@ const Profile = () => {
       }
     );
     const responseData = await serverData.json();
+    setIsUpdatingFriendRequest(false);
     setUser(responseData.user);
   };
 
@@ -80,8 +77,14 @@ const Profile = () => {
   const isDev = process.env.NODE_ENV === "development";
 
   if (isFetchingUser) {
-    <CenterPageLoader />;
+    return <CenterPageLoader />;
   }
+
+  const isFriendReuestSent =
+    loggedInUser &&
+    user.friendRequests.find((friendObj) => {
+      return friendObj.friend === loggedInUser._id;
+    });
 
   return (
     <div className="container">
@@ -124,17 +127,23 @@ const Profile = () => {
             </MediaUpload>
           </div>
         ) : (
-          <div>
-            {/* // <button
-              //   type="button"
-              //   className="btn btn-primary add-friend"
-              //   onClick={() => {
-              //     sendFriendRequest();
-              //   }}
-              // >
-              //   Add Friend
-              // </button> */}
-          </div>
+          <button
+            type="button"
+            className="btn btn-primary add-friend"
+            onClick={() => {
+              updateFriendRequest(
+                isFriendReuestSent
+                  ? "friend_request_cancel"
+                  : "friend_request_send"
+              );
+            }}
+          >
+            {isUpdatingFriendRequest ? (
+              <Loading />
+            ) : (
+              <>{isFriendReuestSent ? "Cancel Friend Request" : "Add Friend"}</>
+            )}
+          </button>
         )}
       </div>
       {loggedInUser && loggedInUser._id === user_id && (
@@ -186,7 +195,6 @@ const Profile = () => {
             isProfilePage={true}
             profilePicURL={getProfilePic()}
             userId={user_id}
-            updateFriendRequest={updateFriendRequest()}
           />
         </div>
       </div>

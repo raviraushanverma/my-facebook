@@ -23,8 +23,9 @@ const ProfileUserAvatar = ({ profilePicURL, userName, time }) => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              backgroundColor: "black",
+              backgroundColor: "white",
             }}
+            className="border"
           >
             <i className="fas fa-user-alt fa-2x text-info"></i>
           </div>

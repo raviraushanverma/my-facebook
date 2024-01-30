@@ -26,7 +26,7 @@ const Notification = ({ notifications = [], setNotifications }) => {
         (notifyObj) => ({ _id: notifyObj._id })
       );
       const serverData = await fetch(
-        `${process.env.REACT_APP_SERVER_END_PONT}/notfication_seen/${loggedInUser._id}`,
+        `${process.env.REACT_APP_SERVER_END_PONT}/notfication_read/${loggedInUser._id}`,
         {
           headers: {
             "Content-Type": "application/json",

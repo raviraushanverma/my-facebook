@@ -4,7 +4,6 @@ import Alert from "./Alert";
 import Loading from "./Loading";
 import { useContext } from "react";
 import { SessionContext } from "../providers/SessionProvider";
-import { NotificationContext } from "../providers/NotificationProvider";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -14,8 +13,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [alertData, setAlertData] = useState({ enable: false });
   const [loading, setLoading] = useState();
-  const [user, setUser] = useContext(SessionContext);
-  const [notification, setNotification] = useContext(NotificationContext);
+  const { setLoggedInUser } = useContext(SessionContext);
 
   const signUp = async (event) => {
     event.preventDefault();
@@ -43,11 +41,7 @@ const SignUp = () => {
 
     setAlertData({ ...response, enable: true });
     if (response.isSuccess === true) {
-      setUser(response.user);
-      const notificationArray = Object.values(
-        response.user.notifications
-      ).reverse();
-      setNotification(notificationArray);
+      setLoggedInUser(response.user);
       document.getElementById("modalCloseSignupButton").click();
     }
   };

@@ -7,27 +7,36 @@ export const NotificationContext = createContext();
 
 const NotificationProvider = (props) => {
   const [playNotificationSound] = useSound(messageAyaSound);
-  const [user] = useContext(SessionContext);
-  const [notification, setNotification] = useState([]);
+  const { loggedInUser } = useContext(SessionContext);
+  const [notifications, setNotifications] = useState([]);
+  const [eventSource, setEventSource] = useState(null);
 
   useEffect(() => {
-    if (user) {
+    if (loggedInUser) {
       (async () => {
-        if (user) {
-          const response = await fetch(
-            `${process.env.REACT_APP_SERVER_END_PONT}/get_notifications/${user._id}`
-          );
-          const res = await response.json();
-          const notificationArray = Object.values(res.notifications).reverse();
-          setNotification(notificationArray);
-        }
+        const eventSource = new EventSource(
+          `${process.env.REACT_APP_SERVER_END_PONT}/notification/${loggedInUser._id}`
+        );
+        setEventSource(eventSource);
+        const response = await fetch(
+          `${process.env.REACT_APP_SERVER_END_PONT}/get_notifications/${
+            loggedInUser._id
+          }/${10}`
+        );
+        const res = await response.json();
+        setNotifications(res.notifications);
       })();
     }
-  }, [user]);
+  }, [loggedInUser]);
 
   return (
     <NotificationContext.Provider
-      value={[notification, setNotification, playNotificationSound]}
+      value={{
+        eventSource,
+        notifications,
+        setNotifications,
+        playNotificationSound,
+      }}
     >
       {props.children}
     </NotificationContext.Provider>

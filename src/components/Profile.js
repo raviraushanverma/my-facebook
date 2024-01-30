@@ -4,16 +4,17 @@ import { useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 import MediaUpload from "./MediaUpload";
-import Loading from "./Loading";
+import CenterPageLoader from "./CenterPageLoader";
 
 const Profile = () => {
   let { user_id } = useParams();
   const [user, setUser] = useState({});
-  const [loginUser, setLoginUser] = useContext(SessionContext);
+  const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
+
   const [isFetchingUser, setIsFetchingUser] = useState(true);
   const getProfilePic = () => {
-    return loginUser && loginUser._id === user_id
-      ? loginUser.profilePicURL
+    return loggedInUser && loggedInUser._id === user_id
+      ? loggedInUser.profilePicURL
       : user.profilePicURL;
   };
 
@@ -35,7 +36,7 @@ const Profile = () => {
       [fieldName]: media[0],
     };
     const serverData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/profile_update/${loginUser._id}`,
+      `${process.env.REACT_APP_SERVER_END_PONT}/profile_update/${loggedInUser._id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +46,7 @@ const Profile = () => {
       }
     );
     serverData.json();
-    setLoginUser({ ...loginUser, [fieldName]: media[0] });
+    setLoggedInUser({ ...loggedInUser, [fieldName]: media[0] });
   };
 
   const updateFriendRequest = (loginUser_id, user_id) => {
@@ -58,10 +59,10 @@ const Profile = () => {
 
   const sendFriendRequest = async () => {
     const data = {
-      loggedInUserId: loginUser._id,
+      loggedInUserId: loggedInUser._id,
     };
     const serverData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/friend_request/${user_id}`,
+      `${process.env.REACT_APP_SERVER_END_PONT}/friend_request_send/${user_id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -74,18 +75,12 @@ const Profile = () => {
     setUser(responseData.user);
   };
 
-  const mainUser = loginUser && loginUser._id === user_id ? loginUser : user;
+  const mainUser =
+    loggedInUser && loggedInUser._id === user_id ? loggedInUser : user;
   const isDev = process.env.NODE_ENV === "development";
 
   if (isFetchingUser) {
-    return (
-      <div
-        className="complete-center"
-        style={{ height: "60vh", width: "100vw" }}
-      >
-        <Loading />
-      </div>
-    );
+    <CenterPageLoader />;
   }
 
   return (
@@ -102,7 +97,7 @@ const Profile = () => {
           <ProfileUserAvatar profilePicURL={getProfilePic()} />
           <h3 className="profile-user-avatar-user-name">{user.name}</h3>
         </div>
-        {loginUser && loginUser._id === user_id ? (
+        {loggedInUser && loggedInUser._id === user_id ? (
           <div
             style={{
               position: "absolute",
@@ -154,7 +149,7 @@ const Profile = () => {
           </div>
         )}
       </div>
-      {loginUser && loginUser._id === user_id && (
+      {loggedInUser && loggedInUser._id === user_id && (
         <MediaUpload
           onSuccessUpload={(media) => {
             onProfileUploadHandler(media, "profilePicURL");

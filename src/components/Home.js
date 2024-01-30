@@ -9,8 +9,8 @@ import { SessionContext } from "../providers/SessionProvider";
 import { useContext } from "react";
 
 const Home = () => {
-  const [user] = useContext(SessionContext);
-  if (user) {
+  const { loggedInUser } = useContext(SessionContext);
+  if (loggedInUser) {
     return <Timeline />;
   }
   return (

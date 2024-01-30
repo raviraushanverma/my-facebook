@@ -5,7 +5,7 @@ import { useContext } from "react";
 import ProfileUserAvatar from "./ProfileUserAvatar";
 
 const Timeline = (props) => {
-  const [user] = useContext(SessionContext);
+  const { loggedInUser } = useContext(SessionContext);
   return (
     <div className="container">
       <div className="row">
@@ -13,19 +13,22 @@ const Timeline = (props) => {
           <div className="profile-side-pannel">
             <div>
               <Link
-                to={`/profile/${user._id}`}
+                to={`/profile/${loggedInUser._id}`}
                 style={{ display: "flex", justifyContent: "center" }}
               >
-                <ProfileUserAvatar profilePicURL={user.profilePicURL} />
+                <ProfileUserAvatar profilePicURL={loggedInUser.profilePicURL} />
               </Link>
               <h4 style={{ textTransform: "capitalize", textAlign: "center" }}>
-                {user.name}
+                {loggedInUser.name}
               </h4>
             </div>
           </div>
         </div>
         <div className="col-md-6">
-          <PostList isProfilePage={false} profilePicURL={user.profilePicURL} />
+          <PostList
+            isProfilePage={false}
+            profilePicURL={loggedInUser.profilePicURL}
+          />
         </div>
         <div className="col-md-3"></div>
       </div>

@@ -19,7 +19,7 @@ const SessionProvider = (props) => {
   }, [navigate, loggedInUser]);
 
   return (
-    <SessionContext.Provider value={[loggedInUser, setLoggedInUser]}>
+    <SessionContext.Provider value={{ loggedInUser, setLoggedInUser }}>
       {props.children}
     </SessionContext.Provider>
   );

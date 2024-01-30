@@ -3,53 +3,42 @@ import Logo from "./Logo";
 import { SessionContext } from "../providers/SessionProvider";
 import { useContext, useEffect } from "react";
 import { NotificationContext } from "../providers/NotificationProvider";
-import NotificationList from "./NotificationList";
+import Notification from "./Notification";
 
 const Header = () => {
-  const [user, setUser] = useContext(SessionContext);
-  const [notification, setNotification, playNotificationSound] =
-    useContext(NotificationContext);
+  const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
+  const {
+    eventSource,
+    notifications,
+    setNotifications,
+    playNotificationSound,
+  } = useContext(NotificationContext);
 
   const logout = () => {
-    setUser(null);
-  };
-
-  const subscribeForNotification = (user_id) => {
-    const eventSource = new EventSource(
-      `${process.env.REACT_APP_SERVER_END_PONT}/notification/${user_id}`
-    );
-
-    eventSource.onopen = function (evt) {
-      console.log("SSE opened");
-    };
-
-    eventSource.onerror = function (error) {
-      console.log("SSE error", error);
-    };
-
-    eventSource.onmessage = (event) => {
-      const mainNotificationObj = JSON.parse(event.data);
-      if (mainNotificationObj) {
-        playNotificationSound();
-        const notificationArray = Object.values(mainNotificationObj).reverse();
-        console.log("Notification came => ", notificationArray);
-        setNotification(notificationArray);
-      }
-    };
-
-    return eventSource;
+    setLoggedInUser(null);
   };
 
   useEffect(() => {
-    if (user) {
-      const eventSource = subscribeForNotification(user._id);
+    if (eventSource) {
+      eventSource.onopen = function (evt) {
+        console.log("SSE opened");
+      };
 
-      return () => {
-        eventSource.close();
+      eventSource.onerror = function (error) {
+        console.log("SSE error", error);
+      };
+
+      eventSource.onmessage = (event) => {
+        const mainNotificationObj = JSON.parse(event.data);
+        if (mainNotificationObj) {
+          playNotificationSound();
+          console.log("Notification came => ", mainNotificationObj);
+          setNotifications([mainNotificationObj, ...notifications]);
+        }
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [eventSource, notifications]);
 
   return (
     <nav
@@ -61,12 +50,12 @@ const Header = () => {
           <Logo />
         </Link>
         <div className="d-flex">
-          {user ? (
+          {loggedInUser ? (
             <div className="d-flex">
               <div style={{ marginRight: "12px" }}>
-                <NotificationList
-                  notification={notification}
-                  setNotification={setNotification}
+                <Notification
+                  notifications={notifications}
+                  setNotifications={setNotifications}
                 />
               </div>
               <button

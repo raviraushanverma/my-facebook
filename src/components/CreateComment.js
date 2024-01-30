@@ -3,17 +3,17 @@ import { SessionContext } from "../providers/SessionProvider";
 import Loading from "./Loading";
 
 const CreateComment = (props) => {
-  const [user] = useContext(SessionContext);
+  const { loggedInUser } = useContext(SessionContext);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState();
 
   const commentPost = async (event) => {
     event.preventDefault();
     const data = {
-      id: props.postId,
+      postId: props.postId,
       comments: {
         content: comment,
-        owner: user._id,
+        owner: loggedInUser._id,
       },
     };
     setLoading(true);

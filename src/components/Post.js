@@ -8,14 +8,14 @@ import Loading from "./Loading";
 import { Link } from "react-router-dom";
 
 const Post = (props) => {
-  const [user] = useContext(SessionContext);
+  const { loggedInUser } = useContext(SessionContext);
 
   const [deleteLoading, setDeleteLoading] = useState();
 
   const postLike = async () => {
-    props.likeUpdateData(props.postObj._id, user._id);
+    props.likeUpdateData(props.postObj._id, loggedInUser._id);
     const likeData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/post_like/${props.postObj._id}/${user._id}/${user.name}`,
+      `${process.env.REACT_APP_SERVER_END_PONT}/post_like/${props.postObj._id}/${loggedInUser._id}/${loggedInUser.name}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -29,7 +29,7 @@ const Post = (props) => {
   const postDelete = async () => {
     setDeleteLoading(true);
     const deleteData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/post_delete/${props.postObj._id}/${user._id}`,
+      `${process.env.REACT_APP_SERVER_END_PONT}/post_delete/${props.postObj._id}/${loggedInUser._id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -51,13 +51,13 @@ const Post = (props) => {
               userName={props.postObj.owner.name}
               time={props.postObj.created}
               profilePicURL={
-                user._id === props.postObj.owner._id
-                  ? user.profilePicURL
+                loggedInUser._id === props.postObj.owner._id
+                  ? loggedInUser.profilePicURL
                   : props.postObj.owner.profilePicURL
               }
             />
           </Link>
-          {user._id === props.postObj.owner._id && (
+          {loggedInUser._id === props.postObj.owner._id && (
             <div>
               <button
                 type="button"
@@ -112,7 +112,7 @@ const Post = (props) => {
           }}
         >
           <span className="post-button">
-            {props.postObj.likes[user._id] === undefined ? (
+            {props.postObj.likes[loggedInUser._id] === undefined ? (
               <i className="fa-regular fa-thumbs-up"></i>
             ) : (
               <i className="fa-solid fa-thumbs-up"></i>

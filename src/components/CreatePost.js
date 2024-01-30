@@ -7,7 +7,7 @@ import Loading from "./Loading";
 import { Link, useNavigate } from "react-router-dom";
 
 const CreatePost = (props) => {
-  const [user] = useContext(SessionContext);
+  const { loggedInUser } = useContext(SessionContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
@@ -21,7 +21,7 @@ const CreatePost = (props) => {
     event.preventDefault();
     const data = {
       content: content,
-      owner: user._id,
+      owner: loggedInUser._id,
     };
     if (mediaList.length > 0) {
       data.medias = mediaList;
@@ -56,7 +56,7 @@ const CreatePost = (props) => {
   return (
     <>
       <div className="create-post-container">
-        <Link to={`/profile/${user._id}`}>
+        <Link to={`/profile/${loggedInUser._id}`}>
           <UserAvatar profilePicURL={props.profilePicURL} />
         </Link>
         <input
@@ -113,11 +113,11 @@ const CreatePost = (props) => {
                               document
                                 .getElementById("createPostModalClose")
                                 .click();
-                              navigate(`/profile/${user._id}`);
+                              navigate(`/profile/${loggedInUser._id}`);
                             }}
                           >
                             <UserAvatar
-                              userName={user.name}
+                              userName={loggedInUser.name}
                               profilePicURL={props.profilePicURL}
                             />
                           </div>
@@ -130,7 +130,7 @@ const CreatePost = (props) => {
                       </div>
                       <textarea
                         style={{ textTransform: "capitalize" }}
-                        placeholder={`What's on your mind, ${user.name}?`}
+                        placeholder={`What's on your mind, ${loggedInUser.name}?`}
                         spellCheck="false"
                         id="createPostTextarea"
                         value={content}

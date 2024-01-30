@@ -5,7 +5,7 @@ import PostSkeleton from "./PostSkeleton";
 import { SessionContext } from "../providers/SessionProvider";
 
 const PostList = (props) => {
-  const [user] = useContext(SessionContext);
+  const { loggedInUser } = useContext(SessionContext);
   const [postData, setPostData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +26,7 @@ const PostList = (props) => {
     fetchData();
   }, [props.isProfilePage, props.userId]);
 
-  if (!user) {
+  if (!loggedInUser) {
     return null;
   }
 
@@ -52,7 +52,7 @@ const PostList = (props) => {
     const index = newData.findIndex((element) => {
       return element._id === postId;
     });
-    if (user._id === newData[index].owner._id) {
+    if (loggedInUser._id === newData[index].owner._id) {
       newData.splice(index, 1);
       setPostData(newData);
     }
@@ -64,9 +64,9 @@ const PostList = (props) => {
       return element._id === postId;
     });
     if (newData[index].likes[userId] === undefined) {
-      newData[index].likes[user._id] = user.name;
+      newData[index].likes[loggedInUser._id] = loggedInUser.name;
     } else {
-      delete newData[index].likes[user._id];
+      delete newData[index].likes[loggedInUser._id];
     }
     setPostData(newData);
   };
@@ -88,7 +88,7 @@ const PostList = (props) => {
     <section>
       {props.isProfilePage ? (
         <>
-          {props.userId === user._id && (
+          {props.userId === loggedInUser._id && (
             <div style={{ marginBottom: "20px", marginTop: "5px" }}>
               <CreatePost
                 updateData={updateData}

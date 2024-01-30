@@ -10,7 +10,7 @@ const Comment = (props) => {
   const [editContent, setAditContent] = useState();
   const timeAgo = new TimeAgo("en-US");
   const [commentDeleteLoading, setCommentDeleteLoading] = useState();
-  const [user] = useContext(SessionContext);
+  const { loggedInUser } = useContext(SessionContext);
 
   useEffect(() => {
     if (isEditing === true) {
@@ -61,8 +61,8 @@ const Comment = (props) => {
           <Link to={`/profile/${props.comment.owner._id}`}>
             <UserAvatar
               profilePicURL={
-                user._id === props.comment.owner._id
-                  ? user.profilePicURL
+                loggedInUser._id === props.comment.owner._id
+                  ? loggedInUser.profilePicURL
                   : props.comment.owner.profilePicURL
               }
             />
@@ -107,7 +107,7 @@ const Comment = (props) => {
                 <span>{props.comment.content}</span>
               </div>
             )}
-            {user._id === props.comment.owner._id && (
+            {loggedInUser._id === props.comment.owner._id && (
               <div style={{ float: "right" }}>
                 <button
                   type="button"

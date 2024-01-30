@@ -125,27 +125,15 @@ const Profile = () => {
           </div>
         ) : (
           <div>
-            {user._id === undefined ? (
-              <button
-                type="button"
-                className="btn btn-primary add-friend"
-                onClick={() => {
-                  sendFriendRequest();
-                }}
-              >
-                Add Friend
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="btn btn-primary add-friend"
-                onClick={() => {
-                  sendFriendRequest();
-                }}
-              >
-                Cancel Friend
-              </button>
-            )}
+            {/* // <button
+              //   type="button"
+              //   className="btn btn-primary add-friend"
+              //   onClick={() => {
+              //     sendFriendRequest();
+              //   }}
+              // >
+              //   Add Friend
+              // </button> */}
           </div>
         )}
       </div>

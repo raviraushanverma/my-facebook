@@ -19,6 +19,9 @@ const Header = () => {
   } = useContext(NotificationContext);
 
   const logout = () => {
+    if (eventSource) {
+      eventSource.close();
+    }
     setLoggedInUser(null);
   };
 
@@ -59,7 +62,7 @@ const Header = () => {
         <div className="d-flex">
           {loggedInUser ? (
             <div className="d-flex">
-              <div style={{ marginRight: "12px" }}>
+              <div style={{ marginRight: "15px" }}>
                 <Notification
                   notifications={notifications}
                   setNotifications={setNotifications}

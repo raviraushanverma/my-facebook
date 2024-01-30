@@ -50,7 +50,7 @@ const Notification = ({ notifications = [], setNotifications }) => {
           notficationSeen();
         }}
       >
-        <i className="fa-regular fa-bell"></i>
+        <i className="fa-regular fa-bell" style={{ fontSize: "21px" }}></i>
         {unreadNotifications.length > 0 && (
           <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
             {unreadNotifications.length}

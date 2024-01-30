@@ -10,9 +10,7 @@ const Profile = () => {
   let { user_id } = useParams();
   const [user, setUser] = useState({});
   const [loginUser, setLoginUser] = useContext(SessionContext);
-  const [addFriend, setAddFriend] = useState(true);
   const [isFetchingUser, setIsFetchingUser] = useState(true);
-
   const getProfilePic = () => {
     return loginUser && loginUser._id === user_id
       ? loginUser.profilePicURL
@@ -50,6 +48,14 @@ const Profile = () => {
     setLoginUser({ ...loginUser, [fieldName]: media[0] });
   };
 
+  const updateFriendRequest = (loginUser_id, user_id) => {
+    const data = {
+      loggedInUserId: loginUser_id,
+      userId: user_id,
+    };
+    return data;
+  };
+
   const sendFriendRequest = async () => {
     const data = {
       loggedInUserId: loginUser._id,
@@ -64,7 +70,8 @@ const Profile = () => {
         body: JSON.stringify(data),
       }
     );
-    serverData.json();
+    const responseData = await serverData.json();
+    setUser(responseData.user);
   };
 
   const mainUser = loginUser && loginUser._id === user_id ? loginUser : user;
@@ -122,20 +129,29 @@ const Profile = () => {
             </MediaUpload>
           </div>
         ) : (
-          <button
-            type="button"
-            className="btn btn-primary add-friend"
-            onClick={() => {
-              if (addFriend === true) {
-                sendFriendRequest();
-                setAddFriend(false);
-              } else {
-                setAddFriend(true);
-              }
-            }}
-          >
-            Add Friend
-          </button>
+          <div>
+            {user._id === undefined ? (
+              <button
+                type="button"
+                className="btn btn-primary add-friend"
+                onClick={() => {
+                  sendFriendRequest();
+                }}
+              >
+                Add Friend
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-primary add-friend"
+                onClick={() => {
+                  sendFriendRequest();
+                }}
+              >
+                Cancel Friend
+              </button>
+            )}
+          </div>
         )}
       </div>
       {loginUser && loginUser._id === user_id && (
@@ -194,6 +210,7 @@ const Profile = () => {
             isProfilePage={true}
             profilePicURL={getProfilePic()}
             userId={user_id}
+            updateFriendRequest={updateFriendRequest()}
           />
         </div>
       </div>

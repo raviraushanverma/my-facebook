@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 
 const Notification = ({ notifications = [], setNotifications }) => {
   const { loggedInUser } = useContext(SessionContext);
+  if (!loggedInUser) {
+    return null;
+  }
 
   const unreadNotifications = notifications.filter(
     (notifyObj) => notifyObj.isRead === false
@@ -77,7 +80,7 @@ const Notification = ({ notifications = [], setNotifications }) => {
               bottom: "3px",
             }}
           >
-            <Link to={`/notifications`}>See all</Link>
+            <Link to={`/notifications`}>See All</Link>
           </small>
         </div>
 

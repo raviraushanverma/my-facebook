@@ -44,6 +44,13 @@ const NotificationList = ({ notifications }) => {
                       {notifyObj.user.name}
                     </strong>
                     &nbsp;sent you friend request
+                    <button
+                      type="button"
+                      className="btn btn-primary "
+                      onClick={() => {}}
+                    >
+                      Confirm
+                    </button>
                   </div>
                 </div>
               )}

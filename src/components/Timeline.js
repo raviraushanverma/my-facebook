@@ -6,6 +6,9 @@ import ProfileUserAvatar from "./ProfileUserAvatar";
 
 const Timeline = (props) => {
   const { loggedInUser } = useContext(SessionContext);
+  if (!loggedInUser) {
+    return null;
+  }
   return (
     <div className="container">
       <div className="row">

@@ -11,7 +11,6 @@ const Profile = () => {
   let { user_id } = useParams();
   const [user, setUser] = useState({});
   const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
-
   const [isFetchingUser, setIsFetchingUser] = useState(true);
   const [isUpdatingFriendRequest, setIsUpdatingFriendRequest] = useState(false);
 
@@ -80,11 +79,9 @@ const Profile = () => {
     return <CenterPageLoader />;
   }
 
-  const isFriendReuestSent =
-    loggedInUser &&
-    user.friendRequests.find((friendObj) => {
-      return friendObj.friend === loggedInUser._id;
-    });
+  if (!loggedInUser) {
+    return null;
+  }
 
   return (
     <div className="container">
@@ -128,20 +125,26 @@ const Profile = () => {
           </div>
         ) : (
           <button
+            style={{ width: "150px" }}
             type="button"
             className="btn btn-primary add-friend"
             onClick={() => {
               updateFriendRequest(
-                isFriendReuestSent
+                user.friendRequests[loggedInUser._id]
                   ? "friend_request_cancel"
                   : "friend_request_send"
               );
             }}
+            disabled={isUpdatingFriendRequest}
           >
             {isUpdatingFriendRequest ? (
               <Loading />
             ) : (
-              <>{isFriendReuestSent ? "Cancel Friend Request" : "Add Friend"}</>
+              <>
+                {user.friendRequests[loggedInUser._id]
+                  ? "Cancel Request"
+                  : "Add Friend"}
+              </>
             )}
           </button>
         )}

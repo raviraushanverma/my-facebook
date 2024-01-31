@@ -4,6 +4,7 @@ import NotificationList from "./NotificationList";
 import { Link } from "react-router-dom";
 import { EventSourceContext } from "../providers/EventSourceProvider";
 import { NotificationContext } from "../providers/NotificationProvider";
+import { apiCall } from "../utils";
 
 const Notification = () => {
   const { loggedInUser } = useContext(SessionContext);
@@ -55,17 +56,11 @@ const Notification = () => {
       const unreadNotificationsIdArray = unreadNotifications.map(
         (notifyObj) => ({ _id: notifyObj._id })
       );
-      const serverData = await fetch(
-        `${process.env.REACT_APP_SERVER_END_PONT}/notfication_read/${loggedInUser._id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-          body: JSON.stringify({ unreadNotificationsIdArray }),
-        }
-      );
-      await serverData.json();
+      await apiCall({
+        url: `${process.env.REACT_APP_SERVER_END_PONT}/notfication_read/${loggedInUser._id}`,
+        method: "POST",
+        body: { unreadNotificationsIdArray },
+      });
     }
   };
 

@@ -5,6 +5,7 @@ import Loading from "./Loading";
 import { useContext } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 import { NotificationContext } from "../providers/NotificationProvider";
+import { apiCall } from "../utils";
 
 const Login = () => {
   const { setLoggedInUser } = useContext(SessionContext);
@@ -17,29 +18,24 @@ const Login = () => {
   const login = async (event) => {
     event.preventDefault();
     setAlertData({ enable: false });
-    const data = {
-      email: email,
-      password: password,
-    };
+
     setLoading(true);
-    const serverData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/login`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(data),
-      }
-    );
-    const response = await serverData.json();
-    setLoading(false);
-    setAlertData({ ...response, enable: true });
-    if (response.isSuccess === true) {
+    const response = await apiCall({
+      url: `${process.env.REACT_APP_SERVER_END_PONT}/login`,
+      method: "POST",
+      body: {
+        email: email,
+        password: password,
+      },
+    });
+
+    if (response) {
       setLoggedInUser(response.user);
       playNotificationSound();
       document.getElementById("modalCloseButton").click();
     }
+    setLoading(false);
+    setAlertData({ ...response, enable: true });
   };
 
   return (

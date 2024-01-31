@@ -1,5 +1,3 @@
-import ImageViewer from "./ImageViewer";
-
 const MediaSlider = (props) => {
   return (
     <div

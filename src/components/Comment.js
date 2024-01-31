@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import Loading from "./Loading";
 import TimeAgo from "javascript-time-ago";
 import { Link } from "react-router-dom";
+import { apiCall } from "../utils";
 
 const Comment = (props) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -20,38 +21,28 @@ const Comment = (props) => {
 
   const commentDeleteData = async () => {
     setCommentDeleteLoading(true);
-    const deleteData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/comment_delete/${props.postId}/${props.comment._id}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "DELETE",
-      }
-    );
-    const response = await deleteData.json();
+    const response = await apiCall({
+      url: `${process.env.REACT_APP_SERVER_END_PONT}/comment_delete/${props.postId}/${props.comment._id}`,
+      method: "DELETE",
+    });
     setCommentDeleteLoading(false);
-    props.commentUpdate(response.post);
+    if (response) {
+      props.commentUpdate(response.post);
+    }
   };
 
   const editCommentData = async (event) => {
     event.preventDefault();
-
-    const data = {
-      content: editContent,
-    };
-    const editData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/comment_edit/${props.postId}/${props.comment._id}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "post",
-        body: JSON.stringify(data),
-      }
-    );
-    await editData.json();
-    props.editComment(props.postId, props.comment._id, editContent);
+    const response = await apiCall({
+      url: `${process.env.REACT_APP_SERVER_END_PONT}/comment_edit/${props.postId}/${props.comment._id}`,
+      method: "post",
+      body: {
+        content: editContent,
+      },
+    });
+    if (response) {
+      props.editComment(props.postId, props.comment._id, editContent);
+    }
   };
 
   return (

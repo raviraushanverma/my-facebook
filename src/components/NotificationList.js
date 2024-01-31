@@ -8,7 +8,9 @@ const NotificationList = ({ notifications, loggedInUser }) => {
 
   const onAcceptFriendRequest = async (userId) => {
     const res = await acceptFriendRequest(loggedInUser._id, userId);
-    console.log("res", res);
+    if (res) {
+      console.log("res", res);
+    }
   };
 
   return (

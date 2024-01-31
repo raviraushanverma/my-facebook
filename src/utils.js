@@ -1,11 +1,6 @@
 export const apiCall = async ({ url, method = "GET", body }) => {
   try {
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method,
-    };
+    const options = { method, headers: { "Content-Type": "application/json" } };
     if (body) {
       options.body = JSON.stringify(body);
     }
@@ -23,24 +18,17 @@ export const apiCall = async ({ url, method = "GET", body }) => {
 };
 
 export const acceptFriendRequest = async (loggedInUserId, userId) => {
-  const serverData = await fetch(
-    `${process.env.REACT_APP_SERVER_END_PONT}/friend_request_accept/${userId}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({ loggedInUserId }),
-    }
-  );
-  return await serverData.json();
+  return await apiCall({
+    url: `${process.env.REACT_APP_SERVER_END_PONT}/friend_request_accept/${userId}`,
+    method: "POST",
+    body: { loggedInUserId },
+  });
 };
 
 export const getNotifications = async (loggedInUserId, limit) => {
-  const response = await fetch(
-    `${
+  return await apiCall({
+    url: `${
       process.env.REACT_APP_SERVER_END_PONT
-    }/get_notifications/${loggedInUserId}/${limit ? limit : ""}`
-  );
-  return await response.json();
+    }/get_notifications/${loggedInUserId}/${limit ? limit : ""}`,
+  });
 };

@@ -4,6 +4,7 @@ import CreatePost from "./CreatePost";
 import PostSkeleton from "./PostSkeleton";
 import { EventSourceContext } from "../providers/EventSourceProvider";
 import { SessionContext } from "../providers/SessionProvider";
+import { apiCall } from "../utils";
 
 const PostList = (props) => {
   const { eventSource } = useContext(EventSourceContext);
@@ -34,16 +35,16 @@ const PostList = (props) => {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      let apiURL;
-      if (props.isProfilePage) {
-        apiURL = `${process.env.REACT_APP_SERVER_END_PONT}/profile_post/${props.userId}`;
-      } else {
-        apiURL = `${process.env.REACT_APP_SERVER_END_PONT}/posts`;
-      }
-      const response = await fetch(apiURL);
-      const responseData = await response.json();
-      setPostData(responseData.posts);
+      const url = props.isProfilePage
+        ? `${process.env.REACT_APP_SERVER_END_PONT}/profile_post/${props.userId}`
+        : `${process.env.REACT_APP_SERVER_END_PONT}/posts`;
+      const response = await apiCall({
+        url,
+      });
       setLoading(false);
+      if (response) {
+        setPostData(response.posts);
+      }
     }
     fetchData();
   }, [props.isProfilePage, props.userId]);

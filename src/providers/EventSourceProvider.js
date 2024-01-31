@@ -26,11 +26,11 @@ const EventSourceProvider = (props) => {
         eventSource.onerror = function (error) {
           console.log("SSE error", error);
           timeoutID = setTimeout(() => {
-            // If Error, We are re-connecting to SSE after each 5 secs
+            // If Error, We are re-connecting to SSE after each 5 minitues
             console.log("Re-connecting to SSE");
             const eventSource = subscribeForServerSentEvent(loggedInUser);
             setEventSource(eventSource);
-          }, 5000);
+          }, 5 * 60000);
         };
 
         setEventSource(eventSource);

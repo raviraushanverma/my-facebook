@@ -4,6 +4,7 @@ import Alert from "./Alert";
 import Loading from "./Loading";
 import { useContext } from "react";
 import { SessionContext } from "../providers/SessionProvider";
+import { apiCall } from "../utils";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -18,32 +19,25 @@ const SignUp = () => {
   const signUp = async (event) => {
     event.preventDefault();
     setAlertData({ enable: false });
-    const data = {
-      name: name,
-      mobileNumber: Number(mobileNumber),
-      birth: birth,
-      email: email,
-      password: password,
-    };
-    setLoading(true);
-    const serverData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/sign_up`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(data),
-      }
-    );
-    const response = await serverData.json();
-    setLoading(false);
 
-    setAlertData({ ...response, enable: true });
-    if (response.isSuccess === true) {
+    setLoading(true);
+    const response = await apiCall({
+      url: `${process.env.REACT_APP_SERVER_END_PONT}/sign_up`,
+      method: "POST",
+      body: {
+        name: name,
+        mobileNumber: Number(mobileNumber),
+        birth: birth,
+        email: email,
+        password: password,
+      },
+    });
+    if (response) {
       setLoggedInUser(response.user);
       document.getElementById("modalCloseSignupButton").click();
+      setAlertData({ ...response, enable: true });
     }
+    setLoading(false);
   };
 
   return (

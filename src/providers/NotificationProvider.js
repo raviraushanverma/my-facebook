@@ -15,7 +15,9 @@ const NotificationProvider = (props) => {
     if (loggedInUser) {
       (async () => {
         const res = await getNotifications(loggedInUser._id, 10);
-        setNotifications(res.notifications);
+        if (res) {
+          setNotifications(res.notifications);
+        }
       })();
     }
   }, [loggedInUser]);

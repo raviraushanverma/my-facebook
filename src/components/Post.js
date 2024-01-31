@@ -6,6 +6,7 @@ import { SessionContext } from "../providers/SessionProvider";
 import { useContext, useState } from "react";
 import Loading from "./Loading";
 import { Link } from "react-router-dom";
+import { apiCall } from "../utils";
 
 const Post = (props) => {
   const { loggedInUser } = useContext(SessionContext);
@@ -14,32 +15,22 @@ const Post = (props) => {
 
   const postLike = async () => {
     props.likeUpdateData(props.postObj._id, loggedInUser._id);
-    const likeData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/post_like/${props.postObj._id}/${loggedInUser._id}/${loggedInUser.name}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-      }
-    );
-    await likeData.json();
+    await apiCall({
+      url: `${process.env.REACT_APP_SERVER_END_PONT}/post_like/${props.postObj._id}/${loggedInUser._id}/${loggedInUser.name}`,
+      method: "POST",
+    });
   };
 
   const postDelete = async () => {
     setDeleteLoading(true);
-    const deleteData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/post_delete/${props.postObj._id}/${loggedInUser._id}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "DELETE",
-      }
-    );
-    await deleteData.json();
+    const response = await apiCall({
+      url: `${process.env.REACT_APP_SERVER_END_PONT}/post_delete/${props.postObj._id}/${loggedInUser._id}`,
+      method: "DELETE",
+    });
+    if (response) {
+      props.deletePostData(props.postObj._id);
+    }
     setDeleteLoading(false);
-    props.deletePostData(props.postObj._id);
   };
 
   return (

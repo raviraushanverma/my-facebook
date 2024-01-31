@@ -6,6 +6,7 @@ import { SessionContext } from "../providers/SessionProvider";
 import MediaUpload from "./MediaUpload";
 import CenterPageLoader from "./CenterPageLoader";
 import Loading from "./Loading";
+import { apiCall } from "../utils";
 
 const Profile = () => {
   let { user_id } = useParams();
@@ -23,52 +24,45 @@ const Profile = () => {
   useEffect(() => {
     setIsFetchingUser(true);
     async function fetchData() {
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER_END_PONT}/get_user/${user_id}`
-      );
-      const responseData = await response.json();
-      setUser(responseData.user);
+      const response = await apiCall({
+        url: `${process.env.REACT_APP_SERVER_END_PONT}/get_user/${user_id}`,
+      });
+      if (response) {
+        setUser(response.user);
+      }
+
       setIsFetchingUser(false);
     }
     fetchData();
   }, [user_id]);
 
   const onProfileUploadHandler = async (media, fieldName) => {
-    const data = {
-      [fieldName]: media[0],
-    };
-    const serverData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/profile_update/${loggedInUser._id}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(data),
-      }
-    );
-    serverData.json();
-    setLoggedInUser({ ...loggedInUser, [fieldName]: media[0] });
+    const response = await apiCall({
+      url: `${process.env.REACT_APP_SERVER_END_PONT}/profile_update/${loggedInUser._id}`,
+      method: "POST",
+      body: {
+        [fieldName]: media[0],
+      },
+    });
+
+    if (response) {
+      setLoggedInUser({ ...loggedInUser, [fieldName]: media[0] });
+    }
   };
 
   const updateFriendRequest = async (uri) => {
-    const data = {
-      loggedInUserId: loggedInUser._id,
-    };
+    const response = await apiCall({
+      url: `${process.env.REACT_APP_SERVER_END_PONT}/${uri}/${user_id}`,
+      method: "POST",
+      body: {
+        loggedInUserId: loggedInUser._id,
+      },
+    });
+    if (response) {
+      setUser(response.user);
+      setIsUpdatingFriendRequest(false);
+    }
     setIsUpdatingFriendRequest(true);
-    const serverData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/${uri}/${user_id}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(data),
-      }
-    );
-    const responseData = await serverData.json();
-    setIsUpdatingFriendRequest(false);
-    setUser(responseData.user);
   };
 
   const mainUser =

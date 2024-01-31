@@ -14,7 +14,9 @@ const NotificationPage = () => {
       (async () => {
         setLoading(true);
         const res = await getNotifications(loggedInUser._id);
-        setNotifications(res.notifications);
+        if (res) {
+          setNotifications(res.notifications);
+        }
         setLoading(false);
       })();
     }

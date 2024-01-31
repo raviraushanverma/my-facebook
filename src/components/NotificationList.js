@@ -21,7 +21,7 @@ const NotificationList = ({ notifications, loggedInUser }) => {
           >
             {index !== 0 && <hr className="dropdown-divider"></hr>}
             <div style={{ display: "flex" }}>
-              <div style={{ marginRight: "5px" }}>
+              <div style={{ marginRight: "10px" }}>
                 <Link to={`/profile/${notifyObj.user._id}`}>
                   <UserAvatar profilePicURL={notifyObj.user.profilePicURL} />
                 </Link>
@@ -55,7 +55,7 @@ const NotificationList = ({ notifications, loggedInUser }) => {
                     &nbsp;sent you friend request
                     <button
                       type="button"
-                      className="btn btn-primary "
+                      className="btn btn-primary btn-sm"
                       onClick={() => {
                         onAcceptFriendRequest(notifyObj.user._id);
                       }}

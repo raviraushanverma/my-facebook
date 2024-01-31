@@ -14,11 +14,11 @@ const Notification = () => {
   useEffect(() => {
     if (eventSource && loggedInUser) {
       eventSource.onmessage = (event) => {
-        const mainNotificationObj = JSON.parse(event.data);
-        if (mainNotificationObj) {
+        const eventStream = JSON.parse(event.data);
+        if (eventStream && eventStream.newNotification) {
           playNotificationSound();
-          console.log("Notification came => ", mainNotificationObj);
-          setNotifications([mainNotificationObj, ...notifications]);
+          console.log("New Notification came => ", eventStream.newNotification);
+          setNotifications([eventStream.newNotification, ...notifications]);
         }
       };
     }

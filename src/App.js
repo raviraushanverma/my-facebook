@@ -8,24 +8,27 @@ import Profile from "./components/Profile";
 import SessionProvider from "./providers/SessionProvider";
 import NotificationProvider from "./providers/NotificationProvider";
 import NotificationPage from "./components/NotificationPage";
+import EventSourceProvider from "./providers/EventSourceProvider";
 
 function App() {
   return (
     <BrowserRouter>
       <SessionProvider>
-        <NotificationProvider>
-          <Header />
-          <Login />
-          <SignUp />
-          <div className="our-container">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/profile/:user_id" element={<Profile />} />
-              <Route path="/notifications" element={<NotificationPage />} />
-            </Routes>
-          </div>
-          <Footer />
-        </NotificationProvider>
+        <EventSourceProvider>
+          <NotificationProvider>
+            <Header />
+            <Login />
+            <SignUp />
+            <div className="our-container">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/profile/:user_id" element={<Profile />} />
+                <Route path="/notifications" element={<NotificationPage />} />
+              </Routes>
+            </div>
+            <Footer />
+          </NotificationProvider>
+        </EventSourceProvider>
       </SessionProvider>
     </BrowserRouter>
   );

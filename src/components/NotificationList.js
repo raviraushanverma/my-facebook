@@ -1,9 +1,16 @@
 import UserAvatar from "./UserAvatar";
 import { Link } from "react-router-dom";
 import TimeAgo from "javascript-time-ago";
+import { acceptFriendRequest } from "../utils";
 
-const NotificationList = ({ notifications }) => {
+const NotificationList = ({ notifications, loggedInUser }) => {
   const timeAgo = new TimeAgo("en-US");
+
+  const onAcceptFriendRequest = async (userId) => {
+    const res = await acceptFriendRequest(loggedInUser._id, userId);
+    console.log("res", res);
+  };
+
   return (
     <>
       {notifications.map((notifyObj, index) => {
@@ -14,9 +21,11 @@ const NotificationList = ({ notifications }) => {
           >
             {index !== 0 && <hr className="dropdown-divider"></hr>}
             <div style={{ display: "flex" }}>
-              <Link to={`/profile/${notifyObj.user._id}`}>
-                <UserAvatar profilePicURL={notifyObj.user.profilePicURL} />
-              </Link>
+              <div style={{ marginRight: "5px" }}>
+                <Link to={`/profile/${notifyObj.user._id}`}>
+                  <UserAvatar profilePicURL={notifyObj.user.profilePicURL} />
+                </Link>
+              </div>
               {notifyObj.action === "POST_LIKED" && (
                 <div className="complete-center">
                   <div>
@@ -47,7 +56,9 @@ const NotificationList = ({ notifications }) => {
                     <button
                       type="button"
                       className="btn btn-primary "
-                      onClick={() => {}}
+                      onClick={() => {
+                        onAcceptFriendRequest(notifyObj.user._id);
+                      }}
                     >
                       Confirm
                     </button>

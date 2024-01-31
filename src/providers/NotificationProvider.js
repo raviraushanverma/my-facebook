@@ -2,32 +2,19 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { SessionContext } from "./SessionProvider";
 import { useSound } from "use-sound";
 import messageAyaSound from "../assets/audios/switch-on.mp3";
+import { getNotifications } from "../utils";
 
 export const NotificationContext = createContext();
 
-export const subscribeForServerSentEvent = (loggedInUser) => {
-  return new EventSource(
-    `${process.env.REACT_APP_SERVER_END_PONT}/notification/${loggedInUser._id}`
-  );
-};
-
 const NotificationProvider = (props) => {
-  const [playNotificationSound] = useSound(messageAyaSound);
   const { loggedInUser } = useContext(SessionContext);
+  const [playNotificationSound] = useSound(messageAyaSound);
   const [notifications, setNotifications] = useState([]);
-  const [eventSource, setEventSource] = useState(null);
 
   useEffect(() => {
     if (loggedInUser) {
       (async () => {
-        const eventSource = subscribeForServerSentEvent(loggedInUser);
-        setEventSource(eventSource);
-        const response = await fetch(
-          `${process.env.REACT_APP_SERVER_END_PONT}/get_notifications/${
-            loggedInUser._id
-          }/${10}`
-        );
-        const res = await response.json();
+        const res = await getNotifications(loggedInUser._id, 10);
         setNotifications(res.notifications);
       })();
     }
@@ -36,8 +23,6 @@ const NotificationProvider = (props) => {
   return (
     <NotificationContext.Provider
       value={{
-        eventSource,
-        setEventSource,
         notifications,
         setNotifications,
         playNotificationSound,

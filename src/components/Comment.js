@@ -72,6 +72,7 @@ const Comment = (props) => {
               background: "#F0F2F5",
               padding: "10px",
               borderRadius: "10px",
+              marginLeft: "10px",
             }}
           >
             <div className="d-flex">

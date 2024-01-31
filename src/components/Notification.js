@@ -1,10 +1,30 @@
 import { SessionContext } from "../providers/SessionProvider";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import NotificationList from "./NotificationList";
 import { Link } from "react-router-dom";
+import { EventSourceContext } from "../providers/EventSourceProvider";
+import { NotificationContext } from "../providers/NotificationProvider";
 
-const Notification = ({ notifications = [], setNotifications }) => {
+const Notification = () => {
   const { loggedInUser } = useContext(SessionContext);
+  const { eventSource } = useContext(EventSourceContext);
+  const { notifications, setNotifications, playNotificationSound } =
+    useContext(NotificationContext);
+
+  useEffect(() => {
+    if (eventSource && loggedInUser) {
+      eventSource.onmessage = (event) => {
+        const mainNotificationObj = JSON.parse(event.data);
+        if (mainNotificationObj) {
+          playNotificationSound();
+          console.log("Notification came => ", mainNotificationObj);
+          setNotifications([mainNotificationObj, ...notifications]);
+        }
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedInUser, eventSource, notifications]);
+
   if (!loggedInUser) {
     return null;
   }
@@ -13,7 +33,7 @@ const Notification = ({ notifications = [], setNotifications }) => {
     (notifyObj) => notifyObj.isRead === false
   );
 
-  const notficationSeen = async () => {
+  const onNotficationRead = async () => {
     if (unreadNotifications.length > 0) {
       // updating frontend first
       const tempNotifications = notifications.map((notify) => {
@@ -50,7 +70,7 @@ const Notification = ({ notifications = [], setNotifications }) => {
         data-bs-toggle="dropdown"
         aria-expanded="false"
         onClick={() => {
-          notficationSeen();
+          onNotficationRead();
         }}
       >
         <i className="fa-regular fa-bell" style={{ fontSize: "21px" }}></i>
@@ -66,7 +86,7 @@ const Notification = ({ notifications = [], setNotifications }) => {
         style={{
           width: "350px",
           overflowY: "auto",
-          marginRight: "-87px",
+          marginRight: "-138px",
           boxShadow:
             "0 12px 28px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.1)",
         }}
@@ -93,7 +113,10 @@ const Notification = ({ notifications = [], setNotifications }) => {
             You don't have any notifications!
           </div>
         )}
-        <NotificationList notifications={notifications} />
+        <NotificationList
+          notifications={notifications}
+          loggedInUser={loggedInUser}
+        />
       </ul>
     </div>
   );

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import NotificationList from "./NotificationList";
 import { SessionContext } from "../providers/SessionProvider";
 import CenterPageLoader from "./CenterPageLoader";
+import { getNotifications } from "../utils";
 
 const NotificationPage = () => {
   const { loggedInUser } = useContext(SessionContext);
@@ -12,12 +13,9 @@ const NotificationPage = () => {
     if (loggedInUser) {
       (async () => {
         setLoading(true);
-        const response = await fetch(
-          `${process.env.REACT_APP_SERVER_END_PONT}/get_notifications/${loggedInUser._id}`
-        );
-        const res = await response.json();
-        setLoading(false);
+        const res = await getNotifications(loggedInUser._id);
         setNotifications(res.notifications);
+        setLoading(false);
       })();
     }
   }, [loggedInUser]);
@@ -39,7 +37,10 @@ const NotificationPage = () => {
             You don't have any notifications!
           </div>
         )}
-        <NotificationList notifications={notifications} />
+        <NotificationList
+          notifications={notifications}
+          loggedInUser={loggedInUser}
+        />
       </ul>
     </div>
   );

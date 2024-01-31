@@ -27,7 +27,7 @@ const ProfileUserAvatar = ({ profilePicURL, userName, time }) => {
             }}
             className="border"
           >
-            <i className="fas fa-user-alt fa-2x text-info"></i>
+            <i className="fas fa-user-alt fa-4x text-info"></i>
           </div>
         )}
       </div>

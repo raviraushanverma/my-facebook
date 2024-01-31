@@ -17,6 +17,11 @@ button, .modal-content {
   border-radius: 0px !important;
 }
 
+.navbar {
+  padding-top: 1px !important;
+  padding-bottom: 1px !important;
+}
+
 .footer {
   background-color: #ffffff;
   color: #000000;
@@ -38,15 +43,15 @@ button, .modal-content {
 }
 
 .profile-pic-img {
-  height: 60px;
-  width: 60px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .profile-pic-img-big-size {
   height: 150px;
   width: 150px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .section {
@@ -54,7 +59,7 @@ button, .modal-content {
 }
 
 .our-container {
-  margin-top: 100px;
+  margin-top: 70px;
   margin-bottom: 40px;
 }
 
@@ -455,8 +460,8 @@ form textarea:focus::placeholder {
 
 .profile-banner {
   background-color: gray;
-  border: 1 px solid gray;
-  height: 300px;
+  border: 1px solid gray;
+  height: 350px;
   width: 100%;
   position: relative;
 }

@@ -1,54 +1,16 @@
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import { SessionContext } from "../providers/SessionProvider";
-import { useContext, useEffect } from "react";
-import {
-  NotificationContext,
-  subscribeForServerSentEvent,
-} from "../providers/NotificationProvider";
+import { useContext } from "react";
 import Notification from "./Notification";
+import UserAvatar from "./UserAvatar";
 
 const Header = () => {
   const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
-  const {
-    eventSource,
-    setEventSource,
-    notifications,
-    setNotifications,
-    playNotificationSound,
-  } = useContext(NotificationContext);
 
   const logout = () => {
-    if (eventSource) {
-      eventSource.close();
-    }
     setLoggedInUser(null);
   };
-
-  useEffect(() => {
-    if (eventSource && loggedInUser) {
-      eventSource.onopen = function (evt) {
-        console.log("SSE opened");
-      };
-
-      eventSource.onerror = function (error) {
-        console.log("SSE error", error);
-        // If Error, We are re-connecting to SSE
-        const eventSource = subscribeForServerSentEvent(loggedInUser);
-        setEventSource(eventSource);
-      };
-
-      eventSource.onmessage = (event) => {
-        const mainNotificationObj = JSON.parse(event.data);
-        if (mainNotificationObj) {
-          playNotificationSound();
-          console.log("Notification came => ", mainNotificationObj);
-          setNotifications([mainNotificationObj, ...notifications]);
-        }
-      };
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedInUser, eventSource, notifications]);
 
   return (
     <nav
@@ -63,14 +25,20 @@ const Header = () => {
           {loggedInUser ? (
             <div className="d-flex">
               <div style={{ marginRight: "15px" }}>
-                <Notification
-                  notifications={notifications}
-                  setNotifications={setNotifications}
-                />
+                <Notification />
+              </div>
+              <div style={{ marginRight: "15px" }}>
+                <Link to={`/profile/${loggedInUser._id}`}>
+                  <UserAvatar
+                    profilePicURL={loggedInUser.profilePicURL}
+                    styleForUserAvatar={{ width: "40px", height: "40px" }}
+                    styleForDefaultUserAvatar={{ fontSize: "1em" }}
+                  />
+                </Link>
               </div>
               <button
                 type="button"
-                className="btn btn-sm btn-outline-primary"
+                className="btn btn-outline-primary btn-sm"
                 onClick={() => {
                   logout();
                 }}

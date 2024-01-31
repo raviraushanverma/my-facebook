@@ -18,7 +18,6 @@ const Login = () => {
   const login = async (event) => {
     event.preventDefault();
     setAlertData({ enable: false });
-
     setLoading(true);
     const response = await apiCall({
       url: `${process.env.REACT_APP_SERVER_END_PONT}/login`,
@@ -28,14 +27,16 @@ const Login = () => {
         password: password,
       },
     });
-
     if (response) {
-      setLoggedInUser(response.user);
-      playNotificationSound();
-      document.getElementById("modalCloseButton").click();
+      if (response.user) {
+        setLoggedInUser(response.user);
+        playNotificationSound();
+        document.getElementById("modalCloseButton").click();
+      } else {
+        setAlertData({ ...response, enable: true });
+      }
     }
     setLoading(false);
-    setAlertData({ ...response, enable: true });
   };
 
   return (

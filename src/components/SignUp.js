@@ -33,9 +33,12 @@ const SignUp = () => {
       },
     });
     if (response) {
-      setLoggedInUser(response.user);
-      document.getElementById("modalCloseSignupButton").click();
-      setAlertData({ ...response, enable: true });
+      if (response.user) {
+        setLoggedInUser(response.user);
+        document.getElementById("modalCloseSignupButton").click();
+      } else {
+        setAlertData({ ...response, enable: true });
+      }
     }
     setLoading(false);
   };

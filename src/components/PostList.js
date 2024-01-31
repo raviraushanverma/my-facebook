@@ -11,18 +11,25 @@ const PostList = (props) => {
   const [postData, setPostData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (eventSource && loggedInUser) {
-      eventSource.onmessage = (event) => {
-        const eventStream = JSON.parse(event.data);
-        if (eventStream && eventStream.newPost) {
-          console.log("New Post came => ", eventStream.newPost);
-          setPostData([eventStream.newPost, ...postData]);
-        }
-      };
+  const onEventMessage = (event) => {
+    const eventStream = JSON.parse(event.data);
+    if (eventStream && eventStream.newPost) {
+      console.log("New Post came => ", eventStream.newPost);
+      setPostData([eventStream.newPost, ...postData]);
     }
+  };
+
+  useEffect(() => {
+    if (eventSource) {
+      eventSource.addEventListener("message", onEventMessage);
+    }
+    return () => {
+      if (eventSource) {
+        eventSource.removeEventListener("message", onEventMessage);
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedInUser, eventSource, postData]);
+  }, [eventSource, postData]);
 
   useEffect(() => {
     async function fetchData() {

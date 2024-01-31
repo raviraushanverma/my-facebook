@@ -11,19 +11,26 @@ const Notification = () => {
   const { notifications, setNotifications, playNotificationSound } =
     useContext(NotificationContext);
 
-  useEffect(() => {
-    if (eventSource && loggedInUser) {
-      eventSource.onmessage = (event) => {
-        const eventStream = JSON.parse(event.data);
-        if (eventStream && eventStream.newNotification) {
-          playNotificationSound();
-          console.log("New Notification came => ", eventStream.newNotification);
-          setNotifications([eventStream.newNotification, ...notifications]);
-        }
-      };
+  const onEventMessage = (event) => {
+    const eventStream = JSON.parse(event.data);
+    if (eventStream && eventStream.newNotification) {
+      playNotificationSound();
+      console.log("New Notification came => ", eventStream.newNotification);
+      setNotifications([eventStream.newNotification, ...notifications]);
     }
+  };
+
+  useEffect(() => {
+    if (eventSource) {
+      eventSource.addEventListener("message", onEventMessage);
+    }
+    return () => {
+      if (eventSource) {
+        eventSource.removeEventListener("message", onEventMessage);
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedInUser, eventSource, notifications]);
+  }, [eventSource, notifications]);
 
   if (!loggedInUser) {
     return null;

@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 import Loading from "./Loading";
+import { apiCall } from "../utils";
 
 const CreateComment = (props) => {
   const { loggedInUser } = useContext(SessionContext);
@@ -17,20 +18,16 @@ const CreateComment = (props) => {
       },
     };
     setLoading(true);
-    const commentData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/comment`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(data),
-      }
-    );
-    const response = await commentData.json();
+    const response = await apiCall({
+      url: `${process.env.REACT_APP_SERVER_END_PONT}/comment`,
+      method: "POST",
+      body: data,
+    });
     setLoading(false);
-    props.updatePostData(response.post);
-    setComment("");
+    if (response) {
+      props.updatePostData(response.post);
+      setComment("");
+    }
   };
 
   return (

@@ -5,6 +5,7 @@ import DisplayMedia from "./DisplayMedia";
 import { SessionContext } from "../providers/SessionProvider";
 import Loading from "./Loading";
 import { Link, useNavigate } from "react-router-dom";
+import { apiCall } from "../utils";
 
 const CreatePost = (props) => {
   const { loggedInUser } = useContext(SessionContext);
@@ -27,24 +28,18 @@ const CreatePost = (props) => {
       data.medias = mediaList;
     }
     setLoading(true);
-    const serverData = await fetch(
-      `${process.env.REACT_APP_SERVER_END_PONT}/post`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(data),
-      }
-    );
-    const response = await serverData.json();
-    if (response.isSuccess === true) {
+    const response = await apiCall({
+      url: `${process.env.REACT_APP_SERVER_END_PONT}/post`,
+      method: "POST",
+      body: data,
+    });
+    if (response) {
       props.updateData(response.post);
       document.getElementById("createPostModalClose").click();
+      setContent("");
+      setMediaList([]);
     }
     setLoading(false);
-    setContent("");
-    setMediaList([]);
   };
 
   const onImageDeleteHandler = (index) => {

@@ -13,7 +13,8 @@ const Profile = () => {
   const [user, setUser] = useState({});
   const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
   const [isFetchingUser, setIsFetchingUser] = useState(true);
-  const [isUpdatingFriendRequest, setIsUpdatingFriendRequest] = useState(false);
+  const [isUpdatingFriendRequestLoader, setIsUpdatingFriendRequestLoader] =
+    useState(false);
 
   const getProfilePic = () => {
     return loggedInUser && loggedInUser._id === user_id
@@ -51,6 +52,7 @@ const Profile = () => {
   };
 
   const updateFriendRequest = async (uri) => {
+    setIsUpdatingFriendRequestLoader(true);
     const response = await apiCall({
       url: `${process.env.REACT_APP_SERVER_END_PONT}/${uri}/${user_id}`,
       method: "POST",
@@ -60,9 +62,8 @@ const Profile = () => {
     });
     if (response) {
       setUser(response.user);
-      setIsUpdatingFriendRequest(false);
     }
-    setIsUpdatingFriendRequest(true);
+    setIsUpdatingFriendRequestLoader(false);
   };
 
   const mainUser =
@@ -129,9 +130,9 @@ const Profile = () => {
                   : "friend_request_send"
               );
             }}
-            disabled={isUpdatingFriendRequest}
+            disabled={isUpdatingFriendRequestLoader}
           >
-            {isUpdatingFriendRequest ? (
+            {isUpdatingFriendRequestLoader ? (
               <Loading />
             ) : (
               <>

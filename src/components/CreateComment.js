@@ -5,23 +5,27 @@ import { apiCall } from "../utils";
 
 const CreateComment = (props) => {
   const { loggedInUser } = useContext(SessionContext);
+
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState();
 
+  if (!loggedInUser) {
+    return null;
+  }
+
   const commentPost = async (event) => {
     event.preventDefault();
-    const data = {
-      postId: props.postId,
-      comments: {
-        content: comment,
-        owner: loggedInUser._id,
-      },
-    };
     setLoading(true);
     const response = await apiCall({
       url: `${process.env.REACT_APP_SERVER_END_PONT}/comment`,
       method: "POST",
-      body: data,
+      body: {
+        postId: props.postId,
+        comments: {
+          content: comment,
+          owner: loggedInUser._id,
+        },
+      },
     });
     setLoading(false);
     if (response) {

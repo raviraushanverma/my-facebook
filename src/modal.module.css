@@ -16,9 +16,8 @@
     padding: 20px;
     background: #fff;
     border-radius: 5px;
-    width: 60%;
+    width: 36vw;
     position: relative;
-    transition: all 5s ease-in-out;
 }
 
 .popup h2 {
@@ -29,9 +28,8 @@
 
 .popup .close {
     position: absolute;
-    top: -5px;
-    right: 3px;
-    transition: all 200ms;
+    top: -1px;
+    right: 9px;
     font-size: 30px;
     font-weight: bold;
     text-decoration: none;
@@ -50,6 +48,6 @@
 
 @media screen and (max-width: 700px) {
     .popup {
-        width: 80%;
+        width: 90vw;
     }
 }

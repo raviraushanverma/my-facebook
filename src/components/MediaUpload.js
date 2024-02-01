@@ -78,7 +78,7 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
       <Modal onClose={modalCloseHandler} show={visibility}>
         <section
           className="d-flex justify-content-center"
-          style={{ minHeight: "50px" }}
+          style={{ minHeight: "100px" }}
         >
           <div style={{ padding: "10px" }}>
             <input
@@ -117,6 +117,7 @@ const MediaUpload = ({ onSuccessUpload, isMultiple = true, children }) => {
                       opacity: 0.5,
                       width: "100%",
                       height: "100%",
+                      zIndex: 1,
                     }}
                   >
                     <div

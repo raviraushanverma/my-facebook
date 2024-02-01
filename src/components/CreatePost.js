@@ -124,7 +124,6 @@ const CreatePost = (props) => {
                         </div>
                       </div>
                       <textarea
-                        style={{ textTransform: "capitalize" }}
                         placeholder={`What's on your mind, ${loggedInUser.name}?`}
                         spellCheck="false"
                         id="createPostTextarea"
@@ -145,6 +144,7 @@ const CreatePost = (props) => {
                                   left: "0px",
                                   backgroundColor: "black",
                                   opacity: 0.5,
+                                  zIndex: 1,
                                 }}
                               >
                                 <button

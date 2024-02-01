@@ -23,7 +23,7 @@ const Header = () => {
         </Link>
         <div className="d-flex">
           {loggedInUser ? (
-            <div className="d-flex">
+            <div className="d-flex align-items-center">
               <div style={{ marginRight: "15px" }}>
                 <Notification />
               </div>

@@ -13,6 +13,7 @@ export const apiCall = async ({ url, method = "GET", body }) => {
       return response;
     }
   } catch (error) {
+    console.log("Error", error);
     document.getElementById("errorModalButton").click();
   }
 };

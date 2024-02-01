@@ -9,15 +9,40 @@ import { apiCall } from "../utils";
 const Notification = () => {
   const { loggedInUser } = useContext(SessionContext);
   const { eventSource } = useContext(EventSourceContext);
-  const { notifications, setNotifications, playNotificationSound } =
-    useContext(NotificationContext);
+  const {
+    notifications,
+    setNotifications,
+    playNotificationSound,
+    setNotificationAction,
+  } = useContext(NotificationContext);
 
   const onEventMessage = (event) => {
     const eventStream = JSON.parse(event.data);
-    if (eventStream && eventStream.newNotification) {
+    if (eventStream && eventStream.notificationStream) {
       playNotificationSound();
-      console.log("New Notification came => ", eventStream.newNotification);
-      setNotifications([eventStream.newNotification, ...notifications]);
+      const { notificationStream } = eventStream;
+      if (notificationStream.operationType === "insert") {
+        if (
+          notifications.findIndex(
+            (notification) =>
+              notification._id === notificationStream.newNotification._id
+          ) === -1
+        ) {
+          setNotifications([
+            notificationStream.newNotification,
+            ...notifications,
+          ]);
+        }
+      } else if (notificationStream.operationType === "delete") {
+        const tempNotifications = [...notifications];
+        const notifyObjIndex = tempNotifications.findIndex((notify) => {
+          return notify._id === notificationStream.deletedNotificationId;
+        });
+        if (notifyObjIndex !== -1) {
+          tempNotifications.splice(notifyObjIndex, 1);
+          setNotifications(tempNotifications);
+        }
+      }
     }
   };
 
@@ -118,6 +143,7 @@ const Notification = () => {
         <NotificationList
           notifications={notifications}
           loggedInUser={loggedInUser}
+          setNotificationAction={setNotificationAction}
         />
       </ul>
     </div>

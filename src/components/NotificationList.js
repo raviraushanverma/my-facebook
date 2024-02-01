@@ -3,16 +3,12 @@ import { Link } from "react-router-dom";
 import TimeAgo from "javascript-time-ago";
 import { acceptFriendRequest } from "../utils";
 
-const NotificationList = ({ notifications, loggedInUser }) => {
+const NotificationList = ({
+  notifications,
+  loggedInUser,
+  setNotificationAction,
+}) => {
   const timeAgo = new TimeAgo("en-US");
-
-  const onAcceptFriendRequest = async (userId) => {
-    const res = await acceptFriendRequest(loggedInUser._id, userId);
-    if (res) {
-      console.log("res", res);
-    }
-  };
-
   return (
     <>
       {notifications.map((notifyObj, index) => {
@@ -54,16 +50,33 @@ const NotificationList = ({ notifications, loggedInUser }) => {
                     <strong style={{ textTransform: "capitalize" }}>
                       {notifyObj.user.name}
                     </strong>
-                    &nbsp;sent you friend request
+                    &nbsp;sent you friend request&nbsp;
                     <button
                       type="button"
                       className="btn btn-primary btn-sm"
-                      onClick={() => {
-                        onAcceptFriendRequest(notifyObj.user._id);
+                      onClick={async () => {
+                        await acceptFriendRequest(
+                          loggedInUser._id,
+                          notifyObj.user._id
+                        );
+                        // setNotificationAction({
+                        //   action: "FRIEND_REQUEST_ACCEPTED",
+                        //   userId: notifyObj.user._id,
+                        // });
                       }}
                     >
                       Confirm
                     </button>
+                  </div>
+                </div>
+              )}
+              {notifyObj.action === "FRIEND_REQUEST_ACCEPTED" && (
+                <div className="complete-center">
+                  <div>
+                    <strong style={{ textTransform: "capitalize" }}>
+                      {notifyObj.user.name}
+                    </strong>
+                    &nbsp;accepted your friend request&nbsp;
                   </div>
                 </div>
               )}

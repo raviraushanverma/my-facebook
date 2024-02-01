@@ -28,13 +28,22 @@ const Header = () => {
                 <Notification />
               </div>
               <div style={{ marginRight: "15px" }}>
-                <Link to={`/profile/${loggedInUser._id}`}>
-                  <UserAvatar
-                    profilePicURL={loggedInUser.profilePicURL}
-                    styleForUserAvatar={{ width: "40px", height: "40px" }}
-                    styleForDefaultUserAvatar={{ fontSize: "1em" }}
-                  />
-                </Link>
+                <div
+                  style={{
+                    alignItems: "center",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Link to={`/profile/${loggedInUser._id}`}>
+                    <UserAvatar
+                      profilePicURL={loggedInUser.profilePicURL}
+                      styleForUserAvatar={{ width: "33px", height: "33px" }}
+                      styleForDefaultUserAvatar={{ fontSize: "1em" }}
+                    />
+                  </Link>
+                  <div>{loggedInUser.name}</div>
+                </div>
               </div>
               <button
                 type="button"

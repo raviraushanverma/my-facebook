@@ -14,9 +14,25 @@ const PostList = (props) => {
 
   const onEventMessage = (event) => {
     const eventStream = JSON.parse(event.data);
-    if (eventStream && eventStream.newPost) {
-      console.log("New Post came => ", eventStream.newPost);
-      setPostData([eventStream.newPost, ...postData]);
+    if (eventStream && eventStream.postStream) {
+      const { postStream } = eventStream;
+      if (postStream.operationType === "insert") {
+        if (
+          postData.findIndex((post) => post._id === postStream.newPost._id) ===
+          -1
+        ) {
+          setPostData([postStream.newPost, ...postData]);
+        }
+      } else if (postStream.operationType === "delete") {
+        const tempPostData = [...postData];
+        const postObjIndex = tempPostData.findIndex((notify) => {
+          return notify._id === postStream.deletedPostId;
+        });
+        if (postObjIndex !== -1) {
+          tempPostData.splice(postObjIndex, 1);
+          setPostData(tempPostData);
+        }
+      }
     }
   };
 

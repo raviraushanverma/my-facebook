@@ -6,7 +6,8 @@ import { SessionContext } from "../providers/SessionProvider";
 import MediaUpload from "./MediaUpload";
 import CenterPageLoader from "./CenterPageLoader";
 import Loading from "./Loading";
-import { apiCall } from "../utils";
+import { acceptFriendRequest, apiCall } from "../utils";
+import { NotificationContext } from "../providers/NotificationProvider";
 
 const Profile = () => {
   let { user_id } = useParams();
@@ -16,10 +17,44 @@ const Profile = () => {
   const [isUpdatingFriendRequestLoader, setIsUpdatingFriendRequestLoader] =
     useState(false);
 
+  const { notificationAction } = useContext(NotificationContext);
+
+  useEffect(() => {
+    (async () => {
+      if (
+        notificationAction &&
+        notificationAction.action === "FRIEND_REQUEST_ACCEPTED"
+      ) {
+        const res = await acceptFriendRequest(
+          loggedInUser._id,
+          notificationAction.userId
+        );
+        if (res) {
+          setUser(res.user);
+          setLoggedInUser(res.loggedInUser);
+        }
+      }
+    })();
+  }, [loggedInUser._id, notificationAction, setLoggedInUser]);
+
   const getProfilePic = () => {
     return loggedInUser && loggedInUser._id === user_id
       ? loggedInUser.profilePicURL
       : user.profilePicURL;
+  };
+
+  const onUnfriendHandler = async () => {
+    const response = await apiCall({
+      url: `${process.env.REACT_APP_SERVER_END_PONT}/unfriend/${user_id}`,
+      method: "DELETE",
+      body: {
+        loggedInUserId: loggedInUser._id,
+      },
+    });
+    if (response) {
+      setUser(response.user);
+      setLoggedInUser(response.loggedInUser);
+    }
   };
 
   useEffect(() => {
@@ -78,6 +113,8 @@ const Profile = () => {
     return null;
   }
 
+  const isMyProfile = loggedInUser && loggedInUser._id === user_id;
+
   return (
     <div className="container">
       <div className="profile-banner">
@@ -92,7 +129,7 @@ const Profile = () => {
           <ProfileUserAvatar profilePicURL={getProfilePic()} />
           <h3 className="profile-user-avatar-user-name">{user.name}</h3>
         </div>
-        {loggedInUser && loggedInUser._id === user_id ? (
+        {isMyProfile ? (
           <div
             style={{
               position: "absolute",
@@ -119,29 +156,62 @@ const Profile = () => {
             </MediaUpload>
           </div>
         ) : (
-          <button
-            style={{ width: "150px" }}
-            type="button"
-            className="btn btn-primary add-friend"
-            onClick={() => {
-              updateFriendRequest(
-                user.friendRequests[loggedInUser._id]
-                  ? "friend_request_cancel"
-                  : "friend_request_send"
-              );
-            }}
-            disabled={isUpdatingFriendRequestLoader}
-          >
-            {isUpdatingFriendRequestLoader ? (
-              <Loading />
+          <>
+            {user.friendLists[loggedInUser._id] ? (
+              <div className="dropdown add-friend">
+                <button
+                  type="button"
+                  style={{ width: "150px" }}
+                  className="btn btn-primary"
+                  id="dropdownMenuButton1"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Friends
+                </button>
+                <ul
+                  className="dropdown-menu"
+                  aria-labelledby="dropdownMenuButton1"
+                >
+                  <li>
+                    <div
+                      style={{ cursor: "pointer" }}
+                      className="dropdown-item"
+                      onClick={() => {
+                        onUnfriendHandler();
+                      }}
+                    >
+                      Unfriend
+                    </div>
+                  </li>
+                </ul>
+              </div>
             ) : (
-              <>
-                {user.friendRequests[loggedInUser._id]
-                  ? "Cancel Request"
-                  : "Add Friend"}
-              </>
+              <button
+                style={{ width: "150px" }}
+                type="button"
+                className="btn btn-primary add-friend"
+                onClick={() => {
+                  updateFriendRequest(
+                    user.friendRequests[loggedInUser._id]
+                      ? "friend_request_cancel"
+                      : "friend_request_send"
+                  );
+                }}
+                disabled={isUpdatingFriendRequestLoader}
+              >
+                {isUpdatingFriendRequestLoader ? (
+                  <Loading />
+                ) : (
+                  <>
+                    {user.friendRequests[loggedInUser._id]
+                      ? "Cancel Request"
+                      : "Add Friend"}
+                  </>
+                )}
+              </button>
             )}
-          </button>
+          </>
         )}
       </div>
       {loggedInUser && loggedInUser._id === user_id && (

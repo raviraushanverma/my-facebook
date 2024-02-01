@@ -3,13 +3,11 @@ import NotificationList from "./NotificationList";
 import { SessionContext } from "../providers/SessionProvider";
 import CenterPageLoader from "./CenterPageLoader";
 import { getNotifications } from "../utils";
-import { NotificationContext } from "../providers/NotificationProvider";
 
 const NotificationPage = () => {
-  const { loggedInUser } = useContext(SessionContext);
+  const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState();
-  const { setNotificationAction } = useContext(NotificationContext);
 
   useEffect(() => {
     if (loggedInUser) {
@@ -44,7 +42,7 @@ const NotificationPage = () => {
         <NotificationList
           notifications={notifications}
           loggedInUser={loggedInUser}
-          setNotificationAction={setNotificationAction}
+          setLoggedInUser={setLoggedInUser}
         />
       </ul>
     </div>

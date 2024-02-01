@@ -7,14 +7,10 @@ import { NotificationContext } from "../providers/NotificationProvider";
 import { apiCall } from "../utils";
 
 const Notification = () => {
-  const { loggedInUser } = useContext(SessionContext);
+  const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
   const { eventSource } = useContext(EventSourceContext);
-  const {
-    notifications,
-    setNotifications,
-    playNotificationSound,
-    setNotificationAction,
-  } = useContext(NotificationContext);
+  const { notifications, setNotifications, playNotificationSound } =
+    useContext(NotificationContext);
 
   const onEventMessage = (event) => {
     const eventStream = JSON.parse(event.data);
@@ -22,12 +18,25 @@ const Notification = () => {
       playNotificationSound();
       const { notificationStream } = eventStream;
       if (notificationStream.operationType === "insert") {
+        console.log(
+          "notificationStream.newNotification ",
+          notificationStream.newNotification
+        );
         if (
           notifications.findIndex(
             (notification) =>
               notification._id === notificationStream.newNotification._id
           ) === -1
         ) {
+          if (
+            notificationStream.newNotification.action === "FRIEND_REQUEST_CAME"
+          ) {
+            console.log(
+              "notificationStream.newNotification.owner ",
+              notificationStream.newNotification.owner
+            );
+            setLoggedInUser(notificationStream.newNotification.owner);
+          }
           setNotifications([
             notificationStream.newNotification,
             ...notifications,
@@ -143,7 +152,7 @@ const Notification = () => {
         <NotificationList
           notifications={notifications}
           loggedInUser={loggedInUser}
-          setNotificationAction={setNotificationAction}
+          setLoggedInUser={setLoggedInUser}
         />
       </ul>
     </div>

@@ -10,7 +10,6 @@ const NotificationProvider = (props) => {
   const { loggedInUser } = useContext(SessionContext);
   const [playNotificationSound] = useSound(messageAyaSound);
   const [notifications, setNotifications] = useState([]);
-  const [notificationAction, setNotificationAction] = useState({});
 
   useEffect(() => {
     if (loggedInUser) {
@@ -29,8 +28,6 @@ const NotificationProvider = (props) => {
         notifications,
         setNotifications,
         playNotificationSound,
-        notificationAction,
-        setNotificationAction,
       }}
     >
       {props.children}

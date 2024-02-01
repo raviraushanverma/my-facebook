@@ -7,7 +7,6 @@ import MediaUpload from "./MediaUpload";
 import CenterPageLoader from "./CenterPageLoader";
 import Loading from "./Loading";
 import { acceptFriendRequest, apiCall } from "../utils";
-import { NotificationContext } from "../providers/NotificationProvider";
 
 const Profile = () => {
   let { user_id } = useParams();
@@ -17,31 +16,18 @@ const Profile = () => {
   const [isUpdatingFriendRequestLoader, setIsUpdatingFriendRequestLoader] =
     useState(false);
 
-  const { notificationAction } = useContext(NotificationContext);
-
   useEffect(() => {
     (async () => {
-      if (
-        notificationAction &&
-        notificationAction.action === "FRIEND_REQUEST_ACCEPTED"
-      ) {
-        const res = await acceptFriendRequest(
-          loggedInUser._id,
-          notificationAction.userId
-        );
-        if (res) {
-          setUser(res.user);
-          setLoggedInUser(res.loggedInUser);
-        }
+      setIsFetchingUser(true);
+      const response = await apiCall({
+        url: `${process.env.REACT_APP_SERVER_END_PONT}/get_user/${user_id}`,
+      });
+      if (response) {
+        setUser(response.user);
       }
+      setIsFetchingUser(false);
     })();
-  }, [loggedInUser._id, notificationAction, setLoggedInUser]);
-
-  const getProfilePic = () => {
-    return loggedInUser && loggedInUser._id === user_id
-      ? loggedInUser.profilePicURL
-      : user.profilePicURL;
-  };
+  }, [user_id]);
 
   const onUnfriendHandler = async () => {
     const response = await apiCall({
@@ -52,25 +38,9 @@ const Profile = () => {
       },
     });
     if (response) {
-      setUser(response.user);
       setLoggedInUser(response.loggedInUser);
     }
   };
-
-  useEffect(() => {
-    setIsFetchingUser(true);
-    async function fetchData() {
-      const response = await apiCall({
-        url: `${process.env.REACT_APP_SERVER_END_PONT}/get_user/${user_id}`,
-      });
-      if (response) {
-        setUser(response.user);
-      }
-
-      setIsFetchingUser(false);
-    }
-    fetchData();
-  }, [user_id]);
 
   const onProfileUploadHandler = async (media, fieldName) => {
     const response = await apiCall({
@@ -80,7 +50,6 @@ const Profile = () => {
         [fieldName]: media[0],
       },
     });
-
     if (response) {
       setLoggedInUser({ ...loggedInUser, [fieldName]: media[0] });
     }
@@ -96,9 +65,15 @@ const Profile = () => {
       },
     });
     if (response) {
-      setUser(response.user);
+      setLoggedInUser(response.loggedInUser);
     }
     setIsUpdatingFriendRequestLoader(false);
+  };
+
+  const getProfilePic = () => {
+    return loggedInUser && loggedInUser._id === user_id
+      ? loggedInUser.profilePicURL
+      : user.profilePicURL;
   };
 
   const mainUser =
@@ -157,7 +132,8 @@ const Profile = () => {
           </div>
         ) : (
           <>
-            {user.friendLists[loggedInUser._id] ? (
+            {loggedInUser?.friends[user._id]?.state ===
+            "FRIEND_REQUEST_CONFIRM" ? (
               <div className="dropdown add-friend">
                 <button
                   type="button"
@@ -187,29 +163,60 @@ const Profile = () => {
                 </ul>
               </div>
             ) : (
-              <button
-                style={{ width: "150px" }}
-                type="button"
-                className="btn btn-primary add-friend"
-                onClick={() => {
-                  updateFriendRequest(
-                    user.friendRequests[loggedInUser._id]
-                      ? "friend_request_cancel"
-                      : "friend_request_send"
-                  );
-                }}
-                disabled={isUpdatingFriendRequestLoader}
-              >
-                {isUpdatingFriendRequestLoader ? (
-                  <Loading />
+              <>
+                {loggedInUser?.friends[user._id]?.state ===
+                "FRIEND_REQUEST_CAME" ? (
+                  <button
+                    style={{ width: "150px" }}
+                    type="button"
+                    className="btn btn-primary add-friend"
+                    disabled={isUpdatingFriendRequestLoader}
+                    onClick={async () => {
+                      setIsUpdatingFriendRequestLoader(true);
+                      const res = await acceptFriendRequest(
+                        loggedInUser._id,
+                        user._id
+                      );
+                      if (res) {
+                        setLoggedInUser(res.loggedInUser);
+                      }
+                      setIsUpdatingFriendRequestLoader(false);
+                    }}
+                  >
+                    {isUpdatingFriendRequestLoader ? (
+                      <Loading />
+                    ) : (
+                      " Accept Friend Request"
+                    )}
+                  </button>
                 ) : (
-                  <>
-                    {user.friendRequests[loggedInUser._id]
-                      ? "Cancel Request"
-                      : "Add Friend"}
-                  </>
+                  <button
+                    style={{ width: "150px" }}
+                    type="button"
+                    className="btn btn-primary add-friend"
+                    onClick={() => {
+                      updateFriendRequest(
+                        loggedInUser?.friends[user._id]?.state ===
+                          "FRIEND_REQUEST_SENT"
+                          ? "friend_request_cancel"
+                          : "friend_request_send"
+                      );
+                    }}
+                    disabled={isUpdatingFriendRequestLoader}
+                  >
+                    {isUpdatingFriendRequestLoader ? (
+                      <Loading />
+                    ) : (
+                      <>
+                        {loggedInUser?.friends[user._id]?.state ===
+                        "FRIEND_REQUEST_SENT"
+                          ? "Cancel Request"
+                          : "Add Friend"}
+                      </>
+                    )}
+                  </button>
                 )}
-              </button>
+              </>
             )}
           </>
         )}

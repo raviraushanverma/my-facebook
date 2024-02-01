@@ -3,11 +3,7 @@ import { Link } from "react-router-dom";
 import TimeAgo from "javascript-time-ago";
 import { acceptFriendRequest } from "../utils";
 
-const NotificationList = ({
-  notifications,
-  loggedInUser,
-  setNotificationAction,
-}) => {
+const NotificationList = ({ notifications, loggedInUser, setLoggedInUser }) => {
   const timeAgo = new TimeAgo("en-US");
   return (
     <>
@@ -44,7 +40,7 @@ const NotificationList = ({
                   </div>
                 </div>
               )}
-              {notifyObj.action === "FRIEND_REQUEST_SENT" && (
+              {notifyObj.action === "FRIEND_REQUEST_CAME" && (
                 <div className="complete-center">
                   <div>
                     <strong style={{ textTransform: "capitalize" }}>
@@ -55,14 +51,13 @@ const NotificationList = ({
                       type="button"
                       className="btn btn-primary btn-sm"
                       onClick={async () => {
-                        await acceptFriendRequest(
+                        const res = await acceptFriendRequest(
                           loggedInUser._id,
                           notifyObj.user._id
                         );
-                        // setNotificationAction({
-                        //   action: "FRIEND_REQUEST_ACCEPTED",
-                        //   userId: notifyObj.user._id,
-                        // });
+                        if (res) {
+                          setLoggedInUser(res.loggedInUser);
+                        }
                       }}
                     >
                       Confirm

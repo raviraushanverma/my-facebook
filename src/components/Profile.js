@@ -131,6 +131,7 @@ const Profile = () => {
             </MediaUpload>
           </div>
         ) : (
+          //
           <>
             {loggedInUser?.friends[user._id]?.state ===
             "FRIEND_REQUEST_CONFIRM" ? (
@@ -138,12 +139,12 @@ const Profile = () => {
                 <button
                   type="button"
                   style={{ width: "150px" }}
-                  className="btn btn-primary"
+                  className="btn btn-light-sm"
                   id="dropdownMenuButton1"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Friends
+                  <i className="fa-solid fa-user-group"></i> Friends
                 </button>
                 <ul
                   className="dropdown-menu"
@@ -219,6 +220,7 @@ const Profile = () => {
               </>
             )}
           </>
+          //
         )}
       </div>
       {loggedInUser && loggedInUser._id === user_id && (

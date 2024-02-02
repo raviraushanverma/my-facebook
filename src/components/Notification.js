@@ -105,6 +105,7 @@ const Notification = () => {
         id="dropdownMenu2"
         data-bs-toggle="dropdown"
         aria-expanded="false"
+        title="notification"
         onClick={() => {
           onNotficationRead();
         }}

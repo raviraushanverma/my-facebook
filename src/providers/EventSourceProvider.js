@@ -1,49 +1,46 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { SessionContext } from "./SessionProvider";
+import { createContext, useEffect, useState } from "react";
 
 export const EventSourceContext = createContext();
 
-export const subscribeForServerSentEvent = (loggedInUser) => {
+export const subscribeForServerSentEvent = () => {
   return new EventSource(
-    `${process.env.REACT_APP_SERVER_END_PONT}/subscribe_for_events/${loggedInUser._id}`
+    `${process.env.REACT_APP_SERVER_END_PONT}/subscribe_for_live_updates/`,
+    { withCredentials: true }
   );
 };
 
 const EventSourceProvider = (props) => {
-  const { loggedInUser } = useContext(SessionContext);
   const [eventSource, setEventSource] = useState(null);
 
   useEffect(() => {
+    const newEventSource = subscribeForServerSentEvent();
+    setEventSource(newEventSource);
+    return () => {
+      newEventSource.close();
+    };
+  }, []);
+
+  useEffect(() => {
     let timeoutID;
-    const eventSourceObj = (() => {
-      if (loggedInUser) {
-        const eventSource = subscribeForServerSentEvent(loggedInUser);
+    if (eventSource) {
+      eventSource.onopen = function (evt) {
+        console.log("SSE opened");
+      };
+      eventSource.onerror = function (error) {
+        console.log("SSE error", error);
+        timeoutID = setTimeout(() => {
+          // If Error, We are re-connecting to SSE after each 5 minitues
+          console.log("Re-connecting to SSE");
+          const eventSource = subscribeForServerSentEvent();
+          setEventSource(eventSource);
+        }, 5 * 60000);
+      };
+    }
 
-        eventSource.onopen = function (evt) {
-          console.log("SSE opened");
-        };
-
-        eventSource.onerror = function (error) {
-          console.log("SSE error", error);
-          timeoutID = setTimeout(() => {
-            // If Error, We are re-connecting to SSE after each 5 minitues
-            console.log("Re-connecting to SSE");
-            const eventSource = subscribeForServerSentEvent(loggedInUser);
-            setEventSource(eventSource);
-          }, 5 * 60000);
-        };
-
-        setEventSource(eventSource);
-        return eventSource;
-      }
-    })();
     return () => {
       clearTimeout(timeoutID);
-      if (eventSourceObj) {
-        eventSourceObj.close();
-      }
     };
-  }, [loggedInUser]);
+  }, [eventSource]);
 
   return (
     <EventSourceContext.Provider

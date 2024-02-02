@@ -9,6 +9,7 @@ import SessionProvider from "./providers/SessionProvider";
 import NotificationProvider from "./providers/NotificationProvider";
 import NotificationPage from "./components/NotificationPage";
 import EventSourceProvider from "./providers/EventSourceProvider";
+import Friends from "./components/Friends";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/profile/:user_id" element={<Profile />} />
                 <Route path="/notifications" element={<NotificationPage />} />
+                <Route path="/friends" element={<Friends />} />
               </Routes>
             </div>
             <Footer />

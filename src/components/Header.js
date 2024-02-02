@@ -1,15 +1,28 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 import { SessionContext } from "../providers/SessionProvider";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Notification from "./Notification";
 import UserAvatar from "./UserAvatar";
+import Loading from "./Loading";
+import { apiCall } from "../utils";
 
 const Header = () => {
   const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const navigate = useNavigate();
 
-  const logout = () => {
-    setLoggedInUser(null);
+  const logout = async () => {
+    setIsLoggingOut(true);
+    const res = await apiCall({
+      url: `${process.env.REACT_APP_SERVER_END_PONT}/logout`,
+    });
+    setIsLoggingOut(false);
+    if (res) {
+      localStorage.removeItem("user");
+      setLoggedInUser(null);
+      navigate("/");
+    }
   };
 
   return (
@@ -35,7 +48,7 @@ const Header = () => {
                     flexDirection: "column",
                   }}
                 >
-                  <Link to={`/profile/${loggedInUser._id}`}>
+                  <Link to={`/profile/${loggedInUser._id}`} title="Account">
                     <UserAvatar
                       profilePicURL={loggedInUser.profilePicURL}
                       styleForUserAvatar={{ width: "33px", height: "33px" }}
@@ -52,7 +65,8 @@ const Header = () => {
                   logout();
                 }}
               >
-                Logout
+                {isLoggingOut ? <Loading /> : "Logout"}
+                <i className="fa-solid fa-right-from-bracket"></i>
               </button>
             </div>
           ) : (

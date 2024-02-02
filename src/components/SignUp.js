@@ -5,6 +5,10 @@ import Loading from "./Loading";
 import { useContext } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 import { apiCall } from "../utils";
+import {
+  EventSourceContext,
+  subscribeForServerSentEvent,
+} from "../providers/EventSourceProvider";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -15,6 +19,7 @@ const SignUp = () => {
   const [alertData, setAlertData] = useState({ enable: false });
   const [loading, setLoading] = useState();
   const { setLoggedInUser } = useContext(SessionContext);
+  const { setEventSource } = useContext(EventSourceContext);
 
   const signUp = async (event) => {
     event.preventDefault();
@@ -35,6 +40,7 @@ const SignUp = () => {
     if (response) {
       if (response.user) {
         setLoggedInUser(response.user);
+        setEventSource(subscribeForServerSentEvent());
         document.getElementById("modalCloseSignupButton").click();
       } else {
         setAlertData({ ...response, enable: true });

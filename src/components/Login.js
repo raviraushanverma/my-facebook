@@ -6,9 +6,14 @@ import { useContext } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 import { NotificationContext } from "../providers/NotificationProvider";
 import { apiCall } from "../utils";
+import {
+  EventSourceContext,
+  subscribeForServerSentEvent,
+} from "../providers/EventSourceProvider";
 
 const Login = () => {
   const { setLoggedInUser } = useContext(SessionContext);
+  const { setEventSource } = useContext(EventSourceContext);
   const { playNotificationSound } = useContext(NotificationContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,6 +35,7 @@ const Login = () => {
     if (response) {
       if (response.user) {
         setLoggedInUser(response.user);
+        setEventSource(subscribeForServerSentEvent());
         playNotificationSound();
         document.getElementById("modalCloseButton").click();
       } else {

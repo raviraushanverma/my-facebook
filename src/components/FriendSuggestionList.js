@@ -22,6 +22,9 @@ const FriendSuggestionList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedInUser]);
 
+  if (newFriendSuggestionList.length === 0) {
+    return null;
+  }
   return (
     <FriendSlider
       heading={"People you may know"}

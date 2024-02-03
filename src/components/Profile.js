@@ -175,7 +175,7 @@ const Profile = () => {
                   <FriendSlider
                     friendList={friendList}
                     isFriendStateButtonShow={false}
-                    heading={"Friends"}
+                    heading={`Friends (${friendList.length})`}
                   />
                 </div>
               )}

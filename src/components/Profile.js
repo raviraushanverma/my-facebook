@@ -19,13 +19,13 @@ const Profile = () => {
   useEffect(() => {
     (async () => {
       const response = await apiCall({
-        url: `${process.env.REACT_APP_SERVER_END_PONT}/get_friend_list/${loggedInUser._id}`,
+        url: `${process.env.REACT_APP_SERVER_END_PONT}/get_friend_list/${user._id}`,
       });
       if (response) {
         setFriendList(response.users);
       }
     })();
-  }, [loggedInUser]);
+  }, [user]);
 
   useEffect(() => {
     (async () => {

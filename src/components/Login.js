@@ -26,11 +26,6 @@ const Login = () => {
     setLoading(true);
     const response = await apiCall({
       url: `${process.env.REACT_APP_SERVER_END_PONT}/login`,
-      method: "POST",
-      body: {
-        email: email,
-        password: password,
-      },
     });
     if (response) {
       if (response.user) {

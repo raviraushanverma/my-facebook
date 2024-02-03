@@ -160,13 +160,15 @@ const Profile = () => {
               {new Date(user.birth).toDateString()}
             </div>
           </div>
-          <div style={{ marginTop: "10px", border: "1px solid lightgray" }}>
-            <FriendSlider
-              friendList={friendList}
-              isFriendStateButtonShow={false}
-              heading={"My Friends"}
-            />
-          </div>
+          {friendList.length > 0 && (
+            <div style={{ marginTop: "10px", border: "1px solid lightgray" }}>
+              <FriendSlider
+                friendList={friendList}
+                isFriendStateButtonShow={false}
+                heading={"My Friends"}
+              />
+            </div>
+          )}
         </div>
         <div className="col-md-7">
           <PostList

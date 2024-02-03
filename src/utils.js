@@ -2,7 +2,6 @@ export const apiCall = async ({ url, method = "GET", body }) => {
   try {
     const options = {
       method,
-      credentials: "include",
       headers: { "Content-Type": "application/json" },
     };
     if (body) {

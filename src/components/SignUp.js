@@ -39,6 +39,7 @@ const SignUp = () => {
     });
     if (response) {
       if (response.user) {
+        localStorage.setItem("user", JSON.stringify(response.user));
         setLoggedInUser(response.user);
         setEventSource(subscribeForServerSentEvent());
         document.getElementById("modalCloseSignupButton").click();

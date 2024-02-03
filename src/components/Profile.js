@@ -71,7 +71,10 @@ const Profile = () => {
     return null;
   }
 
-  const isMyProfile = loggedInUser && loggedInUser._id === user_id;
+  const isMyProfile = loggedInUser?._id === user_id;
+
+  const isMyFriend =
+    loggedInUser?.friends[user._id]?.state === "FRIEND_REQUEST_CONFIRM";
 
   return (
     <div className="container">
@@ -134,49 +137,69 @@ const Profile = () => {
         </MediaUpload>
       )}
       <div className="row" style={{ marginTop: "96px" }}>
-        <div className="col-md-5">
-          <div
-            style={{
-              background: "white",
-              marginBottom: "10px",
-            }}
-          >
-            <div style={{ textTransform: "capitalize" }}>
-              <i
-                className="fa-solid fa-signature"
-                style={{ padding: "20px" }}
-              ></i>
-              {user.name}
+        {(isMyProfile || (!isMyProfile && isMyFriend)) && (
+          <div className="col-md-5">
+            <div
+              style={{
+                background: "white",
+                marginBottom: "10px",
+              }}
+            >
+              <div style={{ textTransform: "capitalize" }}>
+                <i
+                  className="fa-solid fa-signature"
+                  style={{ padding: "20px" }}
+                ></i>
+                {user.name}
+              </div>
+              <div>
+                <i
+                  className="fa-solid fa-mobile"
+                  style={{ padding: "20px" }}
+                ></i>
+                {user.mobileNumber}
+              </div>
+              <div>
+                <i
+                  className="fa-solid fa-calendar-days"
+                  style={{ padding: "20px" }}
+                ></i>
+                {new Date(user.birth).toDateString()}
+              </div>
             </div>
-            <div>
-              <i className="fa-solid fa-mobile" style={{ padding: "20px" }}></i>
-              {user.mobileNumber}
-            </div>
-            <div>
-              <i
-                className="fa-solid fa-calendar-days"
-                style={{ padding: "20px" }}
-              ></i>
-              {new Date(user.birth).toDateString()}
+            {(isMyProfile || (!isMyProfile && isMyFriend)) &&
+              friendList.length > 0 && (
+                <div
+                  style={{ marginTop: "10px", border: "1px solid lightgray" }}
+                >
+                  <FriendSlider
+                    friendList={friendList}
+                    isFriendStateButtonShow={false}
+                    heading={"Friends"}
+                  />
+                </div>
+              )}
+          </div>
+        )}
+        {(isMyProfile || (!isMyProfile && isMyFriend)) && (
+          <div className="col-md-7">
+            <PostList
+              isProfilePage={true}
+              profilePicURL={getProfilePic()}
+              userId={user_id}
+            />
+          </div>
+        )}
+        {!(isMyProfile || (!isMyProfile && isMyFriend)) && (
+          <div className="complete-center" style={{ height: "100px" }}>
+            <div style={{ textAlign: "center" }}>
+              <div>
+                <i class="fa-solid fa-6x fa-lock"></i>
+              </div>
+              <div>This account is locked!</div>
             </div>
           </div>
-          {friendList.length > 0 && (
-            <div style={{ marginTop: "10px", border: "1px solid lightgray" }}>
-              <FriendSlider
-                friendList={friendList}
-                isFriendStateButtonShow={false}
-                heading={"My Friends"}
-              />
-            </div>
-          )}
-        </div>
-        <div className="col-md-7">
-          <PostList
-            isProfilePage={true}
-            profilePicURL={getProfilePic()}
-            userId={user_id}
-          />
-        </div>
+        )}
       </div>
     </div>
   );

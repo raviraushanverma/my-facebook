@@ -2,9 +2,13 @@ import { createContext, useEffect, useState } from "react";
 
 export const SessionContext = createContext();
 
+export const getLoggedInUserFromLocalStorage = () => {
+  return JSON.parse(localStorage.getItem("user"));
+};
+
 const SessionProvider = (props) => {
   const [loggedInUser, setLoggedInUser] = useState(
-    JSON.parse(localStorage.getItem("user"))
+    getLoggedInUserFromLocalStorage()
   );
 
   useEffect(() => {

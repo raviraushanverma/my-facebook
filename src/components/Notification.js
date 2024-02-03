@@ -1,59 +1,73 @@
 import { SessionContext } from "../providers/SessionProvider";
-import { useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import NotificationList from "./NotificationList";
 import { Link } from "react-router-dom";
 import { EventSourceContext } from "../providers/EventSourceProvider";
 import { NotificationContext } from "../providers/NotificationProvider";
 import { apiCall } from "../utils";
+import { PostContext } from "../providers/PostProvider";
 
 const Notification = () => {
   const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
+  const { postList, setPostList } = useContext(PostContext);
   const { eventSource } = useContext(EventSourceContext);
   const { notifications, setNotifications, playNotificationSound } =
     useContext(NotificationContext);
 
-  const onEventMessage = (event) => {
-    const eventStream = JSON.parse(event.data);
-    if (eventStream && eventStream.notificationStream) {
-      playNotificationSound();
-      const { notificationStream } = eventStream;
-      if (notificationStream.operationType === "insert") {
-        console.log(
-          "notificationStream.newNotification ",
-          notificationStream.newNotification
-        );
-        if (
-          notifications.findIndex(
+  const onEventMessage = useCallback(
+    (event) => {
+      const eventStream = JSON.parse(event.data);
+      if (eventStream && eventStream.notificationStream) {
+        playNotificationSound();
+        const { notificationStream } = eventStream;
+        if (notificationStream.operationType === "insert") {
+          console.log(
+            "notificationStream.newNotification ",
+            notificationStream.newNotification
+          );
+          const isThisNotificationAlreadyExist = notifications.find(
             (notification) =>
               notification._id === notificationStream.newNotification._id
-          ) === -1
-        ) {
-          if (
-            notificationStream.newNotification.action === "FRIEND_REQUEST_CAME"
-          ) {
-            console.log(
-              "notificationStream.newNotification.owner ",
-              notificationStream.newNotification.owner
-            );
+          );
+          if (!isThisNotificationAlreadyExist) {
             setLoggedInUser(notificationStream.newNotification.owner);
+            setNotifications([
+              notificationStream.newNotification,
+              ...notifications,
+            ]);
+            if (notificationStream.newNotification.post) {
+              const tempPost = postList.map((post) => {
+                if (post._id === notificationStream.newNotification.post._id) {
+                  return notificationStream.newNotification.post;
+                } else {
+                  return { ...post };
+                }
+              });
+              setPostList(tempPost);
+            }
           }
-          setNotifications([
-            notificationStream.newNotification,
-            ...notifications,
-          ]);
-        }
-      } else if (notificationStream.operationType === "delete") {
-        const tempNotifications = [...notifications];
-        const notifyObjIndex = tempNotifications.findIndex((notify) => {
-          return notify._id === notificationStream.deletedNotificationId;
-        });
-        if (notifyObjIndex !== -1) {
-          tempNotifications.splice(notifyObjIndex, 1);
-          setNotifications(tempNotifications);
+        } else if (notificationStream.operationType === "delete") {
+          const tempNotifications = [...notifications];
+          const notifyObjIndex = tempNotifications.findIndex((notify) => {
+            return notify._id === notificationStream.deletedNotificationId;
+          });
+          if (notifyObjIndex !== -1) {
+            tempNotifications.splice(notifyObjIndex, 1);
+            setNotifications(tempNotifications);
+            setLoggedInUser(notificationStream.owner);
+          }
         }
       }
-    }
-  };
+    },
+    [
+      notifications,
+      playNotificationSound,
+      postList,
+      setLoggedInUser,
+      setNotifications,
+      setPostList,
+    ]
+  );
 
   useEffect(() => {
     if (eventSource) {
@@ -64,8 +78,7 @@ const Notification = () => {
         eventSource.removeEventListener("message", onEventMessage);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventSource, notifications]);
+  }, [eventSource, notifications, postList, loggedInUser, onEventMessage]);
 
   if (!loggedInUser) {
     return null;
@@ -123,7 +136,7 @@ const Notification = () => {
         style={{
           width: "350px",
           overflowY: "auto",
-          marginRight: "-138px",
+          marginRight: "-104px",
           boxShadow:
             "0 12px 28px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.1)",
         }}

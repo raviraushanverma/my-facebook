@@ -510,8 +510,6 @@ form textarea:focus::placeholder {
 
 @media only screen and (max-width: 750px) {
   .profile-side-pannel {
-    display: flex;
-    justify-content: center;
-    position: static;
+    display: none;
   }
 }

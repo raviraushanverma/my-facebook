@@ -1,12 +1,13 @@
 import { createContext, useEffect, useState } from "react";
+import { getLoggedInUserFromLocalStorage } from "./SessionProvider";
 
 export const EventSourceContext = createContext();
 
 export const subscribeForServerSentEvent = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const loggedInUser = getLoggedInUserFromLocalStorage();
   return new EventSource(
     `${process.env.REACT_APP_SERVER_END_PONT}/subscribe_for_live_updates/${
-      user ? user._id : ""
+      loggedInUser ? loggedInUser._id : ""
     }`
   );
 };
@@ -30,8 +31,8 @@ const EventSourceProvider = (props) => {
       };
       eventSource.onerror = function (error) {
         console.log("SSE error", error);
-        const user = JSON.parse(localStorage.getItem("user"));
-        if (user) {
+        const loggedInUser = getLoggedInUserFromLocalStorage();
+        if (loggedInUser) {
           timeoutID = setTimeout(() => {
             // If Error, We are re-connecting to SSE after each 5 minitues
             console.log("Re-connecting to SSE");

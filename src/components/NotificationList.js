@@ -75,6 +75,16 @@ const NotificationList = ({ notifications, loggedInUser, setLoggedInUser }) => {
                   </div>
                 </div>
               )}
+              {notifyObj.action === "UNFRIEND" && (
+                <div className="complete-center">
+                  <div>
+                    <strong style={{ textTransform: "capitalize" }}>
+                      {notifyObj.user.name}
+                    </strong>
+                    &nbsp;unfriend you!
+                  </div>
+                </div>
+              )}
             </div>
             <div style={{ color: "gray", fontSize: "11px" }}>
               {timeAgo.format(new Date(notifyObj.created))}

@@ -33,9 +33,6 @@ const Header = () => {
           {loggedInUser ? (
             <div className="d-flex align-items-center">
               <div style={{ marginRight: "15px" }}>
-                <Notification />
-              </div>
-              <div style={{ marginRight: "15px" }}>
                 <div
                   style={{
                     alignItems: "center",
@@ -53,6 +50,9 @@ const Header = () => {
                   <div>{loggedInUser.name}</div>
                 </div>
               </div>
+              <div style={{ marginRight: "15px" }}>
+                <Notification />
+              </div>
               <button
                 type="button"
                 className="btn btn-outline-primary btn-sm"
@@ -60,7 +60,7 @@ const Header = () => {
                   logout();
                 }}
               >
-                Logout
+                Logout &nbsp;
                 <i className="fa-solid fa-right-from-bracket"></i>
               </button>
             </div>

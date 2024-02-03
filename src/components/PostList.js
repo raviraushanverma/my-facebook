@@ -2,51 +2,14 @@ import { useState, useEffect, useContext } from "react";
 import Post from "./Post";
 import CreatePost from "./CreatePost";
 import PostSkeleton from "./PostSkeleton";
-import { EventSourceContext } from "../providers/EventSourceProvider";
 import { SessionContext } from "../providers/SessionProvider";
 import { apiCall } from "../utils";
+import { PostContext } from "../providers/PostProvider";
 
 const PostList = (props) => {
-  const { eventSource } = useContext(EventSourceContext);
+  const { postList, setPostList } = useContext(PostContext);
   const { loggedInUser } = useContext(SessionContext);
-  const [postData, setPostData] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const onEventMessage = (event) => {
-    const eventStream = JSON.parse(event.data);
-    if (eventStream && eventStream.postStream) {
-      const { postStream } = eventStream;
-      if (postStream.operationType === "insert") {
-        if (
-          postData.findIndex((post) => post._id === postStream.newPost._id) ===
-          -1
-        ) {
-          setPostData([postStream.newPost, ...postData]);
-        }
-      } else if (postStream.operationType === "delete") {
-        const tempPostData = [...postData];
-        const postObjIndex = tempPostData.findIndex((notify) => {
-          return notify._id === postStream.deletedPostId;
-        });
-        if (postObjIndex !== -1) {
-          tempPostData.splice(postObjIndex, 1);
-          setPostData(tempPostData);
-        }
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (eventSource) {
-      eventSource.addEventListener("message", onEventMessage);
-    }
-    return () => {
-      if (eventSource) {
-        eventSource.removeEventListener("message", onEventMessage);
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventSource, postData]);
 
   useEffect(() => {
     async function fetchData() {
@@ -59,10 +22,11 @@ const PostList = (props) => {
       });
       setLoading(false);
       if (response) {
-        setPostData(response.posts);
+        setPostList(response.posts);
       }
     }
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.isProfilePage, props.userId]);
 
   if (!loggedInUser) {
@@ -70,35 +34,35 @@ const PostList = (props) => {
   }
 
   const updatePostData = (postObj) => {
-    const tempData = postData.map((element) => {
+    const tempData = postList.map((element) => {
       if (element._id === postObj._id) {
         return postObj;
       } else {
         return element;
       }
     });
-    setPostData(tempData);
+    setPostList(tempData);
   };
 
   const updateData = (post) => {
-    const tempData = [...postData];
+    const tempData = [...postList];
     tempData.unshift(post);
-    setPostData(tempData);
+    setPostList(tempData);
   };
 
   const deletePostData = (postId) => {
-    const newData = [...postData];
+    const newData = [...postList];
     const index = newData.findIndex((element) => {
       return element._id === postId;
     });
     if (loggedInUser._id === newData[index].owner._id) {
       newData.splice(index, 1);
-      setPostData(newData);
+      setPostList(newData);
     }
   };
 
   const likeUpdateData = (postId, userId) => {
-    const newData = [...postData];
+    const newData = [...postList];
     const index = newData.findIndex((element) => {
       return element._id === postId;
     });
@@ -107,11 +71,11 @@ const PostList = (props) => {
     } else {
       delete newData[index].likes[loggedInUser._id];
     }
-    setPostData(newData);
+    setPostList(newData);
   };
 
   const editComment = (postId, commentId, editContent) => {
-    const newData = [...postData];
+    const newData = [...postList];
     const postIndex = newData.findIndex((element) => {
       return element._id === postId;
     });
@@ -120,7 +84,7 @@ const PostList = (props) => {
       return element._id === commentId;
     });
     newData[postIndex].comments[commentIndex].content = editContent;
-    setPostData(newData);
+    setPostList(newData);
   };
 
   return (
@@ -148,7 +112,7 @@ const PostList = (props) => {
         <PostSkeleton />
       ) : (
         <div>
-          {postData.map((postObj, index) => {
+          {postList.map((postObj, index) => {
             return (
               <div
                 style={{

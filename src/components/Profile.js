@@ -5,16 +5,27 @@ import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 import MediaUpload from "./MediaUpload";
 import CenterPageLoader from "./CenterPageLoader";
-import Loading from "./Loading";
-import { acceptFriendRequest, apiCall } from "../utils";
+import { apiCall } from "../utils";
+import FriendStateButton from "./FriendStateButton";
+import FriendSlider from "./FriendSlider";
 
 const Profile = () => {
   let { user_id } = useParams();
   const [user, setUser] = useState({});
   const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
   const [isFetchingUser, setIsFetchingUser] = useState(true);
-  const [isUpdatingFriendRequestLoader, setIsUpdatingFriendRequestLoader] =
-    useState(false);
+  const [friendList, setFriendList] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await apiCall({
+        url: `${process.env.REACT_APP_SERVER_END_PONT}/get_friend_list/${loggedInUser._id}`,
+      });
+      if (response) {
+        setFriendList(response.users);
+      }
+    })();
+  }, [loggedInUser]);
 
   useEffect(() => {
     (async () => {
@@ -29,19 +40,6 @@ const Profile = () => {
     })();
   }, [user_id]);
 
-  const onUnfriendHandler = async () => {
-    const response = await apiCall({
-      url: `${process.env.REACT_APP_SERVER_END_PONT}/unfriend/${user_id}`,
-      method: "DELETE",
-      body: {
-        loggedInUserId: loggedInUser._id,
-      },
-    });
-    if (response) {
-      setLoggedInUser(response.loggedInUser);
-    }
-  };
-
   const onProfileUploadHandler = async (media, fieldName) => {
     const response = await apiCall({
       url: `${process.env.REACT_APP_SERVER_END_PONT}/profile_update/${loggedInUser._id}`,
@@ -53,21 +51,6 @@ const Profile = () => {
     if (response) {
       setLoggedInUser({ ...loggedInUser, [fieldName]: media[0] });
     }
-  };
-
-  const updateFriendRequest = async (uri) => {
-    setIsUpdatingFriendRequestLoader(true);
-    const response = await apiCall({
-      url: `${process.env.REACT_APP_SERVER_END_PONT}/${uri}/${user_id}`,
-      method: "POST",
-      body: {
-        loggedInUserId: loggedInUser._id,
-      },
-    });
-    if (response) {
-      setLoggedInUser(response.loggedInUser);
-    }
-    setIsUpdatingFriendRequestLoader(false);
   };
 
   const getProfilePic = () => {
@@ -131,96 +114,7 @@ const Profile = () => {
             </MediaUpload>
           </div>
         ) : (
-          //
-          <>
-            {loggedInUser?.friends[user._id]?.state ===
-            "FRIEND_REQUEST_CONFIRM" ? (
-              <div className="dropdown add-friend">
-                <button
-                  type="button"
-                  style={{ width: "150px" }}
-                  className="btn btn-light-sm"
-                  id="dropdownMenuButton1"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <i className="fa-solid fa-user-group"></i> Friends
-                </button>
-                <ul
-                  className="dropdown-menu"
-                  aria-labelledby="dropdownMenuButton1"
-                >
-                  <li>
-                    <div
-                      style={{ cursor: "pointer" }}
-                      className="dropdown-item"
-                      onClick={() => {
-                        onUnfriendHandler();
-                      }}
-                    >
-                      Unfriend
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            ) : (
-              <>
-                {loggedInUser?.friends[user._id]?.state ===
-                "FRIEND_REQUEST_CAME" ? (
-                  <button
-                    style={{ width: "150px" }}
-                    type="button"
-                    className="btn btn-primary add-friend"
-                    disabled={isUpdatingFriendRequestLoader}
-                    onClick={async () => {
-                      setIsUpdatingFriendRequestLoader(true);
-                      const res = await acceptFriendRequest(
-                        loggedInUser._id,
-                        user._id
-                      );
-                      if (res) {
-                        setLoggedInUser(res.loggedInUser);
-                      }
-                      setIsUpdatingFriendRequestLoader(false);
-                    }}
-                  >
-                    {isUpdatingFriendRequestLoader ? (
-                      <Loading />
-                    ) : (
-                      " Accept Friend Request"
-                    )}
-                  </button>
-                ) : (
-                  <button
-                    style={{ width: "150px" }}
-                    type="button"
-                    className="btn btn-primary add-friend"
-                    onClick={() => {
-                      updateFriendRequest(
-                        loggedInUser?.friends[user._id]?.state ===
-                          "FRIEND_REQUEST_SENT"
-                          ? "friend_request_cancel"
-                          : "friend_request_send"
-                      );
-                    }}
-                    disabled={isUpdatingFriendRequestLoader}
-                  >
-                    {isUpdatingFriendRequestLoader ? (
-                      <Loading />
-                    ) : (
-                      <>
-                        {loggedInUser?.friends[user._id]?.state ===
-                        "FRIEND_REQUEST_SENT"
-                          ? "Cancel Request"
-                          : "Add Friend"}
-                      </>
-                    )}
-                  </button>
-                )}
-              </>
-            )}
-          </>
-          //
+          <FriendStateButton user={user} />
         )}
       </div>
       {loggedInUser && loggedInUser._id === user_id && (
@@ -240,7 +134,7 @@ const Profile = () => {
         </MediaUpload>
       )}
       <div className="row" style={{ marginTop: "96px" }}>
-        <div className="col-md-3">
+        <div className="col-md-5">
           <div
             style={{
               background: "white",
@@ -266,8 +160,15 @@ const Profile = () => {
               {new Date(user.birth).toDateString()}
             </div>
           </div>
+          <div style={{ marginTop: "10px", border: "1px solid lightgray" }}>
+            <FriendSlider
+              friendList={friendList}
+              isFriendStateButtonShow={false}
+              heading={"My Friends"}
+            />
+          </div>
         </div>
-        <div className="col-md-6">
+        <div className="col-md-7">
           <PostList
             isProfilePage={true}
             profilePicURL={getProfilePic()}

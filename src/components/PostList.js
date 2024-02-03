@@ -5,6 +5,7 @@ import PostSkeleton from "./PostSkeleton";
 import { SessionContext } from "../providers/SessionProvider";
 import { apiCall } from "../utils";
 import { PostContext } from "../providers/PostProvider";
+import FriendSuggestionList from "./FriendSuggestionList";
 
 const PostList = (props) => {
   const { postList, setPostList } = useContext(PostContext);
@@ -16,7 +17,7 @@ const PostList = (props) => {
       setLoading(true);
       const url = props.isProfilePage
         ? `${process.env.REACT_APP_SERVER_END_PONT}/profile_post/${props.userId}`
-        : `${process.env.REACT_APP_SERVER_END_PONT}/posts`;
+        : `${process.env.REACT_APP_SERVER_END_PONT}/posts/${loggedInUser._id}`;
       const response = await apiCall({
         url,
       });
@@ -108,6 +109,7 @@ const PostList = (props) => {
           />
         </div>
       )}
+      {postList.length === 0 && <FriendSuggestionList />}
       {loading ? (
         <PostSkeleton />
       ) : (

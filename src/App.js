@@ -10,6 +10,7 @@ import NotificationProvider from "./providers/NotificationProvider";
 import NotificationPage from "./components/NotificationPage";
 import EventSourceProvider from "./providers/EventSourceProvider";
 import PostProvider from "./providers/PostProvider";
+import FriendSuggestionProvider from "./providers/FriendSuggestionProvider";
 
 function App() {
   return (
@@ -17,19 +18,24 @@ function App() {
       <SessionProvider>
         <EventSourceProvider>
           <PostProvider>
-            <NotificationProvider>
-              <Header />
-              <Login />
-              <SignUp />
-              <div className="our-container">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/profile/:user_id" element={<Profile />} />
-                  <Route path="/notifications" element={<NotificationPage />} />
-                </Routes>
-              </div>
-              <Footer />
-            </NotificationProvider>
+            <FriendSuggestionProvider>
+              <NotificationProvider>
+                <Header />
+                <Login />
+                <SignUp />
+                <div className="our-container">
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/profile/:user_id" element={<Profile />} />
+                    <Route
+                      path="/notifications"
+                      element={<NotificationPage />}
+                    />
+                  </Routes>
+                </div>
+                <Footer />
+              </NotificationProvider>
+            </FriendSuggestionProvider>
           </PostProvider>
         </EventSourceProvider>
       </SessionProvider>

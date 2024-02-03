@@ -3,9 +3,12 @@ import { Link } from "react-router-dom";
 import { SessionContext } from "../providers/SessionProvider";
 import { useContext } from "react";
 import ProfileUserAvatar from "./ProfileUserAvatar";
+import { PostContext } from "../providers/PostProvider";
+import FriendSuggestionList from "./FriendSuggestionList";
 
 const Timeline = (props) => {
   const { loggedInUser } = useContext(SessionContext);
+  const { postList } = useContext(PostContext);
   if (!loggedInUser) {
     return null;
   }
@@ -13,7 +16,7 @@ const Timeline = (props) => {
     <div className="container">
       <div className="row">
         <div className="col-md-3">
-          <div className="profile-side-pannel">
+          <div className="left-side-pannel">
             <div>
               <Link
                 to={`/profile/${loggedInUser._id}`}
@@ -33,7 +36,9 @@ const Timeline = (props) => {
             profilePicURL={loggedInUser.profilePicURL}
           />
         </div>
-        <div className="col-md-3"></div>
+        <div className="col-md-3">
+          {postList.length > 0 && <FriendSuggestionList />}
+        </div>
       </div>
     </div>
   );

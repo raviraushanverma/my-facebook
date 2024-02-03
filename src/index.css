@@ -502,14 +502,14 @@ form textarea:focus::placeholder {
   align-items: center;
 }
 
-.profile-side-pannel {
+.left-side-pannel {
   display: flex;
   justify-content: center;
   position: fixed;
 }
 
 @media only screen and (max-width: 750px) {
-  .profile-side-pannel {
+  .left-side-pannel {
     display: none;
   }
 }

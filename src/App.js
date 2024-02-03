@@ -11,6 +11,7 @@ import NotificationPage from "./components/NotificationPage";
 import EventSourceProvider from "./providers/EventSourceProvider";
 import PostProvider from "./providers/PostProvider";
 import FriendSuggestionProvider from "./providers/FriendSuggestionProvider";
+import PostDetail from "./components/PostDetail";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/profile/:user_id" element={<Profile />} />
+                    <Route path="/post/:post_id" element={<PostDetail />} />
                     <Route
                       path="/notifications"
                       element={<NotificationPage />}

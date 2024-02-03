@@ -20,26 +20,32 @@ const NotificationList = ({ notifications, loggedInUser, setLoggedInUser }) => {
                   <UserAvatar profilePicURL={notifyObj.user.profilePicURL} />
                 </Link>
               </div>
-              {notifyObj.action === "POST_LIKED" && (
-                <div className="complete-center">
-                  <div>
-                    <strong style={{ textTransform: "capitalize" }}>
-                      {notifyObj.user.name}
-                    </strong>
-                    &nbsp;Likes your post
+              {notifyObj.action === "POST_LIKED" &&
+                notifyObj.user &&
+                notifyObj.post && (
+                  <div className="complete-center">
+                    <div>
+                      <strong style={{ textTransform: "capitalize" }}>
+                        {notifyObj.user.name}
+                      </strong>
+                      &nbsp;Likes your{" "}
+                      <Link to={`/post/${notifyObj.post._id}`}>post</Link>
+                    </div>
                   </div>
-                </div>
-              )}
-              {notifyObj.action === "POST_COMMENTED" && (
-                <div className="complete-center">
-                  <div>
-                    <strong style={{ textTransform: "capitalize" }}>
-                      {notifyObj.user.name}
-                    </strong>
-                    &nbsp;commented on your post
+                )}
+              {notifyObj.action === "POST_COMMENTED" &&
+                notifyObj.user &&
+                notifyObj.post && (
+                  <div className="complete-center">
+                    <div>
+                      <strong style={{ textTransform: "capitalize" }}>
+                        {notifyObj.user.name}
+                      </strong>
+                      &nbsp;commented on your
+                      <Link to={`/post/${notifyObj.post._id}`}>post</Link>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
               {notifyObj.action === "FRIEND_REQUEST_CAME" && (
                 <div className="complete-center">
                   <div>

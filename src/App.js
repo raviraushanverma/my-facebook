@@ -69,13 +69,25 @@ function App() {
               ></button>
             </div>
             <div className="modal-body">
-              <div className="complete-center" style={{ height: "62px" }}>
+              <div className="complete-center" style={{ height: "30vh" }}>
                 <div style={{ textAlign: "center" }}>
                   <i
                     style={{ fontSize: "50px", color: "red" }}
                     className="fa-solid fa-circle-exclamation"
                   ></i>
                   <div>Something went wrong!</div>
+                  <div style={{ margin: "20px" }}>
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => {
+                        localStorage.clear();
+                        window.location.reload();
+                      }}
+                    >
+                      Clear the cache and relogin!
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

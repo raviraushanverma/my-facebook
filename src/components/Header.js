@@ -47,7 +47,6 @@ const Header = () => {
                       styleForDefaultUserAvatar={{ fontSize: "1em" }}
                     />
                   </Link>
-                  <div>{loggedInUser.name}</div>
                 </div>
               </div>
               <div style={{ marginRight: "15px" }}>

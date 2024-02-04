@@ -7,7 +7,7 @@ import { NotificationContext } from "../providers/NotificationProvider";
 import { apiCall } from "../utils";
 import { PostContext } from "../providers/PostProvider";
 
-const Notification = () => {
+const NotificationDropdown = () => {
   const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
   const { postList, setPostList } = useContext(PostContext);
   const { eventSource } = useContext(EventSourceContext);
@@ -173,4 +173,4 @@ const Notification = () => {
   );
 };
 
-export default Notification;
+export default NotificationDropdown;

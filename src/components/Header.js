@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 import { SessionContext } from "../providers/SessionProvider";
 import { useContext } from "react";
-import Notification from "./Notification";
+import NotificationDropdown from "./NotificationDropdown";
 import UserAvatar from "./UserAvatar";
 import { EventSourceContext } from "../providers/EventSourceProvider";
 
@@ -51,7 +51,7 @@ const Header = () => {
                 </div>
               </div>
               <div style={{ marginRight: "15px" }}>
-                <Notification />
+                <NotificationDropdown />
               </div>
               <button
                 type="button"

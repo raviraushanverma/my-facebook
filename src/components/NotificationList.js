@@ -1,13 +1,87 @@
 import UserAvatar from "./UserAvatar";
 import { Link } from "react-router-dom";
-import TimeAgo from "javascript-time-ago";
 import { acceptFriendRequest } from "../utils";
+import TimeAgo from "javascript-time-ago";
 
 const NotificationList = ({ notifications, loggedInUser, setLoggedInUser }) => {
   const timeAgo = new TimeAgo("en-US");
+
+  const onAcceptFriendRequest = async (userId) => {
+    const res = await acceptFriendRequest(loggedInUser._id, userId);
+    if (res) {
+      setLoggedInUser(res.loggedInUser);
+    }
+  };
+
+  const filterNotifications = [];
+
+  notifications.forEach((notifyObj) => {
+    if (notifyObj.user) {
+      if (notifyObj.action === "POST_LIKED" && notifyObj.post) {
+        filterNotifications.push({
+          ...notifyObj,
+          children: (
+            <>
+              &nbsp;Likes your{" "}
+              <Link
+                className="post-highlight"
+                to={`/post/${notifyObj.post._id}`}
+              >
+                post
+              </Link>
+            </>
+          ),
+        });
+      } else if (notifyObj.action === "POST_COMMENTED" && notifyObj.post) {
+        filterNotifications.push({
+          ...notifyObj,
+          children: (
+            <>
+              &nbsp;commented on your&nbsp;
+              <Link
+                className="post-highlight"
+                to={`/post/${notifyObj.post._id}/#${notifyObj.comment}`}
+              >
+                post
+              </Link>
+            </>
+          ),
+        });
+      } else if (notifyObj.action === "FRIEND_REQUEST_CAME") {
+        filterNotifications.push({
+          ...notifyObj,
+          children: (
+            <>
+              &nbsp;sent you friend request&nbsp;
+              <button
+                type="button"
+                className="btn btn-primary btn-sm"
+                onClick={async () => {
+                  onAcceptFriendRequest(notifyObj.user._id);
+                }}
+              >
+                Confirm
+              </button>
+            </>
+          ),
+        });
+      } else if (notifyObj.action === "FRIEND_REQUEST_ACCEPTED") {
+        filterNotifications.push({
+          ...notifyObj,
+          children: <>&nbsp;accepted your friend request&nbsp;</>,
+        });
+      } else if (notifyObj.action === "UNFRIEND") {
+        filterNotifications.push({
+          ...notifyObj,
+          children: <>&nbsp;unfriend you!</>,
+        });
+      }
+    }
+  });
+
   return (
     <>
-      {notifications.map((notifyObj, index) => {
+      {filterNotifications.map((notifyObj, index) => {
         return (
           <li
             key={notifyObj.created}
@@ -20,77 +94,14 @@ const NotificationList = ({ notifications, loggedInUser, setLoggedInUser }) => {
                   <UserAvatar profilePicURL={notifyObj.user.profilePicURL} />
                 </Link>
               </div>
-              {notifyObj.action === "POST_LIKED" &&
-                notifyObj.user &&
-                notifyObj.post && (
-                  <div className="complete-center">
-                    <div>
-                      <strong style={{ textTransform: "capitalize" }}>
-                        {notifyObj.user.name}
-                      </strong>
-                      &nbsp;Likes your{" "}
-                      <Link to={`/post/${notifyObj.post._id}`}>post</Link>
-                    </div>
-                  </div>
-                )}
-              {notifyObj.action === "POST_COMMENTED" &&
-                notifyObj.user &&
-                notifyObj.post && (
-                  <div className="complete-center">
-                    <div>
-                      <strong style={{ textTransform: "capitalize" }}>
-                        {notifyObj.user.name}
-                      </strong>
-                      &nbsp;commented on your
-                      <Link to={`/post/${notifyObj.post._id}`}>post</Link>
-                    </div>
-                  </div>
-                )}
-              {notifyObj.action === "FRIEND_REQUEST_CAME" && (
-                <div className="complete-center">
-                  <div>
-                    <strong style={{ textTransform: "capitalize" }}>
-                      {notifyObj.user.name}
-                    </strong>
-                    &nbsp;sent you friend request&nbsp;
-                    <button
-                      type="button"
-                      className="btn btn-primary btn-sm"
-                      onClick={async () => {
-                        const res = await acceptFriendRequest(
-                          loggedInUser._id,
-                          notifyObj.user._id
-                        );
-                        if (res) {
-                          setLoggedInUser(res.loggedInUser);
-                        }
-                      }}
-                    >
-                      Confirm
-                    </button>
-                  </div>
+              <div className="complete-center">
+                <div>
+                  <strong style={{ textTransform: "capitalize" }}>
+                    {notifyObj.user.name}
+                  </strong>
+                  {notifyObj.children}
                 </div>
-              )}
-              {notifyObj.action === "FRIEND_REQUEST_ACCEPTED" && (
-                <div className="complete-center">
-                  <div>
-                    <strong style={{ textTransform: "capitalize" }}>
-                      {notifyObj.user.name}
-                    </strong>
-                    &nbsp;accepted your friend request&nbsp;
-                  </div>
-                </div>
-              )}
-              {notifyObj.action === "UNFRIEND" && (
-                <div className="complete-center">
-                  <div>
-                    <strong style={{ textTransform: "capitalize" }}>
-                      {notifyObj.user.name}
-                    </strong>
-                    &nbsp;unfriend you!
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
             <div style={{ color: "gray", fontSize: "11px" }}>
               {timeAgo.format(new Date(notifyObj.created))}

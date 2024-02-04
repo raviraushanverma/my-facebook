@@ -3,9 +3,15 @@ import { useParams } from "react-router-dom";
 import { apiCall } from "../utils";
 import CenterPageLoader from "./CenterPageLoader";
 import Post from "./Post";
+import { useLocation } from "react-router-dom";
 import { SessionContext } from "../providers/SessionProvider";
 
 const PostDetail = () => {
+  const { hash } = useLocation();
+  let hashLocation;
+  if (hash) {
+    hashLocation = hash.split("#")[1];
+  }
   let { post_id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -19,10 +25,19 @@ const PostDetail = () => {
       });
       if (response) {
         setPost(response.post);
+        setTimeout(() => {
+          if (hashLocation) {
+            const element = document.getElementById(hashLocation);
+            if (element) {
+              // 👇 Will scroll smoothly to the top of the next section
+              element.scrollIntoView({ behavior: "smooth" });
+            }
+          }
+        });
       }
       setLoading(false);
     })();
-  }, [post_id]);
+  }, [hashLocation, post_id]);
 
   const likeUpdateData = (postId, userId) => {
     const tempPost = { ...post };
@@ -66,6 +81,7 @@ const PostDetail = () => {
             deletePostData={() => setPost(null)}
             likeUpdateData={likeUpdateData}
             editComment={editComment}
+            commentHash={hashLocation}
           />
         </div>
         <div className="col-md-2"></div>

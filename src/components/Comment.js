@@ -46,99 +46,103 @@ const Comment = (props) => {
   };
 
   return (
-    <>
-      <div style={{ padding: "10px" }}>
-        <div className="d-flex">
-          <Link to={`/profile/${props.comment.owner._id}`}>
-            <UserAvatar
-              profilePicURL={
-                loggedInUser._id === props.comment.owner._id
-                  ? loggedInUser.profilePicURL
-                  : props.comment.owner.profilePicURL
-              }
-            />
-          </Link>
-          <div
-            style={{
-              background: "#F0F2F5",
-              padding: "10px",
-              borderRadius: "10px",
-              marginLeft: "10px",
-            }}
-          >
-            <div className="d-flex">
-              <h6>{props.comment.owner.name}</h6>
-              <span
-                style={{
-                  color: "gray",
-                  marginLeft: "10px",
-                  marginTop: "-2px",
+    <div
+      style={{ padding: "10px" }}
+      id={props.comment._id}
+      className={`${
+        props.commentHash === props.comment._id ? "comment-highlight" : ""
+      }`}
+    >
+      <div className="d-flex">
+        <Link to={`/profile/${props.comment.owner._id}`}>
+          <UserAvatar
+            profilePicURL={
+              loggedInUser._id === props.comment.owner._id
+                ? loggedInUser.profilePicURL
+                : props.comment.owner.profilePicURL
+            }
+          />
+        </Link>
+        <div
+          style={{
+            background: "#F0F2F5",
+            padding: "10px",
+            borderRadius: "10px",
+            marginLeft: "10px",
+          }}
+        >
+          <div className="d-flex">
+            <h6>{props.comment.owner.name}</h6>
+            <span
+              style={{
+                color: "gray",
+                marginLeft: "10px",
+                marginTop: "-2px",
+              }}
+            >
+              {timeAgo.format(new Date(props.comment.created))}
+            </span>
+          </div>
+          {isEditing ? (
+            <form
+              onSubmit={(event) => {
+                editCommentData(event);
+                setIsEditing(false);
+              }}
+            >
+              <input
+                className="form-control no-border"
+                type="text"
+                value={editContent}
+                onChange={(event) => {
+                  setAditContent(event.target.value);
                 }}
-              >
-                {timeAgo.format(new Date(props.comment.created))}
-              </span>
+              />
+            </form>
+          ) : (
+            <div>
+              <span>{props.comment.content}</span>
             </div>
-            {isEditing ? (
-              <form
-                onSubmit={(event) => {
-                  editCommentData(event);
-                  setIsEditing(false);
+          )}
+          {loggedInUser._id === props.comment.owner._id && (
+            <div style={{ float: "right" }}>
+              <button
+                type="button"
+                className="btn btn-light"
+                onClick={() => {
+                  if (isEditing === false) {
+                    setIsEditing(true);
+                  } else {
+                    setIsEditing(false);
+                  }
                 }}
               >
-                <input
-                  className="form-control no-border"
-                  type="text"
-                  value={editContent}
-                  onChange={(event) => {
-                    setAditContent(event.target.value);
-                  }}
-                />
-              </form>
-            ) : (
-              <div>
-                <span>{props.comment.content}</span>
-              </div>
-            )}
-            {loggedInUser._id === props.comment.owner._id && (
-              <div style={{ float: "right" }}>
-                <button
-                  type="button"
-                  className="btn btn-light"
-                  onClick={() => {
-                    if (isEditing === false) {
-                      setIsEditing(true);
-                    } else {
-                      setIsEditing(false);
-                    }
-                  }}
-                >
+                <i
+                  style={{ cursor: "pointer" }}
+                  className="fa-regular fa-pen-to-square"
+                ></i>
+              </button>
+              <button
+                type="button"
+                className="btn btn-light"
+                onClick={() => {
+                  commentDeleteData();
+                }}
+              >
+                {commentDeleteLoading ? (
+                  <Loading />
+                ) : (
                   <i
                     style={{ cursor: "pointer" }}
-                    className="fa-regular fa-pen-to-square"
+                    className="fa-solid fa-trash-can"
                   ></i>
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-light"
-                  onClick={() => {
-                    commentDeleteData();
-                  }}
-                >
-                  {commentDeleteLoading ? (
-                    <Loading />
-                  ) : (
-                    <i
-                      style={{ cursor: "pointer" }}
-                      className="fa-solid fa-trash-can"
-                    ></i>
-                  )}
-                </button>
-              </div>
-            )}
-          </div>
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

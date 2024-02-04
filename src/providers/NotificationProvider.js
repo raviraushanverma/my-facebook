@@ -14,7 +14,7 @@ const NotificationProvider = (props) => {
   useEffect(() => {
     if (loggedInUser) {
       (async () => {
-        const res = await getNotifications(loggedInUser._id, 10);
+        const res = await getNotifications(loggedInUser._id, 1000);
         if (res) {
           setNotifications(res.notifications);
         }

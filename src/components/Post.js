@@ -129,7 +129,7 @@ const Post = (props) => {
         updatePostData={props.updatePostData}
         commentUpdate={props.commentUpdate}
       />
-      <div style={{ maxHeight: "500px", overflowY: "auto" }}>
+      <div className={`${props.isCommentScroll ? "comment-scroll" : ""}`}>
         {props.postObj.comments.map((comment, index) => {
           return (
             <Comment
@@ -138,6 +138,7 @@ const Post = (props) => {
               postId={props.postObj._id}
               commentUpdate={props.updatePostData}
               editComment={props.editComment}
+              commentHash={props.commentHash}
             />
           );
         })}

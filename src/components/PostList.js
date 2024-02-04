@@ -123,6 +123,7 @@ const PostList = (props) => {
                 key={index}
               >
                 <Post
+                  isCommentScroll={true}
                   postObj={postObj}
                   updatePostData={updatePostData}
                   deletePostData={deletePostData}

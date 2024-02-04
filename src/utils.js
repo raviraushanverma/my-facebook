@@ -10,14 +10,12 @@ export const apiCall = async ({ url, method = "GET", body }) => {
     const jsonRes = await fetch(url, options);
     const response = await jsonRes.json();
     if (!response.isSuccess) {
-      document.getElementById("errorModalButton").click();
       return false;
     } else {
       return response;
     }
   } catch (error) {
-    console.log("Error", error);
-    document.getElementById("errorModalButton").click();
+    console.log("Error while calling API =>", error);
   }
 };
 

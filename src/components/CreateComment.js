@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext, useState, forwardRef } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 import Loading from "./Loading";
 import { apiCall } from "../utils";
 
-const CreateComment = (props) => {
+const CreateComment = forwardRef((props, ref) => {
   const { loggedInUser } = useContext(SessionContext);
 
   const [comment, setComment] = useState("");
@@ -52,6 +52,7 @@ const CreateComment = (props) => {
               className="create-comment-textbox"
               placeholder="Write a comment ?"
               required
+              ref={ref}
               value={comment}
               onChange={(event) => {
                 setComment(event.target.value);
@@ -70,5 +71,5 @@ const CreateComment = (props) => {
       <hr style={{ margin: "0px" }}></hr>
     </div>
   );
-};
+});
 export default CreateComment;

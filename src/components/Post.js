@@ -3,14 +3,14 @@ import CreateComment from "./CreateComment";
 import Comment from "./Comment";
 import AssetViewer from "./AssetViewer";
 import { SessionContext } from "../providers/SessionProvider";
-import { useContext, useState } from "react";
+import { useContext, useState, createRef } from "react";
 import Loading from "./Loading";
 import { Link } from "react-router-dom";
 import { apiCall } from "../utils";
 
 const Post = (props) => {
+  const commentInputRef = createRef();
   const { loggedInUser } = useContext(SessionContext);
-
   const [deleteLoading, setDeleteLoading] = useState();
 
   const postLike = async () => {
@@ -119,20 +119,23 @@ const Post = (props) => {
           </span>
           <span className="text">Like</span>
         </button>
-        <button className="btn btn-light" type="button">
+        <button
+          className="btn btn-light"
+          type="button"
+          onClick={() => {
+            if (commentInputRef) {
+              commentInputRef.current.focus();
+            }
+          }}
+        >
           <span className="post-button">
             <i className="fa-regular fa-comment"></i>
           </span>
           <span>Comment</span>
         </button>
-        <button className="btn btn-light">
-          <span className="post-button">
-            <i className="fa-solid fa-share"></i>
-          </span>
-          <span className="text">Share</span>
-        </button>
       </div>
       <CreateComment
+        ref={commentInputRef}
         postId={props.postObj._id}
         updatePostData={props.updatePostData}
         commentUpdate={props.commentUpdate}

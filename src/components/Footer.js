@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
     <footer className="footer">
-      <div>Created By: Ravi Raushan</div>
+      <div style={{ color: "gray" }}>ApnaFacebook © 2024</div>
     </footer>
   );
 };

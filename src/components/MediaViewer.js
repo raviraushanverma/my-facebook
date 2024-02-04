@@ -2,7 +2,7 @@ import VideoWidget from "./VideoWidget";
 
 const MediaViewer = (props) => {
   const { url, secure_url, resource_type } = props.media;
-  const imgStyle = { ...props.style, opacity: "0.7" };
+  const imgStyle = { ...props.style };
 
   const src = process.env.NODE_ENV === "development" ? url : secure_url;
 

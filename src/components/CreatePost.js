@@ -35,9 +35,9 @@ const CreatePost = (props) => {
     });
     if (response) {
       props.updateData(response.post);
-      document.getElementById("createPostModalClose").click();
       setContent("");
       setMediaList([]);
+      document.getElementById("createPostModalClose").click();
     }
     setLoading(false);
   };

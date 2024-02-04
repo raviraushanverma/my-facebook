@@ -14,23 +14,27 @@ const Post = (props) => {
   const [deleteLoading, setDeleteLoading] = useState();
 
   const postLike = async () => {
-    props.likeUpdateData(props.postObj._id, loggedInUser._id);
-    await apiCall({
-      url: `${process.env.REACT_APP_SERVER_END_PONT}/post_like/${props.postObj._id}/${loggedInUser._id}/${loggedInUser.name}`,
-      method: "POST",
-    });
+    if (loggedInUser) {
+      props.likeUpdateData(props.postObj._id, loggedInUser._id);
+      await apiCall({
+        url: `${process.env.REACT_APP_SERVER_END_PONT}/post_like/${props.postObj._id}/${loggedInUser._id}/${loggedInUser.name}`,
+        method: "POST",
+      });
+    }
   };
 
   const postDelete = async () => {
-    setDeleteLoading(true);
-    const response = await apiCall({
-      url: `${process.env.REACT_APP_SERVER_END_PONT}/post_delete/${props.postObj._id}/${loggedInUser._id}`,
-      method: "DELETE",
-    });
-    if (response) {
-      props.deletePostData(props.postObj._id);
+    if (loggedInUser) {
+      setDeleteLoading(true);
+      const response = await apiCall({
+        url: `${process.env.REACT_APP_SERVER_END_PONT}/post_delete/${props.postObj._id}/${loggedInUser._id}`,
+        method: "DELETE",
+      });
+      if (response) {
+        props.deletePostData(props.postObj._id);
+      }
+      setDeleteLoading(false);
     }
-    setDeleteLoading(false);
   };
 
   return (
@@ -42,13 +46,13 @@ const Post = (props) => {
               userName={props.postObj.owner.name}
               time={props.postObj.created}
               profilePicURL={
-                loggedInUser._id === props.postObj.owner._id
-                  ? loggedInUser.profilePicURL
+                loggedInUser?._id === props.postObj.owner._id
+                  ? loggedInUser?.profilePicURL
                   : props.postObj.owner.profilePicURL
               }
             />
           </Link>
-          {loggedInUser._id === props.postObj.owner._id && (
+          {loggedInUser?._id === props.postObj.owner._id && (
             <div>
               <button
                 type="button"
@@ -74,7 +78,11 @@ const Post = (props) => {
             <div className="post-content">{props.postObj.content}</div>
           </div>
           <div>
-            <AssetViewer assets={props.postObj.medias} />
+            {props.isMediaDisplay && (
+              <Link to={`/post/${props.postObj._id}`}>
+                <AssetViewer assets={props.postObj.medias} />
+              </Link>
+            )}
           </div>
         </section>
       </div>
@@ -103,7 +111,7 @@ const Post = (props) => {
           }}
         >
           <span className="post-button">
-            {props.postObj.likes[loggedInUser._id] === undefined ? (
+            {props.postObj.likes[loggedInUser?._id] === undefined ? (
               <i className="fa-regular fa-thumbs-up"></i>
             ) : (
               <i className="fa-solid fa-thumbs-up"></i>

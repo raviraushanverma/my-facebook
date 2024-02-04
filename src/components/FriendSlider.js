@@ -7,17 +7,12 @@ function Arrow({ children, disabled, onClick }) {
   return (
     <div
       style={{
-        cursor: "pointer",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        right: "1%",
         opacity: disabled ? "0" : "1",
         userSelect: "none",
       }}
     >
       <button
-        className="btn btn-info rounded-circle btn-sm"
+        className="btn btn-info rounded-circle"
         disabled={disabled}
         onClick={onClick}
       >
@@ -89,25 +84,38 @@ const UserCard = ({ user, isFriendStateButtonShow }) => {
   const isDev = process.env.NODE_ENV === "development";
 
   return (
-    <div className="card" style={{ width: "200px", margin: "10px" }}>
+    <div
+      className="card"
+      style={{
+        width: "200px",
+        margin: "10px",
+        borderRadius: "0px",
+        boxShadow:
+          "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+      }}
+    >
       <div
         style={{
-          width: "100%",
           height: "100px",
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
         }}
       >
-        <Link to={`/profile/${user._id}`}>
+        <Link to={`/profile/${user._id}`} style={{ width: "100%" }}>
           {profilePicURL ? (
             <img
               src={isDev ? profilePicURL.url : profilePicURL.secure_url}
-              className="card-img-top"
+              className="card-img-top friend-slider-image"
               alt="user-card"
             />
           ) : (
-            <div>
+            <div
+              className="card-img-top friend-slider-image"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <i
                 style={{
                   fontSize: "5em",
@@ -120,7 +128,7 @@ const UserCard = ({ user, isFriendStateButtonShow }) => {
       </div>
       <div
         className="card-body"
-        style={{ textAlign: "center", marginTop: "38px" }}
+        style={{ textAlign: "center", marginTop: "80px" }}
       >
         <h6 className="card-title" style={{ textTransform: "capitalize" }}>
           {user.name}
@@ -138,7 +146,7 @@ const FriendSlider = ({
   isFriendStateButtonShow = true,
 }) => {
   return (
-    <div style={{ border: "1px solid lightgray", marginBottom: "10px" }}>
+    <div style={{ marginBottom: "10px" }}>
       <ScrollMenu
         Header={
           <h6 style={{ textAlign: "center", paddingTop: "10px" }}>{heading}</h6>

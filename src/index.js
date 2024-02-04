@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "../node_modules/bootstrap/dist/css/bootstrap.css";
 import "../node_modules/bootstrap/dist/js/bootstrap";
 import "../node_modules/react-horizontal-scrolling-menu/dist/styles.css";
+import "../node_modules/react-responsive-carousel/lib/styles/carousel.min.css";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";

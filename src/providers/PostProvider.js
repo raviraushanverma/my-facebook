@@ -5,6 +5,7 @@ export const PostContext = createContext();
 
 const PostProvider = (props) => {
   const [postList, setPostList] = useState([]);
+  const [isPostListLoading, setIsPostListLoading] = useState(true);
   const { eventSource } = useContext(EventSourceContext);
 
   const onEventMessage = (event) => {
@@ -44,7 +45,9 @@ const PostProvider = (props) => {
   }, [eventSource, postList]);
 
   return (
-    <PostContext.Provider value={{ postList, setPostList }}>
+    <PostContext.Provider
+      value={{ postList, setPostList, isPostListLoading, setIsPostListLoading }}
+    >
       {props.children}
     </PostContext.Provider>
   );

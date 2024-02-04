@@ -527,3 +527,43 @@ form textarea:focus::placeholder {
 .comment-highlight {
   border: 2px solid darkgray;
 }
+
+.friend-slider-image {
+  height: 188px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  border-bottom: 1px solid lightgray;
+}
+
+.react-horizontal-scrolling-menu--inner-wrapper {
+  position: relative;
+}
+
+.react-horizontal-scrolling-menu--arrow-left {
+  position: absolute;
+  left: 0;
+  top: 45%;
+  z-index: 1;
+}
+
+.react-horizontal-scrolling-menu--arrow-right {
+  position: absolute;
+  right: 0;
+  top: 45%;
+  z-index: 1;
+}
+
+.post-detail-scroll {
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+}
+
+.carousel .slider-wrapper {
+  height: auto;
+}
+
+.carousel .slide img, .carousel .slide video {
+  height: calc(100vh - 110px);
+  object-fit: cover;
+}

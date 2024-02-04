@@ -1,9 +1,6 @@
-import { useNavigate } from "react-router-dom";
 import VideoWidget from "./VideoWidget";
 
 const MediaViewer = (props) => {
-  const navigate = useNavigate();
-
   const { url, secure_url, resource_type } = props.media;
   const imgStyle = { ...props.style, opacity: "0.7" };
 
@@ -18,9 +15,6 @@ const MediaViewer = (props) => {
             style={props.style}
             src={src}
             alt="post-data"
-            onClick={() => {
-              navigate("/photo");
-            }}
           />
         ) : (
           <VideoWidget url={src} style={imgStyle} />
@@ -37,9 +31,6 @@ const MediaViewer = (props) => {
           style={imgStyle}
           src={src}
           alt="post-data"
-          onClick={() => {
-            navigate("/photo");
-          }}
         />
       ) : (
         <VideoWidget url={src} style={imgStyle} />

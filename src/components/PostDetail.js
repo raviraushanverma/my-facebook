@@ -5,6 +5,7 @@ import CenterPageLoader from "./CenterPageLoader";
 import Post from "./Post";
 import { useLocation } from "react-router-dom";
 import { SessionContext } from "../providers/SessionProvider";
+import MediaCarousel from "./MediaCarousel";
 
 const PostDetail = () => {
   const { hash } = useLocation();
@@ -70,21 +71,30 @@ const PostDetail = () => {
     );
   }
 
+  const postJSX = (
+    <Post
+      postObj={post}
+      updatePostData={(postObj) => setPost(postObj)}
+      deletePostData={() => setPost(null)}
+      likeUpdateData={likeUpdateData}
+      editComment={editComment}
+      commentHash={hashLocation}
+    />
+  );
+
   return (
-    <div className="container">
+    <div className="container post-detail-page">
       <div className="row featurette">
-        <div className="col-md-2"></div>
-        <div className="col-md-8">
-          <Post
-            postObj={post}
-            updatePostData={(postObj) => setPost(postObj)}
-            deletePostData={() => setPost(null)}
-            likeUpdateData={likeUpdateData}
-            editComment={editComment}
-            commentHash={hashLocation}
-          />
-        </div>
-        <div className="col-md-2"></div>
+        {post.medias.length > 0 ? (
+          <>
+            <div className="col-md-8">
+              <MediaCarousel mediaList={post.medias} />
+            </div>
+            <div className="col-md-4 post-detail-scroll">{postJSX}</div>
+          </>
+        ) : (
+          <div className="offset-md-3 col-md-6">{postJSX}</div>
+        )}
       </div>
     </div>
   );

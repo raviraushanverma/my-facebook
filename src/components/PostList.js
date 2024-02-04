@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import Post from "./Post";
 import CreatePost from "./CreatePost";
 import PostSkeleton from "./PostSkeleton";
@@ -8,22 +8,22 @@ import { PostContext } from "../providers/PostProvider";
 import FriendSuggestionList from "./FriendSuggestionList";
 
 const PostList = (props) => {
-  const { postList, setPostList } = useContext(PostContext);
+  const { postList, setPostList, isPostListLoading, setIsPostListLoading } =
+    useContext(PostContext);
   const { loggedInUser } = useContext(SessionContext);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
-      setLoading(true);
+      setIsPostListLoading(true);
       const url = props.isProfilePage
         ? `${process.env.REACT_APP_SERVER_END_PONT}/profile_post/${props.userId}`
         : `${process.env.REACT_APP_SERVER_END_PONT}/posts/${loggedInUser._id}`;
       const response = await apiCall({
         url,
       });
-      setLoading(false);
       if (response) {
         setPostList(response.posts);
+        setIsPostListLoading(false);
       }
     }
     fetchData();
@@ -109,8 +109,8 @@ const PostList = (props) => {
           />
         </div>
       )}
-      {postList.length === 0 && <FriendSuggestionList />}
-      {loading ? (
+      {!isPostListLoading && postList.length === 0 && <FriendSuggestionList />}
+      {isPostListLoading ? (
         <PostSkeleton />
       ) : (
         <div>
@@ -124,6 +124,7 @@ const PostList = (props) => {
               >
                 <Post
                   isCommentScroll={true}
+                  isMediaDisplay={true}
                   postObj={postObj}
                   updatePostData={updatePostData}
                   deletePostData={deletePostData}

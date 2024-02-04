@@ -6,8 +6,8 @@ import ProfileUserAvatar from "./ProfileUserAvatar";
 import { PostContext } from "../providers/PostProvider";
 import FriendSuggestionList from "./FriendSuggestionList";
 
-const Timeline = (props) => {
-  const { loggedInUser } = useContext(SessionContext);
+const Timeline = () => {
+  const { loggedInUser, isPostListLoading } = useContext(SessionContext);
   const { postList } = useContext(PostContext);
   if (!loggedInUser) {
     return null;
@@ -37,7 +37,9 @@ const Timeline = (props) => {
           />
         </div>
         <div className="col-md-3">
-          {postList.length > 0 && <FriendSuggestionList />}
+          {!isPostListLoading && postList.length > 0 && (
+            <FriendSuggestionList />
+          )}
         </div>
       </div>
     </div>

@@ -57,8 +57,8 @@ const Comment = (props) => {
         <Link to={`/profile/${props.comment.owner._id}`}>
           <UserAvatar
             profilePicURL={
-              loggedInUser._id === props.comment.owner._id
-                ? loggedInUser.profilePicURL
+              loggedInUser?._id === props.comment.owner._id
+                ? loggedInUser?.profilePicURL
                 : props.comment.owner.profilePicURL
             }
           />
@@ -104,7 +104,7 @@ const Comment = (props) => {
               <span>{props.comment.content}</span>
             </div>
           )}
-          {loggedInUser._id === props.comment.owner._id && (
+          {loggedInUser?._id === props.comment.owner._id && (
             <div style={{ float: "right" }}>
               <button
                 type="button"

@@ -170,7 +170,10 @@ const Profile = () => {
             {(isMyProfile || (!isMyProfile && isMyFriend)) &&
               friendList.length > 0 && (
                 <div
-                  style={{ marginTop: "10px", border: "1px solid lightgray" }}
+                  style={{
+                    background: "white",
+                    marginTop: "10px",
+                  }}
                 >
                   <FriendSlider
                     friendList={friendList}
@@ -194,9 +197,12 @@ const Profile = () => {
           <div className="complete-center" style={{ height: "100px" }}>
             <div style={{ textAlign: "center" }}>
               <div>
-                <i class="fa-solid fa-6x fa-lock"></i>
+                <i
+                  style={{ color: "#FF7F7F" }}
+                  class="fa-solid fa-6x fa-lock"
+                ></i>
               </div>
-              <div>This account is locked!</div>
+              <div style={{ marginTop: "10px" }}>This account is locked!</div>
             </div>
           </div>
         )}

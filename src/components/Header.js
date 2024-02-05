@@ -82,7 +82,6 @@ const Header = () => {
                           className="form-control me-2"
                           id="findUserDropDown"
                           placeholder="Search for friends"
-                          aria-label="Search"
                           value={autocomplete}
                           ref={inputSearch}
                           onBlur={() => {

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 import { SessionContext } from "../providers/SessionProvider";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import NotificationDropdown from "./NotificationDropdown";
 import UserAvatar from "./UserAvatar";
 import { EventSourceContext } from "../providers/EventSourceProvider";
@@ -15,6 +15,8 @@ const Header = () => {
   const [autocomplete, setAutocomplete] = useState("");
   const [foundUsers, setFoundUsers] = useState([]);
   const [isUserFindLoading, setIsUserFindLoading] = useState(false);
+  const [isSearchInputShow, setIsSearchInputShow] = useState(false);
+  const inputSearch = useRef();
 
   const logout = async () => {
     if (eventSource) {
@@ -24,6 +26,12 @@ const Header = () => {
     localStorage.removeItem("user");
     setLoggedInUser(null);
   };
+
+  useEffect(() => {
+    if (isSearchInputShow && inputSearch) {
+      inputSearch.current.focus();
+    }
+  }, [isSearchInputShow]);
 
   useEffect(() => {
     (async () => {
@@ -59,18 +67,34 @@ const Header = () => {
               <div style={{ marginRight: "15px" }}>
                 <div className="dropdown">
                   <div data-bs-toggle="dropdown" aria-expanded="false">
-                    <form onSubmit={() => {}}>
-                      <input
-                        className="form-control me-2"
-                        id="findUserDropDown"
-                        placeholder="Search for friends"
-                        aria-label="Search"
-                        value={autocomplete}
-                        onChange={(e) => {
-                          setAutocomplete(e.target.value);
+                    {!isSearchInputShow && (
+                      <i
+                        style={{ fontSize: "20px" }}
+                        className="fa-solid fa-magnifying-glass"
+                        onClick={() => {
+                          setIsSearchInputShow(true);
                         }}
-                      ></input>
-                    </form>
+                      ></i>
+                    )}
+                    {isSearchInputShow && (
+                      <form>
+                        <input
+                          className="form-control me-2"
+                          id="findUserDropDown"
+                          placeholder="Search for friends"
+                          aria-label="Search"
+                          value={autocomplete}
+                          ref={inputSearch}
+                          onBlur={() => {
+                            setIsSearchInputShow(false);
+                            setAutocomplete("");
+                          }}
+                          onChange={(e) => {
+                            setAutocomplete(e.target.value);
+                          }}
+                        ></input>
+                      </form>
+                    )}
                   </div>
                   <ul
                     className="dropdown-menu"
@@ -114,36 +138,40 @@ const Header = () => {
                   </ul>
                 </div>
               </div>
-              <div style={{ marginRight: "15px" }}>
-                <div
-                  style={{
-                    alignItems: "center",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <Link to={`/profile/${loggedInUser._id}`} title="Account">
-                    <UserAvatar
-                      profilePicURL={loggedInUser.profilePicURL}
-                      styleForUserAvatar={{ width: "33px", height: "33px" }}
-                      styleForDefaultUserAvatar={{ fontSize: "1em" }}
-                    />
-                  </Link>
-                </div>
-              </div>
-              <div style={{ marginRight: "15px" }}>
-                <NotificationDropdown />
-              </div>
-              <button
-                type="button"
-                className="btn btn-outline-primary btn-sm"
-                onClick={() => {
-                  logout();
-                }}
-              >
-                Logout &nbsp;
-                <i className="fa-solid fa-right-from-bracket"></i>
-              </button>
+              {!isSearchInputShow && (
+                <>
+                  <div style={{ marginRight: "15px" }}>
+                    <div
+                      style={{
+                        alignItems: "center",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Link to={`/profile/${loggedInUser._id}`} title="Account">
+                        <UserAvatar
+                          profilePicURL={loggedInUser.profilePicURL}
+                          styleForUserAvatar={{ width: "33px", height: "33px" }}
+                          styleForDefaultUserAvatar={{ fontSize: "1em" }}
+                        />
+                      </Link>
+                    </div>
+                  </div>
+                  <div style={{ marginRight: "15px" }}>
+                    <NotificationDropdown />
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-outline-primary btn-sm"
+                    onClick={() => {
+                      logout();
+                    }}
+                  >
+                    Logout &nbsp;
+                    <i className="fa-solid fa-right-from-bracket"></i>
+                  </button>
+                </>
+              )}
             </div>
           ) : (
             <div className="d-flex">

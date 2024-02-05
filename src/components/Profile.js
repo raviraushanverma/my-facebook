@@ -77,7 +77,7 @@ const Profile = () => {
     loggedInUser?.friends[user._id]?.state === "FRIEND_REQUEST_CONFIRM";
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="profile-banner">
         {mainUser.banner && (
           <img

@@ -18,13 +18,13 @@ const NotificationDropdown = () => {
     (event) => {
       const eventStream = JSON.parse(event.data);
       if (eventStream && eventStream.notificationStream) {
-        playNotificationSound();
         const { notificationStream } = eventStream;
         if (notificationStream.operationType === "insert") {
           console.log(
             "notificationStream.newNotification ",
             notificationStream.newNotification
           );
+          playNotificationSound();
           const isThisNotificationAlreadyExist = notifications.find(
             (notification) =>
               notification._id === notificationStream.newNotification._id

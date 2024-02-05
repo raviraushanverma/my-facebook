@@ -199,7 +199,7 @@ const Profile = () => {
               <div>
                 <i
                   style={{ color: "#FF7F7F" }}
-                  class="fa-solid fa-6x fa-lock"
+                  className="fa-solid fa-6x fa-lock"
                 ></i>
               </div>
               <div style={{ marginTop: "10px" }}>This account is locked!</div>

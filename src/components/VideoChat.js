@@ -8,10 +8,20 @@ const VideoChat = () => {
       if (videoElement && videoElement.current) {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
           audio: true,
-          video: { width: "100vw", height: "100vh" },
+          video: {
+            advanced: [
+              { width: { exact: 2560 } },
+              { width: { exact: 1920 } },
+              { width: { exact: 1280 } },
+              { width: { exact: 1024 } },
+              { width: { exact: 900 } },
+              { width: { exact: 800 } },
+              { width: { exact: 640 } },
+              { width: { exact: 320 } },
+            ],
+          },
         });
         videoElement.current.srcObject = mediaStream;
-        videoElement.current.muted = true;
       }
     })();
   }, []);

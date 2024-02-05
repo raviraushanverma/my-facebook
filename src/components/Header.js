@@ -61,13 +61,10 @@ const Header = () => {
         <Link className="navbar-brand" to={"/"}>
           <Logo />
         </Link>
-        <div>
-          <Link to={"/video-chat"}>Go Live</Link>
-        </div>
         <div className="d-flex">
           {loggedInUser ? (
             <div className="d-flex align-items-center">
-              <div style={{ marginRight: "15px" }}>
+              <div style={{ marginRight: "10px" }}>
                 <div className="dropdown">
                   <div data-bs-toggle="dropdown" aria-expanded="false">
                     {!isSearchInputShow && (
@@ -142,7 +139,12 @@ const Header = () => {
               </div>
               {!isSearchInputShow && (
                 <>
-                  <div style={{ marginRight: "15px" }}>
+                  <div style={{ marginRight: "10px" }}>
+                    <Link to={"/video-chat"}>
+                      <i class="fa-solid fa-video"></i>
+                    </Link>
+                  </div>
+                  <div style={{ marginRight: "10px" }}>
                     <div
                       style={{
                         alignItems: "center",
@@ -159,7 +161,7 @@ const Header = () => {
                       </Link>
                     </div>
                   </div>
-                  <div style={{ marginRight: "15px" }}>
+                  <div style={{ marginRight: "10px" }}>
                     <NotificationDropdown />
                   </div>
                   <button
@@ -169,8 +171,7 @@ const Header = () => {
                       logout();
                     }}
                   >
-                    Logout &nbsp;
-                    <i className="fa-solid fa-right-from-bracket"></i>
+                    Logout
                   </button>
                 </>
               )}

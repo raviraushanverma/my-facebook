@@ -503,15 +503,8 @@ form textarea:focus::placeholder {
 }
 
 .left-side-pannel {
-  display: flex;
-  justify-content: center;
-  position: fixed;
-}
-
-@media only screen and (max-width: 750px) {
-  .left-side-pannel {
-    display: none;
-  }
+  position: sticky;
+  top: 70px;
 }
 
 .comment-scroll {

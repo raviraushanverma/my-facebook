@@ -141,7 +141,7 @@ const Header = () => {
                 <>
                   <div style={{ marginRight: "10px" }}>
                     <Link to={"/video-chat"}>
-                      <i class="fa-solid fa-video"></i>
+                      <i className="fa-solid fa-video"></i>
                     </Link>
                   </div>
                   <div style={{ marginRight: "10px" }}>

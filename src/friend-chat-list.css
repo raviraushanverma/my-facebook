@@ -1,0 +1,153 @@
+.chat {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.chat-card {
+    border-radius: 15px;
+    position: sticky;
+    top: calc(100vh - 583px);
+    width: 100%;
+    background-color: white;
+    overflow-y: auto;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px;
+}
+
+.contacts_body {
+    max-height: 500px;
+	overflow-y: auto;
+	white-space: nowrap;
+}
+
+.msg_card_body {
+	overflow-y: auto;
+}
+
+.chat-card-header {
+	border-radius: 15px 15px 0 0 !important;
+	border-bottom: 0 !important;
+}
+
+.chat-card-footer {
+	border-radius: 0 0 15px 15px !important;
+	border-top: 0 !important;
+}
+
+.container {
+	align-content: center;
+}
+
+.search {
+	height: 50px;
+	background-color: white !important;
+	border: 0 !important;
+	color: black !important;
+}
+
+.search:focus {
+	box-shadow: none !important;
+	outline: 0px !important;
+}
+
+.type_msg {
+	background-color: rgba(0, 0, 0, 0.3) !important;
+	border: 0 !important;
+	color: white !important;
+	height: 60px !important;
+	overflow-y: auto;
+}
+
+.type_msg:focus {
+	box-shadow: none !important;
+	outline: 0px !important;
+}
+
+.attach_btn {
+	border-radius: 0 15px 15px 0 !important;
+    border: 0 !important;
+    color: blue !important;
+    cursor: pointer;
+}
+
+.search_btn {
+	background-color: white;
+	border: 0;
+	color: blue;
+	cursor: pointer;
+    font-size: 20px;
+}
+
+.contacts {
+	list-style: none;
+	padding: 0;
+    margin: 0;
+}
+
+.contacts li {
+	width: 100%;
+    border: 1px solid lightgray;
+}
+
+.online {
+	background-color:white;
+    cursor: pointer;
+}
+
+.user_img {
+	height: 70px;
+	width: 70px;
+	border: 1.5px solid #f5f6fa;
+}
+
+.user_img_msg {
+	height: 40px;
+	width: 40px;
+	border: 1.5px solid #f5f6fa;
+}
+
+.img_cont {
+	position: relative;
+    margin-left: 10px;
+	height: 70px;
+	width: 70px;
+}
+
+.img_cont_msg {
+	height: 40px;
+	width: 40px;
+}
+
+.online_icon {
+	position: absolute;
+	height: 15px;
+	width: 15px;
+	background-color: #4cd137;
+	border-radius: 50%;
+	bottom: 0.2em;
+	right: 0.4em;
+	border: 1.5px solid white;
+}
+
+.offline {
+	background-color: #c23616 !important;
+}
+
+.user_info {
+    align-items: center;
+}
+
+.user_info span {
+	font-size: 20px;
+	color: black;
+}
+
+.user_info p {
+	font-size: 10px;
+	color: black;
+}
+
+@media(max-width: 576px) {
+	.contacts_card {
+		margin-bottom: 15px !important;
+	}
+}

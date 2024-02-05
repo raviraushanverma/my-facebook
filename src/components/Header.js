@@ -61,6 +61,9 @@ const Header = () => {
         <Link className="navbar-brand" to={"/"}>
           <Logo />
         </Link>
+        <div>
+          <Link to={"/video-chat"}>Go Live</Link>
+        </div>
         <div className="d-flex">
           {loggedInUser ? (
             <div className="d-flex align-items-center">

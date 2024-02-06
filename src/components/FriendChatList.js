@@ -29,7 +29,7 @@ const FriendChatList = () => {
         <ul className="contacts">
           {Object.values(loggedInUser.friends).map((friend) => {
             return (
-              <>
+              <div key={friend.user._id}>
                 {friend.state === "FRIEND_REQUEST_CONFIRM" && (
                   <li className="online">
                     <div className="d-flex" style={{ marginTop: "7px" }}>
@@ -46,7 +46,7 @@ const FriendChatList = () => {
                     </div>
                   </li>
                 )}
-              </>
+              </div>
             );
           })}
         </ul>

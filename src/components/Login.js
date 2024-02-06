@@ -19,6 +19,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [alertData, setAlertData] = useState({ enable: false });
   const [loading, setLoading] = useState();
+  const [showPassword, setShowPassword] = useState();
 
   const login = async (event) => {
     event.preventDefault();
@@ -87,10 +88,11 @@ const Login = () => {
                   }}
                 />
               </div>
-              <div className="text-box">
+              <div className="text-box complete-center">
                 <input
+                  id="pass"
+                  type={showPassword ? "text" : "password"}
                   className="text-box"
-                  type="password"
                   placeholder="Enter your password"
                   required
                   value={password}
@@ -98,6 +100,12 @@ const Login = () => {
                     setPassword(event.target.value);
                   }}
                 />
+                <i
+                  type="checkbox"
+                  class="fa-regular fa-eye-slash"
+                  value={showPassword}
+                  onClick={() => setShowPassword((prev) => !prev)}
+                ></i>
               </div>
               {alertData.enable && (
                 <div className="text-box">

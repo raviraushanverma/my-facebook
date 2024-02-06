@@ -151,3 +151,9 @@
 		margin-bottom: 15px !important;
 	}
 }
+
+.chat-message{
+	position: fixed;
+	bottom: 35px;
+	right: 0;
+}

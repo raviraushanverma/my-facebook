@@ -9,6 +9,10 @@ import {
   EventSourceContext,
   subscribeForServerSentEvent,
 } from "../providers/EventSourceProvider";
+import {
+  WebsocketContext,
+  subscribeForWebsocket,
+} from "../providers/WebsocketProvider";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -20,6 +24,7 @@ const SignUp = () => {
   const [loading, setLoading] = useState();
   const { setLoggedInUser } = useContext(SessionContext);
   const { setEventSource } = useContext(EventSourceContext);
+  const { setSocket } = useContext(WebsocketContext);
 
   const signUp = async (event) => {
     event.preventDefault();
@@ -42,6 +47,7 @@ const SignUp = () => {
         localStorage.setItem("user", JSON.stringify(response.user));
         setLoggedInUser(response.user);
         setEventSource(subscribeForServerSentEvent());
+        setSocket(subscribeForWebsocket());
         document.getElementById("modalCloseSignupButton").click();
       } else {
         setAlertData({ ...response, enable: true });

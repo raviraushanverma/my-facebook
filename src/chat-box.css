@@ -52,17 +52,6 @@
 	outline: 0px;
 }
 
-.online_icon {
-	position: absolute;
-	height: 15px;
-	width: 15px;
-	background-color: #4cd137;
-	border-radius: 50%;
-	bottom: 0.2em;
-	right: 0.4em;
-	border: 1.5px solid white;
-}
-
 .video_cam {
 	margin-right: 16px;
 }

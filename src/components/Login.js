@@ -10,10 +10,15 @@ import {
   EventSourceContext,
   subscribeForServerSentEvent,
 } from "../providers/EventSourceProvider";
+import {
+  WebsocketContext,
+  subscribeForWebsocket,
+} from "../providers/WebsocketProvider";
 
 const Login = () => {
   const { setLoggedInUser } = useContext(SessionContext);
   const { setEventSource } = useContext(EventSourceContext);
+  const { setSocket } = useContext(WebsocketContext);
   const { playNotificationSound } = useContext(NotificationContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,6 +42,7 @@ const Login = () => {
         localStorage.setItem("user", JSON.stringify(response.user));
         setLoggedInUser(response.user);
         setEventSource(subscribeForServerSentEvent());
+        setSocket(subscribeForWebsocket());
         playNotificationSound();
         document.getElementById("modalCloseButton").click();
       } else {

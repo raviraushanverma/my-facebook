@@ -7,10 +7,12 @@ import UserAvatar from "./UserAvatar";
 import { EventSourceContext } from "../providers/EventSourceProvider";
 import { apiCall } from "../utils";
 import Loading from "./Loading";
+import { WebsocketContext } from "../providers/WebsocketProvider";
 
 const Header = () => {
   const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
   const { eventSource } = useContext(EventSourceContext);
+  const { socket } = useContext(WebsocketContext);
   const navigate = useNavigate();
   const [autocomplete, setAutocomplete] = useState("");
   const [foundUsers, setFoundUsers] = useState([]);
@@ -21,6 +23,9 @@ const Header = () => {
   const logout = async () => {
     if (eventSource) {
       eventSource.close();
+    }
+    if (socket) {
+      socket.close();
     }
     navigate("/");
     localStorage.removeItem("user");

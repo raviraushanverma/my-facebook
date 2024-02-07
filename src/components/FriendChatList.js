@@ -1,19 +1,62 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 import UserAvatar from "./UserAvatar";
 import { ActiveChatFriendContext } from "../providers/ActiveChatFriendProvider";
+import { WebsocketContext } from "../providers/WebsocketProvider";
+
+const updateFriendList = (friendList, otherUserIds, isOnlineFlag) => {
+  return friendList
+    .map((friend) => {
+      if (otherUserIds.includes(friend._id)) {
+        return { ...friend, isOnline: isOnlineFlag };
+      }
+      return { ...friend };
+    })
+    .sort((a, b) => b.isOnline - a.isOnline);
+};
 
 const FriendChatList = () => {
   const { setActiveChatFriend } = useContext(ActiveChatFriendContext);
-
   const { loggedInUser } = useContext(SessionContext);
+  const [friends, setFriends] = useState([]);
+  const { socket } = useContext(WebsocketContext);
+
+  useEffect(() => {
+    if (loggedInUser) {
+      setFriends(
+        Object.values(loggedInUser.friends)
+          .filter((friend) => {
+            return friend.state === "FRIEND_REQUEST_CONFIRM";
+          })
+          .map((friend) => {
+            return { ...friend.user, isOnline: false };
+          })
+      );
+    }
+  }, [loggedInUser]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("all-connected-users", (userIds) => {
+        const friendListTemp = updateFriendList(friends, userIds, true);
+        setFriends(friendListTemp);
+      });
+
+      socket.on("other-user-connected", (otherUserId) => {
+        const friendListTemp = updateFriendList(friends, [otherUserId], true);
+        setFriends(friendListTemp);
+      });
+
+      socket.on("other-user-disconnected", (otherUserId) => {
+        const friendListTemp = updateFriendList(friends, [otherUserId], false);
+        setFriends(friendListTemp);
+      });
+    }
+  }, [friends, socket]);
+
   if (!loggedInUser) {
     return null;
   }
-
-  const friends = Object.values(loggedInUser.friends).filter((friend) => {
-    return friend.state === "FRIEND_REQUEST_CONFIRM";
-  });
 
   if (!friends.length) {
     return null;
@@ -43,23 +86,30 @@ const FriendChatList = () => {
           {friends.map((friend) => {
             return (
               <li
-                key={friend.user._id}
-                className="online"
+                key={friend._id}
+                className="friend-list-item"
                 onClick={() => {
-                  setActiveChatFriend(friend.user);
+                  setActiveChatFriend(friend);
                 }}
               >
                 <div className="d-flex" style={{ marginTop: "7px" }}>
                   <div className="img_cont">
-                    <UserAvatar profilePicURL={friend.user.profilePicURL} />
-                    <span className="online_icon"></span>
+                    <UserAvatar profilePicURL={friend.profilePicURL} />
+                    <span
+                      className={`status_icon ${
+                        friend.isOnline ? "online" : ""
+                      }`}
+                    ></span>
                   </div>
                   <div className="user_info">
                     <div>
                       <span>
-                        <h6>{friend.user.name}</h6>
+                        <h6>{friend.name}</h6>
                       </span>
-                      <p>{friend.user.name} is online</p>
+                      <p>
+                        {friend.name} is
+                        {friend.isOnline ? " Online" : " Offline"}
+                      </p>
                     </div>
                   </div>
                 </div>

@@ -8,6 +8,12 @@
     box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px;
 }
 
+@media (max-width: 767px) {
+	.chat-box {
+		width: 96%;
+	}
+}
+
 .card {
     border-radius: 0px;
 }

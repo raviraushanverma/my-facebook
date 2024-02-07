@@ -24,7 +24,7 @@ const ChatBox = () => {
           </div>
           <div className="video_cam">
             <span>
-              <i class="fa-solid fa-gun"></i>
+              <i className="fa-solid fa-gun"></i>
             </span>
             <span>
               <i className="fas fa-video" />
@@ -36,7 +36,7 @@ const ChatBox = () => {
           <div className="chat-box-close-button">
             <button
               type="button"
-              class="btn-close"
+              className="btn-close"
               aria-label="Close"
               onClick={() => {
                 setActiveChatFriend(null);

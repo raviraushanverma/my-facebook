@@ -140,11 +140,6 @@ const Header = () => {
               {!isSearchInputShow && (
                 <>
                   <div style={{ marginRight: "10px" }}>
-                    <Link to={"/video-chat"}>
-                      <i className="fa-solid fa-video"></i>
-                    </Link>
-                  </div>
-                  <div style={{ marginRight: "10px" }}>
                     <div
                       style={{
                         alignItems: "center",

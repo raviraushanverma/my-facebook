@@ -7,11 +7,17 @@ import enjoy from "../assets/images/enjoy.webp";
 import Timeline from "./Timeline";
 import { SessionContext } from "../providers/SessionProvider";
 import { useContext } from "react";
+import ChatBox from "./ChatBox";
 
 const Home = () => {
   const { loggedInUser } = useContext(SessionContext);
   if (loggedInUser) {
-    return <Timeline />;
+    return (
+      <>
+        <Timeline />
+        <ChatBox />
+      </>
+    );
   }
   return (
     <main>

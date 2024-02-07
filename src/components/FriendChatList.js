@@ -20,7 +20,7 @@ const FriendChatList = () => {
   }
 
   return (
-    <div className="d-none d-md-block chat-card contacts_card">
+    <div className="chat-card contacts_card">
       {friends.length > 7 && (
         <div className="chat-card-header">
           <div className="input-group">
@@ -43,6 +43,7 @@ const FriendChatList = () => {
           {friends.map((friend) => {
             return (
               <li
+                key={friend.user._id}
                 className="online"
                 onClick={() => {
                   setActiveChatFriend(friend.user);

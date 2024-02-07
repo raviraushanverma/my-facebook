@@ -7,6 +7,7 @@ import { useContext, useState, createRef } from "react";
 import Loading from "./Loading";
 import { Link } from "react-router-dom";
 import { apiCall } from "../utils";
+import likeImg from "../assets/images/like.png";
 
 const Post = (props) => {
   const commentInputRef = createRef();
@@ -88,14 +89,14 @@ const Post = (props) => {
       </div>
       <div className="post-buttons">
         <div
-          style={{ cursor: "pointer" }}
+          style={{ display: "flex", alignItems: "center" }}
           data-bs-toggle="tooltip"
           data-bs-placement="right"
           title={Object.values(props.postObj.likes)
             .map((obj) => obj.userName)
             .join(",")}
         >
-          <i className="fa-solid fa-thumbs-up"></i>
+          <img src={likeImg} width={20} height={20} alt="like" />
           <span style={{ marginLeft: "10px" }}>
             {Object.keys(props.postObj.likes).length}
           </span>

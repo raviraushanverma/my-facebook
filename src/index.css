@@ -22,6 +22,10 @@ button, .modal-content {
   padding-bottom: 1px !important;
 }
 
+.fixed-top {
+  z-index: 9;
+}
+
 .footer {
   background-color: #ffffff;
   color: #000000;
@@ -559,4 +563,22 @@ form textarea:focus::placeholder {
 .carousel .slide img, .carousel .slide video {
   height: calc(100vh - 110px);
   object-fit: cover;
+}
+
+.chat-buuble-mobile {
+  position: fixed;
+  right: 5px;
+  bottom: 5px;
+  z-index: 9999;
+}
+
+.btn-circular {
+  background-color: black;
+  padding: 10px;
+  color: pink;
+  font-size: 20px;
+  border-radius: 50% !important;
+  line-height: 1;
+  z-index: 56;
+  cursor: pointer;
 }

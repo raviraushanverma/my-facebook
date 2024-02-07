@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 import UserAvatar from "./UserAvatar";
 import { ActiveChatFriendContext } from "../providers/ActiveChatFriendProvider";
 import { WebsocketContext } from "../providers/WebsocketProvider";
+import { OnlineUserContext } from "../providers/OnlineUserProvider";
 
 const updateFriendList = (friendList, otherUserIds, isOnlineFlag) => {
   return friendList
@@ -16,24 +17,10 @@ const updateFriendList = (friendList, otherUserIds, isOnlineFlag) => {
 };
 
 const FriendChatList = () => {
+  const { socket } = useContext(WebsocketContext);
   const { setActiveChatFriend } = useContext(ActiveChatFriendContext);
   const { loggedInUser } = useContext(SessionContext);
-  const [friends, setFriends] = useState([]);
-  const { socket } = useContext(WebsocketContext);
-
-  useEffect(() => {
-    if (loggedInUser) {
-      setFriends(
-        Object.values(loggedInUser.friends)
-          .filter((friend) => {
-            return friend.state === "FRIEND_REQUEST_CONFIRM";
-          })
-          .map((friend) => {
-            return { ...friend.user, isOnline: false };
-          })
-      );
-    }
-  }, [loggedInUser]);
+  const { friends, setFriends } = useContext(OnlineUserContext);
 
   useEffect(() => {
     if (socket) {
@@ -52,6 +39,7 @@ const FriendChatList = () => {
         setFriends(friendListTemp);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [friends, socket]);
 
   if (!loggedInUser) {

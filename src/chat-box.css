@@ -1,0 +1,127 @@
+.chat-box {
+    position: fixed;
+    top: 70px;
+	left: 10px;
+    width: 74.5%;
+    height: calc(100vh - 75px);
+    z-index: 999;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px;
+}
+
+.card {
+    border-radius: 0px;
+}
+
+.input-group {
+    border-radius: 0;
+    border: 1px solid lightgray;
+}
+
+.msg_card_body {
+    height: 300px;
+	overflow-y: auto;
+}
+
+.card-header {
+	border-bottom: 0 !important;
+}
+
+.card-footer {
+	border-top: 0 !important;
+}
+
+.type_msg {
+	border: 1px solid gray;
+    border-radius: 0px;
+	color: black;
+	height: 60px;
+	overflow-y: auto;
+}
+
+.type_msg:focus {
+	box-shadow: none;
+	outline: 0px;
+}
+
+.online_icon {
+	position: absolute;
+	height: 15px;
+	width: 15px;
+	background-color: #4cd137;
+	border-radius: 50%;
+	bottom: 0.2em;
+	right: 0.4em;
+	border: 1.5px solid white;
+}
+
+.video_cam {
+	margin-right: 16px;
+}
+
+.video_cam span {
+	color: darkorchid;
+	font-size: 20px;
+	cursor: pointer;
+	margin-right: 20px;
+}
+
+.msg_cotainer {
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-left: 10px;
+	border-radius: 25px;
+	background-color: #82ccdd;
+	padding: 10px;
+	position: relative;
+}
+
+.msg_cotainer_send {
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-right: 10px;
+	border-radius: 25px;
+	background-color: #78e08f;
+	padding: 10px;
+	position: relative;
+}
+
+.msg_time {
+	position: absolute;
+	left: 0;
+	bottom: -15px;
+	font-size: 10px;
+}
+
+.msg_time_send {
+	position: absolute;
+	right: 0;
+	bottom: -15px;
+	font-size: 10px;
+}
+
+.msg_head {
+	position: relative;
+    padding: 0px;
+    margin: 0px;
+}
+
+.send_btn {
+    height: 100%;
+    margin-left: 1px;
+    background-color: white;
+    cursor: pointer;
+    border-left: 1px solid lightgray;
+    border-radius: 0px;
+}
+
+.bd-highlight {
+    align-items: center;
+    justify-content: space-between;
+	position: relative;
+}
+
+.chat-box-close-button {
+	position: absolute;
+	right: 3px;
+	top: 3px;
+}

@@ -8,23 +8,9 @@
 }
 
 .contacts_body {
-    max-height: 550px;
+    max-height: calc(100vh - 106px);;
 	overflow-y: auto;
 	white-space: nowrap;
-}
-
-.msg_card_body {
-	overflow-y: auto;
-}
-
-.chat-card-header {
-	border-radius: 15px 15px 0 0 !important;
-	border-bottom: 0 !important;
-}
-
-.chat-card-footer {
-	border-radius: 0 0 15px 15px !important;
-	border-top: 0 !important;
 }
 
 .container {
@@ -44,9 +30,8 @@
 }
 
 .type_msg {
-	background-color: rgba(0, 0, 0, 0.3) !important;
 	border: 0 !important;
-	color: white !important;
+	color: black !important;
 	height: 60px !important;
 	overflow-y: auto;
 }
@@ -104,6 +89,7 @@
     margin-left: 10px;
 	height: 70px;
 	width: 70px;
+	margin-top: 5px;
 }
 
 .img_cont_msg {
@@ -129,7 +115,6 @@
 .user_info {
 	display: flex;
 	align-items: center;
-    align-items: center;
 }
 
 .user_info span {

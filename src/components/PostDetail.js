@@ -83,7 +83,7 @@ const PostDetail = () => {
   );
 
   return (
-    <div className="container post-detail-page">
+    <div className="container-fluid post-detail-page">
       <div className="row featurette">
         {post.medias.length > 0 ? (
           <>

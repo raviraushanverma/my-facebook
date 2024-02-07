@@ -13,6 +13,7 @@ import PostProvider from "./providers/PostProvider";
 import FriendSuggestionProvider from "./providers/FriendSuggestionProvider";
 import PostDetail from "./components/PostDetail";
 import VideoChat from "./components/VideoChat";
+import ActiveChatFriendProvider from "./providers/ActiveChatFriendProvider";
 
 function App() {
   return (
@@ -22,22 +23,24 @@ function App() {
           <PostProvider>
             <FriendSuggestionProvider>
               <NotificationProvider>
-                <Header />
-                <Login />
-                <SignUp />
-                <div className="our-container">
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/profile/:user_id" element={<Profile />} />
-                    <Route path="/post/:post_id" element={<PostDetail />} />
-                    <Route
-                      path="/notifications"
-                      element={<NotificationPage />}
-                    />
-                    <Route path="/video-chat" element={<VideoChat />} />
-                  </Routes>
-                </div>
-                <Footer />
+                <ActiveChatFriendProvider>
+                  <Header />
+                  <Login />
+                  <SignUp />
+                  <div className="our-container">
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/profile/:user_id" element={<Profile />} />
+                      <Route path="/post/:post_id" element={<PostDetail />} />
+                      <Route
+                        path="/notifications"
+                        element={<NotificationPage />}
+                      />
+                      <Route path="/video-chat" element={<VideoChat />} />
+                    </Routes>
+                  </div>
+                  <Footer />
+                </ActiveChatFriendProvider>
               </NotificationProvider>
             </FriendSuggestionProvider>
           </PostProvider>

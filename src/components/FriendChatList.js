@@ -1,8 +1,11 @@
 import { useContext } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 import UserAvatar from "./UserAvatar";
+import { ActiveChatFriendContext } from "../providers/ActiveChatFriendProvider";
 
 const FriendChatList = () => {
+  const { setActiveChatFriend } = useContext(ActiveChatFriendContext);
+
   const { loggedInUser } = useContext(SessionContext);
   if (!loggedInUser) {
     return null;
@@ -39,24 +42,27 @@ const FriendChatList = () => {
         <ul className="contacts">
           {friends.map((friend) => {
             return (
-              <div key={friend.user._id}>
-                <li className="online">
-                  <div className="d-flex" style={{ marginTop: "7px" }}>
-                    <div className="img_cont">
-                      <UserAvatar profilePicURL={friend.user.profilePicURL} />
-                      <span className="online_icon"></span>
-                    </div>
-                    <div className="user_info">
-                      <div>
-                        <span>
-                          <h6>{friend.user.name}</h6>
-                        </span>
-                        <p>{friend.user.name} is online</p>
-                      </div>
+              <li
+                className="online"
+                onClick={() => {
+                  setActiveChatFriend(friend.user);
+                }}
+              >
+                <div className="d-flex" style={{ marginTop: "7px" }}>
+                  <div className="img_cont">
+                    <UserAvatar profilePicURL={friend.user.profilePicURL} />
+                    <span className="online_icon"></span>
+                  </div>
+                  <div className="user_info">
+                    <div>
+                      <span>
+                        <h6>{friend.user.name}</h6>
+                      </span>
+                      <p>{friend.user.name} is online</p>
                     </div>
                   </div>
-                </li>
-              </div>
+                </div>
+              </li>
             );
           })}
         </ul>

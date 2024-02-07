@@ -1,14 +1,14 @@
 .chat-card {
-    position: sticky;
-    top: calc(100vh - 633px);
-    width: 100%;
+    position: fixed;
+	bottom: 35px;
+    width: 23%;
     background-color: white;
     overflow-y: auto;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px;
 }
 
 .contacts_body {
-    max-height: calc(100vh - 106px);;
+    max-height: 500px;
 	overflow-y: auto;
 	white-space: nowrap;
 }

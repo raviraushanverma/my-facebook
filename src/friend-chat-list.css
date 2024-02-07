@@ -1,12 +1,6 @@
-.chat {
-	margin-top: auto;
-	margin-bottom: auto;
-}
-
 .chat-card {
-    border-radius: 15px;
     position: sticky;
-    top: calc(100vh - 583px);
+    top: calc(100vh - 633px);
     width: 100%;
     background-color: white;
     overflow-y: auto;
@@ -14,7 +8,7 @@
 }
 
 .contacts_body {
-    max-height: 500px;
+    max-height: 550px;
 	overflow-y: auto;
 	white-space: nowrap;
 }
@@ -133,6 +127,8 @@
 }
 
 .user_info {
+	display: flex;
+	align-items: center;
     align-items: center;
 }
 
@@ -144,16 +140,4 @@
 .user_info p {
 	font-size: 10px;
 	color: black;
-}
-
-@media(max-width: 576px) {
-	.contacts_card {
-		margin-bottom: 15px !important;
-	}
-}
-
-.chat-message{
-	position: fixed;
-	bottom: 35px;
-	right: 0;
 }

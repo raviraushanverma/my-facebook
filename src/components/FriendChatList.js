@@ -1,52 +1,15 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 import UserAvatar from "./UserAvatar";
 import { ActiveChatFriendContext } from "../providers/ActiveChatFriendProvider";
-import { WebsocketContext } from "../providers/WebsocketProvider";
 import { OnlineUserContext } from "../providers/OnlineUserProvider";
 
-const updateFriendList = (friendList, otherUserIds, isOnlineFlag) => {
-  return friendList
-    .map((friend) => {
-      if (otherUserIds.includes(friend._id)) {
-        return { ...friend, isOnline: isOnlineFlag };
-      }
-      return { ...friend };
-    })
-    .sort((a, b) => b.isOnline - a.isOnline);
-};
-
 const FriendChatList = () => {
-  const { socket } = useContext(WebsocketContext);
   const { setActiveChatFriend } = useContext(ActiveChatFriendContext);
   const { loggedInUser } = useContext(SessionContext);
-  const { friends, setFriends } = useContext(OnlineUserContext);
+  const { friends } = useContext(OnlineUserContext);
 
-  useEffect(() => {
-    if (socket) {
-      socket.on("all-connected-users", (userIds) => {
-        const friendListTemp = updateFriendList(friends, userIds, true);
-        setFriends(friendListTemp);
-      });
-
-      socket.on("other-user-connected", (otherUserId) => {
-        const friendListTemp = updateFriendList(friends, [otherUserId], true);
-        setFriends(friendListTemp);
-      });
-
-      socket.on("other-user-disconnected", (otherUserId) => {
-        const friendListTemp = updateFriendList(friends, [otherUserId], false);
-        setFriends(friendListTemp);
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [friends, socket]);
-
-  if (!loggedInUser) {
-    return null;
-  }
-
-  if (!friends.length) {
+  if (!loggedInUser || !friends.length) {
     return null;
   }
 

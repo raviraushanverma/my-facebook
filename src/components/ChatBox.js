@@ -17,9 +17,8 @@ const ChatBox = () => {
   const { activeChatFriend, setActiveChatFriend } = useContext(
     ActiveChatFriendContext
   );
-  const { activeChatMessages, setActiveChatMessages } = useContext(
-    ActiveChatMessageContext
-  );
+  const { activeChatMessages, setActiveChatMessages, isChatLoading } =
+    useContext(ActiveChatMessageContext);
   const { friends } = useContext(OnlineUserContext);
   const chatContainer = useRef();
 
@@ -86,6 +85,11 @@ const ChatBox = () => {
             <div className="img_cont">
               <Link to={`/profile/${activeChatFriend._id}`} title="Account">
                 <UserAvatar profilePicURL={activeChatFriend.profilePicURL} />
+                <span
+                  className={`status_icon ${
+                    activeChatFriend.isOnline ? "online" : ""
+                  }`}
+                ></span>
               </Link>
               <span className="online_icon" />
             </div>
@@ -116,60 +120,84 @@ const ChatBox = () => {
           </div>
         </div>
       </div>
-      <div className="card-body msg_card_body">
+      <div
+        className={`card-body msg_card_body ${
+          isChatLoading || !activeChatMessages.length
+            ? "complete-center gray-out"
+            : ""
+        }`}
+      >
         <div ref={chatContainer}>
-          {activeChatMessages.map((chat) => {
-            if (chat.from === loggedInUser._id) {
-              return (
-                <div
-                  key={chat.time}
-                  className="d-flex justify-content-end mb-4"
-                >
-                  <div className="msg_cotainer_send">
-                    {chat.message}
-                    <span className="msg_time_send">
-                      {timeAgo.format(new Date(chat.time))}
-                    </span>
-                  </div>
-                  <div className="img_cont_msg">
-                    <Link to={`/profile/${loggedInUser._id}`} title="Account">
-                      <UserAvatar
-                        profilePicURL={loggedInUser.profilePicURL}
-                        styleForUserAvatar={{ width: "33px", height: "33px" }}
-                        styleForDefaultUserAvatar={{ fontSize: "1em" }}
-                      />
-                    </Link>
-                  </div>
-                </div>
-              );
-            } else {
-              return (
-                <div
-                  key={chat.time}
-                  className="d-flex justify-content-start mb-4"
-                >
-                  <div className="img_cont_msg">
-                    <Link
-                      to={`/profile/${activeChatFriend._id}`}
-                      title="Account"
-                    >
-                      <UserAvatar
-                        profilePicURL={activeChatFriend.profilePicURL}
-                        styleForUserAvatar={{ width: "33px", height: "33px" }}
-                        styleForDefaultUserAvatar={{ fontSize: "1em" }}
-                      />
-                    </Link>
-                  </div>
-                  <div className="msg_cotainer">
-                    {chat.message}
-                    <span className="msg_time">
-                      {timeAgo.format(new Date(chat.time))}
-                    </span>
-                  </div>
-                </div>
-              );
-            }
-          })}
+          <>
+            {isChatLoading ? (
+              "Loading..."
+            ) : (
+              <>
+                {!activeChatMessages.length && "There are no conversations"}
+                {activeChatMessages.map((chat) => {
+                  if (chat.from === loggedInUser._id) {
+                    return (
+                      <div
+                        key={chat.time}
+                        className="d-flex justify-content-end mb-4"
+                      >
+                        <div className="msg_cotainer_send">
+                          {chat.message}
+                          <span className="msg_time_send">
+                            {timeAgo.format(new Date(chat.time))}
+                          </span>
+                        </div>
+                        <div className="img_cont_msg">
+                          <Link
+                            to={`/profile/${loggedInUser._id}`}
+                            title="Account"
+                          >
+                            <UserAvatar
+                              profilePicURL={loggedInUser.profilePicURL}
+                              styleForUserAvatar={{
+                                width: "33px",
+                                height: "33px",
+                              }}
+                              styleForDefaultUserAvatar={{ fontSize: "1em" }}
+                            />
+                          </Link>
+                        </div>
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div
+                        key={chat.time}
+                        className="d-flex justify-content-start mb-4"
+                      >
+                        <div className="img_cont_msg">
+                          <Link
+                            to={`/profile/${activeChatFriend._id}`}
+                            title="Account"
+                          >
+                            <UserAvatar
+                              profilePicURL={activeChatFriend.profilePicURL}
+                              styleForUserAvatar={{
+                                width: "33px",
+                                height: "33px",
+                              }}
+                              styleForDefaultUserAvatar={{ fontSize: "1em" }}
+                            />
+                          </Link>
+                        </div>
+                        <div className="msg_cotainer">
+                          {chat.message}
+                          <span className="msg_time">
+                            {timeAgo.format(new Date(chat.time))}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  }
+                })}
+              </>
+            )}
+          </>
         </div>
       </div>
       <div className="card-footer">

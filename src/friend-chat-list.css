@@ -125,9 +125,11 @@
 .user_info span {
 	font-size: 20px;
 	color: black;
+	text-transform: capitalize;
 }
 
 .user_info p {
 	font-size: 10px;
 	color: black;
+	text-transform: capitalize;
 }

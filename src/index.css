@@ -578,3 +578,7 @@ form textarea:focus::placeholder {
   z-index: 56;
   cursor: pointer;
 }
+
+.gray-out {
+  color: gray;
+}

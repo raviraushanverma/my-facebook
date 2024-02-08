@@ -5,8 +5,12 @@ import { Link } from "react-router-dom";
 import { SessionContext } from "../providers/SessionProvider";
 import { WebsocketContext } from "../providers/WebsocketProvider";
 import { ActiveChatMessageContext } from "../providers/ActiveChatMessageProvider";
+import { OnlineUserContext } from "../providers/OnlineUserProvider";
+import TimeAgo from "javascript-time-ago";
 
 const ChatBox = () => {
+  const timeAgo = new TimeAgo("en-US");
+  const inputRef = useRef();
   const { socket } = useContext(WebsocketContext);
   const { loggedInUser } = useContext(SessionContext);
   const [textMessage, setTextMessage] = useState("");
@@ -16,6 +20,7 @@ const ChatBox = () => {
   const { activeChatMessages, setActiveChatMessages } = useContext(
     ActiveChatMessageContext
   );
+  const { friends } = useContext(OnlineUserContext);
   const chatContainer = useRef();
 
   useEffect(() => {
@@ -26,20 +31,31 @@ const ChatBox = () => {
   }, [activeChatMessages]);
 
   useEffect(() => {
+    if (activeChatFriend) {
+      inputRef?.current?.focus();
+    }
+  }, [activeChatFriend]);
+
+  useEffect(() => {
     if (socket) {
       socket.on("on-message", ({ userId, message }) => {
         console.log("on-meesage", userId, message);
       });
 
       socket.on("receive-message", (data) => {
-        console.log("data ", data);
         const temp = [...activeChatMessages];
         temp.push(data);
         setActiveChatMessages(temp);
+        if (!activeChatFriend) {
+          const tempFriend = friends.find((friend) => {
+            return friend._id === data.from;
+          });
+          setActiveChatFriend(tempFriend);
+        }
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeChatMessages, socket]);
+  }, [activeChatFriend, activeChatMessages, friends, socket]);
 
   const sendMessage = () => {
     if (socket && activeChatFriend && loggedInUser) {
@@ -111,7 +127,9 @@ const ChatBox = () => {
                 >
                   <div className="msg_cotainer_send">
                     {chat.message}
-                    <span className="msg_time_send">8:55 AM, Today</span>
+                    <span className="msg_time_send">
+                      {timeAgo.format(new Date(chat.time))}
+                    </span>
                   </div>
                   <div className="img_cont_msg">
                     <Link to={`/profile/${loggedInUser._id}`} title="Account">
@@ -144,7 +162,9 @@ const ChatBox = () => {
                   </div>
                   <div className="msg_cotainer">
                     {chat.message}
-                    <span className="msg_time">8:40 AM, Today</span>
+                    <span className="msg_time">
+                      {timeAgo.format(new Date(chat.time))}
+                    </span>
                   </div>
                 </div>
               );
@@ -165,6 +185,7 @@ const ChatBox = () => {
             placeholder="Type your message..."
             value={textMessage}
             onChange={(e) => setTextMessage(e.target.value)}
+            ref={inputRef}
           />
           <div className="input-group-append">
             <button className="input-group-text send_btn" type="submit">

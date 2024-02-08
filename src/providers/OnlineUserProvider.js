@@ -55,17 +55,17 @@ const OnlineUserProvider = (props) => {
         setFriends(friendListTemp);
       });
     }
-  }, [friends, socket]);
-
-  useEffect(() => {
-    if (activeChatFriend) {
-      const tempFriend = friends.find((friend) => {
-        return friend._id === activeChatFriend._id;
-      });
-      setActiveChatFriend(tempFriend);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeChatFriend, friends]);
+  }, [socket, friends]);
+
+  // useEffect(() => {
+  //   if (activeChatFriend) {
+  //     const tempFriend = friends.find((friend) => {
+  //       return friend._id === activeChatFriend._id;
+  //     });
+  //     setActiveChatFriend(tempFriend);
+  //   }
+  // }, [activeChatFriend, friends]);
 
   return (
     <OnlineUserContext.Provider value={{ friends, setFriends }}>

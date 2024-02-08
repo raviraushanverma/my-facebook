@@ -10,8 +10,12 @@ import Loading from "./Loading";
 import { WebsocketContext } from "../providers/WebsocketProvider";
 
 const Header = () => {
-  const { loggedInUser, setLoggedInUser, setIsLoggedInUserLoading } =
-    useContext(SessionContext);
+  const {
+    loggedInUser,
+    setLoggedInUser,
+    isLoggedInUserLoading,
+    setIsLoggedInUserLoading,
+  } = useContext(SessionContext);
   const { eventSource } = useContext(EventSourceContext);
   const { socket, setSocket } = useContext(WebsocketContext);
   const navigate = useNavigate();
@@ -70,7 +74,7 @@ const Header = () => {
           <Logo />
         </Link>
         <div className="d-flex">
-          {loggedInUser ? (
+          {!isLoggedInUserLoading && loggedInUser ? (
             <div className="d-flex align-items-center">
               <div style={{ marginRight: "10px" }}>
                 <div className="dropdown">
@@ -180,25 +184,29 @@ const Header = () => {
               )}
             </div>
           ) : (
-            <div className="d-flex">
-              <button
-                style={{ marginRight: "10px" }}
-                type="button"
-                className="btn btn-sm btn-outline-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#loginModal"
-              >
-                LOGIN
-              </button>
-              <button
-                type="button"
-                className="btn btn-sm btn-outline-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#signupModal"
-              >
-                SIGN UP
-              </button>
-            </div>
+            <>
+              {!isLoggedInUserLoading && (
+                <div className="d-flex">
+                  <button
+                    style={{ marginRight: "10px" }}
+                    type="button"
+                    className="btn btn-sm btn-outline-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#loginModal"
+                  >
+                    LOGIN
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#signupModal"
+                  >
+                    SIGN UP
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

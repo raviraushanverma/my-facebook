@@ -16,6 +16,7 @@ import VideoChat from "./components/VideoChat";
 import ActiveChatFriendProvider from "./providers/ActiveChatFriendProvider";
 import WebsocketProvider from "./providers/WebsocketProvider";
 import OnlineUserProvider from "./providers/OnlineUserProvider";
+import ActiveChatMessageProvider from "./providers/ActiveChatMessageProvider";
 
 function App() {
   return (
@@ -28,27 +29,29 @@ function App() {
                 <ActiveChatFriendProvider>
                   <WebsocketProvider>
                     <OnlineUserProvider>
-                      <Header />
-                      <Login />
-                      <SignUp />
-                      <div className="our-container">
-                        <Routes>
-                          <Route path="/" element={<Home />} />
-                          <Route
-                            path="/profile/:user_id"
-                            element={<Profile />}
-                          />
-                          <Route
-                            path="/post/:post_id"
-                            element={<PostDetail />}
-                          />
-                          <Route
-                            path="/notifications"
-                            element={<NotificationPage />}
-                          />
-                          <Route path="/video-chat" element={<VideoChat />} />
-                        </Routes>
-                      </div>
+                      <ActiveChatMessageProvider>
+                        <Header />
+                        <Login />
+                        <SignUp />
+                        <div className="our-container">
+                          <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route
+                              path="/profile/:user_id"
+                              element={<Profile />}
+                            />
+                            <Route
+                              path="/post/:post_id"
+                              element={<PostDetail />}
+                            />
+                            <Route
+                              path="/notifications"
+                              element={<NotificationPage />}
+                            />
+                            <Route path="/video-chat" element={<VideoChat />} />
+                          </Routes>
+                        </div>
+                      </ActiveChatMessageProvider>
                       <Footer />
                     </OnlineUserProvider>
                   </WebsocketProvider>

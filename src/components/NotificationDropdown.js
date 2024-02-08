@@ -136,7 +136,7 @@ const NotificationDropdown = () => {
         style={{
           width: "350px",
           overflowY: "auto",
-          marginRight: "-104px",
+          marginRight: "-77px",
           boxShadow:
             "0 12px 28px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.1)",
         }}

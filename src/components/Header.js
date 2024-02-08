@@ -10,7 +10,8 @@ import Loading from "./Loading";
 import { WebsocketContext } from "../providers/WebsocketProvider";
 
 const Header = () => {
-  const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
+  const { loggedInUser, setLoggedInUser, setIsLoggedInUserLoading } =
+    useContext(SessionContext);
   const { eventSource } = useContext(EventSourceContext);
   const { socket, setSocket } = useContext(WebsocketContext);
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ const Header = () => {
     navigate("/");
     localStorage.removeItem("user");
     setLoggedInUser(null);
+    setIsLoggedInUserLoading(false);
   };
 
   useEffect(() => {

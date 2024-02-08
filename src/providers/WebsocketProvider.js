@@ -34,13 +34,13 @@ const WebsocketProvider = (props) => {
     }
     const handleVisibilityChange = () => {
       if (socket && socket.readyState !== WebSocket.OPEN) {
-        if (!document.hidden) {
+        if (document.hidden) {
+          socket.close();
+        } else {
           const newWebSocket = subscribeForWebsocket();
           if (newWebSocket) {
             setSocket(newWebSocket);
           }
-        } else {
-          socket.close();
         }
       }
     };

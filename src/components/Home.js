@@ -8,9 +8,15 @@ import Timeline from "./Timeline";
 import { SessionContext } from "../providers/SessionProvider";
 import { useContext } from "react";
 import ChatBox from "./ChatBox";
+import CenterPageLoader from "./CenterPageLoader";
 
 const Home = () => {
-  const { loggedInUser } = useContext(SessionContext);
+  const { loggedInUser, isLoggedInUserLoading } = useContext(SessionContext);
+
+  if (isLoggedInUserLoading) {
+    return <CenterPageLoader />;
+  }
+
   if (loggedInUser) {
     return (
       <>

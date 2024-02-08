@@ -12,7 +12,7 @@ import { WebsocketContext } from "../providers/WebsocketProvider";
 const Header = () => {
   const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
   const { eventSource } = useContext(EventSourceContext);
-  const { socket } = useContext(WebsocketContext);
+  const { socket, setSocket } = useContext(WebsocketContext);
   const navigate = useNavigate();
   const [autocomplete, setAutocomplete] = useState("");
   const [foundUsers, setFoundUsers] = useState([]);
@@ -26,6 +26,7 @@ const Header = () => {
     }
     if (socket) {
       socket.close();
+      setSocket(null);
     }
     navigate("/");
     localStorage.removeItem("user");

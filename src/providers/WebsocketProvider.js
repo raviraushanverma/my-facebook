@@ -22,6 +22,7 @@ const WebsocketProvider = (props) => {
     return () => {
       if (webSocket) {
         webSocket.close();
+        setSocket(null);
       }
     };
   }, []);
@@ -31,6 +32,24 @@ const WebsocketProvider = (props) => {
       const loggedInUser = getLoggedInUserFromLocalStorage();
       socket.emit("user-connected", loggedInUser._id);
     }
+    const handleVisibilityChange = () => {
+      if (socket && socket.readyState !== WebSocket.OPEN) {
+        if (!document.hidden) {
+          const newWebSocket = subscribeForWebsocket();
+          if (newWebSocket) {
+            setSocket(newWebSocket);
+          }
+        } else {
+          socket.close();
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, [socket]);
 
   return (

@@ -2,20 +2,20 @@ import { useContext } from "react";
 import { SessionContext } from "../providers/SessionProvider";
 import UserAvatar from "./UserAvatar";
 import { ActiveChatFriendContext } from "../providers/ActiveChatFriendProvider";
-import { OnlineUserContext } from "../providers/OnlineUserProvider";
+import { WebsocketContext } from "../providers/WebsocketProvider";
 
 const FriendChatList = () => {
-  const { setActiveChatFriend } = useContext(ActiveChatFriendContext);
+  const { setActiveChatFriendId } = useContext(ActiveChatFriendContext);
   const { loggedInUser } = useContext(SessionContext);
-  const { friends } = useContext(OnlineUserContext);
+  const { friends } = useContext(WebsocketContext);
 
-  if (!loggedInUser || !friends.length) {
+  if (!loggedInUser || !friends.size) {
     return null;
   }
 
   return (
     <div className="chat-card contacts_card">
-      {friends.length > 7 && (
+      {friends.size > 7 && (
         <div className="chat-card-header">
           <div className="input-group">
             <input
@@ -34,13 +34,13 @@ const FriendChatList = () => {
       )}
       <div className="card-body contacts_body">
         <ul className="contacts">
-          {friends.map((friend) => {
+          {[...friends.values()].map((friend) => {
             return (
               <li
                 key={friend._id}
                 className="friend-list-item"
                 onClick={() => {
-                  setActiveChatFriend(friend);
+                  setActiveChatFriendId(friend._id);
                 }}
               >
                 <div className="d-flex" style={{ marginTop: "7px" }}>

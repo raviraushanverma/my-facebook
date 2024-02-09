@@ -5,21 +5,19 @@ import { Link } from "react-router-dom";
 import { SessionContext } from "../providers/SessionProvider";
 import { WebsocketContext } from "../providers/WebsocketProvider";
 import { ActiveChatMessageContext } from "../providers/ActiveChatMessageProvider";
-import { OnlineUserContext } from "../providers/OnlineUserProvider";
 import TimeAgo from "javascript-time-ago";
 
 const ChatBox = () => {
   const timeAgo = new TimeAgo("en-US");
   const inputRef = useRef();
-  const { socket } = useContext(WebsocketContext);
+  const { socket, friends } = useContext(WebsocketContext);
   const { loggedInUser } = useContext(SessionContext);
   const [textMessage, setTextMessage] = useState("");
-  const { activeChatFriend, setActiveChatFriend } = useContext(
+  const { activeChatFriendId, setActiveChatFriendId } = useContext(
     ActiveChatFriendContext
   );
   const { activeChatMessages, setActiveChatMessages, isChatLoading } =
     useContext(ActiveChatMessageContext);
-  const { friends } = useContext(OnlineUserContext);
   const chatContainer = useRef();
 
   useEffect(() => {
@@ -30,37 +28,30 @@ const ChatBox = () => {
   }, [activeChatMessages]);
 
   useEffect(() => {
-    if (activeChatFriend) {
+    if (activeChatFriendId) {
       inputRef?.current?.focus();
     }
-  }, [activeChatFriend]);
+  }, [activeChatFriendId]);
 
   useEffect(() => {
     if (socket) {
-      socket.on("on-message", ({ userId, message }) => {
-        console.log("on-meesage", userId, message);
-      });
-
       socket.on("receive-message", (data) => {
         const temp = [...activeChatMessages];
         temp.push(data);
         setActiveChatMessages(temp);
-        if (!activeChatFriend) {
-          const tempFriend = friends.find((friend) => {
-            return friend._id === data.from;
-          });
-          setActiveChatFriend(tempFriend);
+        if (!activeChatFriendId) {
+          setActiveChatFriendId(data.from);
         }
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeChatFriend, activeChatMessages, friends, socket]);
+  }, [activeChatFriendId, activeChatMessages, socket]);
 
   const sendMessage = () => {
-    if (socket && activeChatFriend && loggedInUser) {
+    if (socket && activeChatFriendId && loggedInUser) {
       const time = Date.now();
       const msgObj = {
-        to: activeChatFriend._id,
+        to: activeChatFriendId,
         from: loggedInUser._id,
         message: textMessage,
         time,
@@ -73,7 +64,9 @@ const ChatBox = () => {
     }
   };
 
-  if (!loggedInUser || !socket || !activeChatFriend) {
+  const currentUser = friends.get(activeChatFriendId);
+
+  if (!loggedInUser || !socket || !activeChatFriendId || !currentUser) {
     return null;
   }
 
@@ -83,18 +76,18 @@ const ChatBox = () => {
         <div className="d-flex bd-highlight">
           <div className="d-flex">
             <div className="img_cont">
-              <Link to={`/profile/${activeChatFriend._id}`} title="Account">
-                <UserAvatar profilePicURL={activeChatFriend.profilePicURL} />
+              <Link to={`/profile/${currentUser._id}`} title="Account">
+                <UserAvatar profilePicURL={currentUser.profilePicURL} />
                 <span
                   className={`status_icon ${
-                    activeChatFriend.isOnline ? "online" : ""
+                    currentUser.isOnline ? "online" : ""
                   }`}
                 ></span>
               </Link>
               <span className="online_icon" />
             </div>
             <div className="user_info">
-              <span> &nbsp; {activeChatFriend.name}</span>
+              <span> &nbsp; {currentUser.name}</span>
             </div>
           </div>
           <div className="video_cam">
@@ -114,7 +107,7 @@ const ChatBox = () => {
               className="btn-close"
               aria-label="Close"
               onClick={() => {
-                setActiveChatFriend(null);
+                setActiveChatFriendId(null);
               }}
             ></button>
           </div>
@@ -172,11 +165,11 @@ const ChatBox = () => {
                       >
                         <div className="img_cont_msg">
                           <Link
-                            to={`/profile/${activeChatFriend._id}`}
+                            to={`/profile/${currentUser._id}`}
                             title="Account"
                           >
                             <UserAvatar
-                              profilePicURL={activeChatFriend.profilePicURL}
+                              profilePicURL={currentUser.profilePicURL}
                               styleForUserAvatar={{
                                 width: "33px",
                                 height: "33px",

@@ -8,15 +8,15 @@ export const ActiveChatMessageContext = createContext();
 const ActiveChatMessageProvider = (props) => {
   const [activeChatMessages, setActiveChatMessages] = useState([]);
   const [isChatLoading, setIsChatLoading] = useState(false);
-  const { activeChatFriend } = useContext(ActiveChatFriendContext);
+  const { activeChatFriendId } = useContext(ActiveChatFriendContext);
   const { loggedInUser } = useContext(SessionContext);
 
   useEffect(() => {
     (async () => {
-      if (activeChatFriend) {
+      if (loggedInUser && activeChatFriendId) {
         setIsChatLoading(true);
         const response = await apiCall({
-          url: `${process.env.REACT_APP_SERVER_END_PONT}/get-chat/${loggedInUser._id}/${activeChatFriend._id}`,
+          url: `${process.env.REACT_APP_SERVER_END_PONT}/get-chat/${loggedInUser._id}/${activeChatFriendId}`,
         });
         if (response) {
           setActiveChatMessages(response.chats || []);
@@ -24,7 +24,7 @@ const ActiveChatMessageProvider = (props) => {
         setIsChatLoading(false);
       }
     })();
-  }, [loggedInUser, activeChatFriend]);
+  }, [loggedInUser, activeChatFriendId]);
 
   return (
     <ActiveChatMessageContext.Provider

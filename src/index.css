@@ -582,3 +582,15 @@ form textarea:focus::placeholder {
 .gray-out {
   color: gray;
 }
+
+/* This is for Gun */
+canvas {
+  position: absolute;
+  background: black;
+  top: 0;
+  left: 0;
+  cursor: none;
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/guns-game-98c10.appspot.com/o/wall%2FWall.jpg?alt=media&token=79c89ffe-c757-4d0c-8c8a-87977ec66c21");
+  background-size: 32px;
+  /*   image-rendering: pixelated; */
+}

@@ -2,9 +2,11 @@ import Loading from "./Loading";
 import { acceptFriendRequest, apiCall } from "../utils";
 import { useContext, useState } from "react";
 import { SessionContext } from "../providers/SessionProvider";
+import { ActiveChatFriendContext } from "../providers/ActiveChatFriendProvider";
 
 const FriendStateButton = ({ user, isProfilePage = true }) => {
   const { loggedInUser, setLoggedInUser } = useContext(SessionContext);
+  const { setActiveChatFriendId } = useContext(ActiveChatFriendContext);
   const [isUpdatingFriendRequestLoader, setIsUpdatingFriendRequestLoader] =
     useState(false);
 
@@ -55,6 +57,17 @@ const FriendStateButton = ({ user, isProfilePage = true }) => {
             <i className="fa-solid fa-user-group"></i> Friends
           </button>
           <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li>
+              <div
+                style={{ cursor: "pointer" }}
+                className="dropdown-item"
+                onClick={() => {
+                  setActiveChatFriendId(user._id);
+                }}
+              >
+                Message
+              </div>
+            </li>
             <li>
               <div
                 style={{ cursor: "pointer" }}

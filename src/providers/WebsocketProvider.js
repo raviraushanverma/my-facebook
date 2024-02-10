@@ -13,13 +13,19 @@ import io from "socket.io-client";
 
 export const WebsocketContext = createContext();
 
-export const updateFriendList = (friendsMapObj, otherUserIds, isOnlineFlag) => {
-  const users = [...friendsMapObj.values()].reduce((acc, element) => {
-    acc.set(`${element._id}`, {
-      ...element,
-      isOnline: otherUserIds.includes(element._id)
-        ? isOnlineFlag
-        : element.isOnline,
+export const updateFriendList = (
+  friendsMapObj,
+  otherUserIds,
+  isOnlineFlag,
+  lastLoggedInTime
+) => {
+  const users = [...friendsMapObj.values()].reduce((acc, user) => {
+    acc.set(`${user._id}`, {
+      ...user,
+      lastLoggedInTime: lastLoggedInTime
+        ? lastLoggedInTime
+        : user.lastLoggedInTime,
+      isOnline: otherUserIds.includes(user._id) ? isOnlineFlag : user.isOnline,
     });
     return acc;
   }, new Map());
@@ -44,13 +50,9 @@ const WebsocketProvider = (props) => {
   }, []);
 
   useEffect(() => {
-    if (socket) {
-      socket.on("all-connected-users", allAlreadyOnlineUserListener);
-    }
+    socket?.on("all-connected-users", allAlreadyOnlineUserListener);
     return () => {
-      if (socket) {
-        socket.off("all-connected-users", allAlreadyOnlineUserListener);
-      }
+      socket?.off("all-connected-users", allAlreadyOnlineUserListener);
     };
   }, [allAlreadyOnlineUserListener, socket]);
 
@@ -118,23 +120,24 @@ const WebsocketProvider = (props) => {
   );
 
   const otherUserDisconnectedListener = useCallback(
-    (otherUserId) => {
-      const friendListTemp = updateFriendList(friends, [otherUserId], false);
+    ({ userId, lastLoggedInTime }) => {
+      const friendListTemp = updateFriendList(
+        friends,
+        [userId],
+        false,
+        lastLoggedInTime
+      );
       setFriends(friendListTemp);
     },
     [friends, setFriends]
   );
 
   useEffect(() => {
-    if (socket) {
-      socket.on("other-user-connected", otherUserConnectedListener);
-      socket.on("other-user-disconnected", otherUserDisconnectedListener);
-    }
+    socket?.on("other-user-connected", otherUserConnectedListener);
+    socket?.on("other-user-disconnected", otherUserDisconnectedListener);
     return () => {
-      if (socket) {
-        socket.off("other-user-connected", otherUserConnectedListener);
-        socket.off("other-user-disconnected", otherUserDisconnectedListener);
-      }
+      socket?.off("other-user-connected", otherUserConnectedListener);
+      socket?.off("other-user-disconnected", otherUserDisconnectedListener);
     };
   }, [
     socket,

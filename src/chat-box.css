@@ -83,6 +83,10 @@
 	position: relative;
 }
 
+.typing-section {
+	background-color: #F0F2F5;
+}
+
 .msg_time {
 	position: absolute;
 	left: 0;

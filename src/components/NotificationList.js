@@ -2,9 +2,13 @@ import UserAvatar from "./UserAvatar";
 import { Link } from "react-router-dom";
 import { acceptFriendRequest } from "../utils";
 import TimeAgo from "javascript-time-ago";
+import { useContext } from "react";
+import { ActiveChatFriendContext } from "../providers/ActiveChatFriendProvider";
 
 const NotificationList = ({ notifications, loggedInUser, setLoggedInUser }) => {
   const timeAgo = new TimeAgo("en-US");
+
+  const { setActiveChatFriendId } = useContext(ActiveChatFriendContext);
 
   const onAcceptFriendRequest = async (userId) => {
     const res = await acceptFriendRequest(loggedInUser._id, userId);
@@ -74,6 +78,24 @@ const NotificationList = ({ notifications, loggedInUser, setLoggedInUser }) => {
         filterNotifications.push({
           ...notifyObj,
           children: <>&nbsp;unfriend you!</>,
+        });
+      } else if (notifyObj.action === "CHAT_MESSAGE") {
+        filterNotifications.push({
+          ...notifyObj,
+          children: (
+            <>
+              &nbsp;
+              <span
+                className="post-highlight"
+                onClick={() => {
+                  setActiveChatFriendId(notifyObj.user._id);
+                }}
+              >
+                messaged
+              </span>{" "}
+              you!
+            </>
+          ),
         });
       }
     }

@@ -7,7 +7,6 @@ import enjoy from "../assets/images/enjoy.webp";
 import Timeline from "./Timeline";
 import { SessionContext } from "../providers/SessionProvider";
 import { useContext } from "react";
-import ChatBox from "./ChatBox";
 import CenterPageLoader from "./CenterPageLoader";
 
 const Home = () => {
@@ -18,13 +17,9 @@ const Home = () => {
   }
 
   if (loggedInUser) {
-    return (
-      <>
-        <Timeline />
-        <ChatBox />
-      </>
-    );
+    return <Timeline />;
   }
+
   return (
     <main>
       <div className="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary">

@@ -3,8 +3,10 @@ import { SessionContext } from "../providers/SessionProvider";
 import UserAvatar from "./UserAvatar";
 import { ActiveChatFriendContext } from "../providers/ActiveChatFriendProvider";
 import { WebsocketContext } from "../providers/WebsocketProvider";
+import TimeAgo from "javascript-time-ago";
 
 const FriendChatList = () => {
+  const timeAgo = new TimeAgo("en-US");
   const { setActiveChatFriendId } = useContext(ActiveChatFriendContext);
   const { loggedInUser } = useContext(SessionContext);
   const { friends } = useContext(WebsocketContext);
@@ -58,8 +60,16 @@ const FriendChatList = () => {
                         <h6>{friend.name}</h6>
                       </span>
                       <p>
-                        {friend.name} is
-                        {friend.isOnline ? " Online" : " Offline"}
+                        {friend.isOnline
+                          ? " Online"
+                          : !!friend.lastLoggedInTime && (
+                              <small>
+                                Last Login{" "}
+                                {timeAgo.format(
+                                  new Date(friend.lastLoggedInTime)
+                                )}
+                              </small>
+                            )}
                       </p>
                     </div>
                   </div>

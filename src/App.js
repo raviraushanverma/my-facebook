@@ -16,6 +16,7 @@ import VideoChat from "./components/VideoChat";
 import ActiveChatFriendProvider from "./providers/ActiveChatFriendProvider";
 import WebsocketProvider from "./providers/WebsocketProvider";
 import ActiveChatMessageProvider from "./providers/ActiveChatMessageProvider";
+import ChatBox from "./components/ChatBox";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
                           />
                           <Route path="/video-chat" element={<VideoChat />} />
                         </Routes>
+                        <ChatBox />
                       </div>
                     </ActiveChatMessageProvider>
                     <Footer />

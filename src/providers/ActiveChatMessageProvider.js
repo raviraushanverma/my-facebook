@@ -19,7 +19,8 @@ const ActiveChatMessageProvider = (props) => {
           url: `${process.env.REACT_APP_SERVER_END_PONT}/get-chat/${loggedInUser._id}/${activeChatFriendId}`,
         });
         if (response) {
-          setActiveChatMessages(response.chats || []);
+          const chats = response.chats || [];
+          setActiveChatMessages(chats);
         }
         setIsChatLoading(false);
       }

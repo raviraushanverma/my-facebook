@@ -1,13 +1,13 @@
-export const apiCall = async ({ url, method = "GET", body }) => {
+export const apiCall = async ({ url, method = "GET", body, options = {} }) => {
   try {
-    const options = {
+    const httpOptions = {
       method,
       headers: { "Content-Type": "application/json" },
     };
     if (body) {
-      options.body = JSON.stringify(body);
+      httpOptions.body = JSON.stringify(body);
     }
-    const jsonRes = await fetch(url, options);
+    const jsonRes = await fetch(url, { ...httpOptions, ...options });
     const response = await jsonRes.json();
     if (!response.isSuccess) {
       return false;

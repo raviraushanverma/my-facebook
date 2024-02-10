@@ -39,7 +39,7 @@ const ChatBox = () => {
       setIsMessageTyping(false);
       if (!activeChatFriendId) {
         setActiveChatFriendId(data.from);
-      } else {
+      } else if (activeChatFriendId === data.from) {
         const temp = [...activeChatMessages];
         temp.push(data);
         setActiveChatMessages(temp);
@@ -60,9 +60,14 @@ const ChatBox = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [isMessageTyping]);
 
-  const onTypingReceived = useCallback((data) => {
-    setIsMessageTyping(data);
-  }, []);
+  const onTypingReceived = useCallback(
+    (data) => {
+      if (activeChatFriendId === data.from) {
+        setIsMessageTyping(data);
+      }
+    },
+    [activeChatFriendId]
+  );
 
   const onUserDisconnected = useCallback(() => {
     setIsMessageTyping(null);

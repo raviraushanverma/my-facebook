@@ -20,13 +20,12 @@ export const updateFriendList = (
   lastLoggedInTime
 ) => {
   const users = [...friendsMapObj.values()].reduce((acc, user) => {
-    acc.set(`${user._id}`, {
-      ...user,
-      lastLoggedInTime: lastLoggedInTime
-        ? lastLoggedInTime
-        : user.lastLoggedInTime,
-      isOnline: otherUserIds.includes(user._id) ? isOnlineFlag : user.isOnline,
-    });
+    const userObj = { ...user };
+    if (otherUserIds.includes(user._id)) {
+      userObj.lastLoggedInTime = lastLoggedInTime ?? user.lastLoggedInTime;
+      userObj.isOnline = isOnlineFlag;
+    }
+    acc.set(`${user._id}`, userObj);
     return acc;
   }, new Map());
   return new Map([...users].sort((a, b) => b[1].isOnline - a[1].isOnline));

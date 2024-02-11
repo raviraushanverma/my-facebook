@@ -289,6 +289,7 @@ const ChatBox = () => {
                   onChange={(e) => setTextMessage(e.target.value)}
                   onKeyDown={onTypingHandler}
                   ref={inputRef}
+                  required
                 />
                 <div className="input-group-append">
                   <button className="input-group-text send_btn" type="submit">

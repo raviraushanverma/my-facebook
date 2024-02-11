@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 
 const VideoCall = () => {
-  const videoElement = useRef();
+  const videoElement = useRef(null);
 
   useEffect(() => {
-    (async () => {
+    const mediaStream = (async () => {
       if (videoElement && videoElement.current) {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
           audio: true,
@@ -21,17 +21,27 @@ const VideoCall = () => {
             ],
           },
         });
-        videoElement.current.srcObject = mediaStream;
+        if (videoElement && videoElement.current) {
+          videoElement.current.srcObject = mediaStream;
+        }
+        return mediaStream;
       }
     })();
+
+    return async () => {
+      const stream = await mediaStream;
+      stream?.getTracks().forEach((track) => track.stop());
+    };
   }, []);
 
   return (
-    <video
-      style={{ width: "100vw", height: "100vh" }}
-      ref={videoElement}
-      autoPlay
-    />
+    <div>
+      <video
+        style={{ width: "100%", height: "100%" }}
+        ref={videoElement}
+        autoPlay
+      />
+    </div>
   );
 };
 

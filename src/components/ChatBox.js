@@ -7,6 +7,7 @@ import { WebsocketContext } from "../providers/WebsocketProvider";
 import { ActiveChatMessageContext } from "../providers/ActiveChatMessageProvider";
 import TimeAgo from "javascript-time-ago";
 import OutsideClickHandler from "react-outside-click-handler";
+import VideoCall from "./VideoChat";
 
 const ChatBox = () => {
   const timeAgo = new TimeAgo("en-US");
@@ -21,14 +22,16 @@ const ChatBox = () => {
     useContext(ActiveChatMessageContext);
   const [isMessageTyping, setIsMessageTyping] = useState(null);
   const chatContainer = useRef();
+  const [isVideoCall, setIsVideoCall] = useState(false);
 
   useEffect(() => {
     chatContainer?.current?.scrollIntoView({
       block: "end",
     });
-  }, [isMessageTyping, activeChatMessages]);
+  }, [isMessageTyping, activeChatMessages, isVideoCall]);
 
   useEffect(() => {
+    setIsVideoCall(false);
     if (activeChatFriendId) {
       inputRef?.current?.focus();
     }
@@ -145,7 +148,12 @@ const ChatBox = () => {
             </div>
             <div className="video_cam">
               <span>
-                <i className="fas fa-video" />
+                <i
+                  className={`${
+                    isVideoCall ? "fa-solid fa-video-slash" : "fas fa-video"
+                  }`}
+                  onClick={() => setIsVideoCall(!isVideoCall)}
+                />
               </span>
               <span>
                 <i className="fas fa-phone" />
@@ -163,127 +171,134 @@ const ChatBox = () => {
             </div>
           </div>
         </div>
-        <div
-          className={`card-body msg_card_body ${
-            isChatLoading || !activeChatMessages.length
-              ? "complete-center gray-out"
-              : ""
-          }`}
-        >
-          <div ref={chatContainer}>
-            <>
-              {isChatLoading ? (
-                "Loading..."
-              ) : (
+        {isVideoCall ? (
+          <VideoCall />
+        ) : (
+          <>
+            <div
+              className={`card-body msg_card_body ${
+                isChatLoading || !activeChatMessages.length
+                  ? "complete-center gray-out"
+                  : ""
+              }`}
+            >
+              <div ref={chatContainer}>
                 <>
-                  {!activeChatMessages.length && "There are no conversations"}
-                  {activeChatMessages.map((chat) => {
-                    if (chat.from === loggedInUser._id) {
-                      return (
-                        <div
-                          key={chat.time}
-                          className="d-flex justify-content-end mb-4"
-                        >
-                          <div className="msg_cotainer_send">
-                            {chat.message}
-                            <span className="msg_time_send">
-                              {timeAgo.format(new Date(chat.time))}
-                            </span>
-                          </div>
+                  {isChatLoading ? (
+                    "Loading..."
+                  ) : (
+                    <>
+                      {!activeChatMessages.length &&
+                        "There are no conversations"}
+                      {activeChatMessages.map((chat) => {
+                        if (chat.from === loggedInUser._id) {
+                          return (
+                            <div
+                              key={chat.time}
+                              className="d-flex justify-content-end mb-4"
+                            >
+                              <div className="msg_cotainer_send">
+                                {chat.message}
+                                <span className="msg_time_send">
+                                  {timeAgo.format(new Date(chat.time))}
+                                </span>
+                              </div>
+                              <div className="img_cont_msg">
+                                <UserAvatar
+                                  profilePicURL={loggedInUser.profilePicURL}
+                                  styleForUserAvatar={{
+                                    width: "33px",
+                                    height: "33px",
+                                  }}
+                                  styleForDefaultUserAvatar={{
+                                    fontSize: "1em",
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          );
+                        } else {
+                          return (
+                            <div
+                              key={chat.time}
+                              className="d-flex justify-content-start mb-4"
+                            >
+                              <div className="img_cont_msg">
+                                <UserAvatar
+                                  profilePicURL={currentUser.profilePicURL}
+                                  styleForUserAvatar={{
+                                    width: "33px",
+                                    height: "33px",
+                                  }}
+                                  styleForDefaultUserAvatar={{
+                                    fontSize: "1em",
+                                  }}
+                                />
+                              </div>
+                              <div className="msg_cotainer">
+                                {chat.message}
+                                <span className="msg_time">
+                                  {timeAgo.format(new Date(chat.time))}
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        }
+                      })}
+                      {!!isMessageTyping && (
+                        <div className="d-flex justify-content-start mb-4">
                           <div className="img_cont_msg">
-                            <UserAvatar
-                              profilePicURL={loggedInUser.profilePicURL}
-                              styleForUserAvatar={{
-                                width: "33px",
-                                height: "33px",
-                              }}
-                              styleForDefaultUserAvatar={{
-                                fontSize: "1em",
-                              }}
-                            />
+                            <Link
+                              to={`/profile/${currentUser._id}`}
+                              title="Account"
+                            >
+                              <UserAvatar
+                                profilePicURL={currentUser.profilePicURL}
+                                styleForUserAvatar={{
+                                  width: "33px",
+                                  height: "33px",
+                                }}
+                                styleForDefaultUserAvatar={{
+                                  fontSize: "1em",
+                                }}
+                              />
+                            </Link>
+                          </div>
+                          <div className="msg_cotainer typing-section">
+                            Typing......
                           </div>
                         </div>
-                      );
-                    } else {
-                      return (
-                        <div
-                          key={chat.time}
-                          className="d-flex justify-content-start mb-4"
-                        >
-                          <div className="img_cont_msg">
-                            <UserAvatar
-                              profilePicURL={currentUser.profilePicURL}
-                              styleForUserAvatar={{
-                                width: "33px",
-                                height: "33px",
-                              }}
-                              styleForDefaultUserAvatar={{
-                                fontSize: "1em",
-                              }}
-                            />
-                          </div>
-                          <div className="msg_cotainer">
-                            {chat.message}
-                            <span className="msg_time">
-                              {timeAgo.format(new Date(chat.time))}
-                            </span>
-                          </div>
-                        </div>
-                      );
-                    }
-                  })}
-                  {!!isMessageTyping && (
-                    <div className="d-flex justify-content-start mb-4">
-                      <div className="img_cont_msg">
-                        <Link
-                          to={`/profile/${currentUser._id}`}
-                          title="Account"
-                        >
-                          <UserAvatar
-                            profilePicURL={currentUser.profilePicURL}
-                            styleForUserAvatar={{
-                              width: "33px",
-                              height: "33px",
-                            }}
-                            styleForDefaultUserAvatar={{
-                              fontSize: "1em",
-                            }}
-                          />
-                        </Link>
-                      </div>
-                      <div className="msg_cotainer typing-section">
-                        Typing......
-                      </div>
-                    </div>
+                      )}
+                    </>
                   )}
                 </>
-              )}
-            </>
-          </div>
-        </div>
-        <div className="card-footer">
-          <form
-            className="input-group"
-            onSubmit={(e) => {
-              e.preventDefault();
-              sendMessage();
-            }}
-          >
-            <input
-              className="form-control type_msg"
-              placeholder="Type your message..."
-              value={textMessage}
-              onChange={(e) => setTextMessage(e.target.value)}
-              onKeyDown={onTypingHandler}
-              ref={inputRef}
-            />
-            <div className="input-group-append">
-              <button className="input-group-text send_btn" type="submit">
-                <i className="fas fa-location-arrow" />
-              </button>
+              </div>
             </div>
-          </form>
-        </div>
+            <div className="card-footer">
+              <form
+                className="input-group"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  sendMessage();
+                }}
+              >
+                <input
+                  className="form-control type_msg"
+                  placeholder="Type your message..."
+                  value={textMessage}
+                  onChange={(e) => setTextMessage(e.target.value)}
+                  onKeyDown={onTypingHandler}
+                  ref={inputRef}
+                />
+                <div className="input-group-append">
+                  <button className="input-group-text send_btn" type="submit">
+                    <i className="fas fa-location-arrow" />
+                  </button>
+                </div>
+              </form>
+            </div>
+          </>
+        )}
       </div>
     </OutsideClickHandler>
   );

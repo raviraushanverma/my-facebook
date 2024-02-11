@@ -12,7 +12,6 @@ import EventSourceProvider from "./providers/EventSourceProvider";
 import PostProvider from "./providers/PostProvider";
 import FriendSuggestionProvider from "./providers/FriendSuggestionProvider";
 import PostDetail from "./components/PostDetail";
-import VideoChat from "./components/VideoChat";
 import ActiveChatFriendProvider from "./providers/ActiveChatFriendProvider";
 import WebsocketProvider from "./providers/WebsocketProvider";
 import ActiveChatMessageProvider from "./providers/ActiveChatMessageProvider";
@@ -47,7 +46,6 @@ function App() {
                             path="/notifications"
                             element={<NotificationPage />}
                           />
-                          <Route path="/video-chat" element={<VideoChat />} />
                         </Routes>
                         <ChatBox />
                       </div>

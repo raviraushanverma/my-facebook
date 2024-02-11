@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-const VideoChat = () => {
+const VideoCall = () => {
   const videoElement = useRef();
 
   useEffect(() => {
@@ -35,4 +35,4 @@ const VideoChat = () => {
   );
 };
 
-export default VideoChat;
+export default VideoCall;

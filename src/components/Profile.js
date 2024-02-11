@@ -195,13 +195,11 @@ const Profile = () => {
         )}
         {!(isMyProfile || (!isMyProfile && isMyFriend)) && (
           <div className="complete-center" style={{ height: "100px" }}>
-            <div style={{ textAlign: "center" }}>
-              <div>
-                <i
-                  style={{ color: "#FF7F7F" }}
-                  className="fa-solid fa-6x fa-lock"
-                ></i>
-              </div>
+            <div style={{ textAlign: "center", marginTop: "30px" }}>
+              <i
+                style={{ color: "#FF7F7F" }}
+                className="fa-solid fa-6x fa-lock"
+              ></i>
               <div style={{ marginTop: "10px" }}>This account is locked!</div>
             </div>
           </div>

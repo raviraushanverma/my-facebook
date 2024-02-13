@@ -172,7 +172,7 @@ const ChatBox = () => {
           </div>
         </div>
         {isVideoCall ? (
-          <VideoCall />
+          <VideoCall userId={activeChatFriendId} />
         ) : (
           <>
             <div

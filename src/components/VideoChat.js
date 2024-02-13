@@ -117,23 +117,12 @@ const VideoCall = ({ userId }) => {
   }, []);
 
   return (
-    <div>
+    <div style={{ display: "flex" }}>
       {myStream && (
-        <>
-          <h1>My Stream</h1>
-          <ReactPlayer playing height="100px" width="200px" url={myStream} />
-        </>
+        <ReactPlayer playing height="100%" width="50%" url={myStream} />
       )}
       {remoteStream && (
-        <>
-          <h1>Remote Stream</h1>
-          <ReactPlayer
-            playing
-            height="100px"
-            width="200px"
-            url={remoteStream}
-          />
-        </>
+        <ReactPlayer playing height="100%" width="50%" url={remoteStream} />
       )}
     </div>
   );

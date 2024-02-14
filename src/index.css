@@ -8,14 +8,6 @@ a {
   cursor: pointer;
 }
 
-@media (max-width: 700px) {
-  .container-fluid {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-  ::-webkit-scrollbar { display: none; }
-}
-
 .logo {
   height: auto;
   width: 100px;
